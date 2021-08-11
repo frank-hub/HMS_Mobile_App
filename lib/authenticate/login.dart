@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:hms/authenticate/register.dart';
+import 'package:hms/screens/patient/HomeScreen.dart';
 
 class Login extends StatelessWidget {
 
@@ -118,20 +120,32 @@ class Login extends StatelessWidget {
                               borderRadius: BorderRadius.circular(50),
                               color: Colors.blue[500]),
                           child: Center(
-                            child: Text(
-                              "Login",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                            child:   ElevatedButton(
+                              child: Text( "LOGIN"),
+                              onPressed:  () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(
+                                        builder: (
+                                            context) => HomeScreen()
+                                    ));
+                              },
                             ),
                           ),
                         ),
                         SizedBox(
                           height: 50,
                         ),
-                        Text(
-                          "Continue with social media",
-                          style: TextStyle(color: Colors.grey),
+                        Center(
+                          child:ElevatedButton(
+                            child: Text( "Sign Up"),
+                            onPressed:  () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(
+                                      builder: (
+                                          context) => Register()
+                                  ));
+                            },
+                          ),
                         ),
                         SizedBox(
                           height: 30,

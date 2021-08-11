@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hms/authenticate/login.dart';
+import 'package:hms/screens/patient/HomeScreen.dart';
 
 Color orangeColors = Color(0xff6dcae7);
 Color orangeLightColors = Color(0xff5eeadf);
@@ -37,21 +39,36 @@ class _RegisterState extends State<Register> {
                     ButtonWidget(
                           btnText: "SIGNUP",
                           onClick: () {
-                            Navigator.pop(context);
+                            Navigator.push(context,
+                                MaterialPageRoute(
+                                    builder: (
+                                        context) => HomeScreen()
+                                ));
                           },
                         ),
                     SizedBox(height: 20.0,),
 
-                    RichText(
-                      text: TextSpan(children: [
-                        TextSpan(
-                            text: "Already a member ? ",
-                            style: TextStyle(color: Colors.black)),
-                        TextSpan(
-                            text: "SIGNIN",
-                            style: TextStyle(color: orangeColors)),
-                      ]),
+                    GestureDetector(
+                      child: RichText(
+                        text: TextSpan(children: [
+                          TextSpan(
+
+                              text: "Already a member ? ",
+                              style: TextStyle(color: Colors.black)),
+                          TextSpan(
+                              text: "SIGNIN",
+                              style: TextStyle(color: orangeColors)),
+                        ]),
+                      ),
+                      onTap:(){
+                        Navigator.push(context,
+                            MaterialPageRoute(
+                                builder: (
+                                    context) => Login()
+                            ));
+                      } ,
                     )
+
                   ],
                 ),
               ),
