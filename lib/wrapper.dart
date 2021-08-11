@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hms/authenticate/login.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 class Wrapper extends StatefulWidget {
   @override
@@ -50,7 +51,7 @@ class _WrapperState extends State<Wrapper> {
                     )
                 ),
                 onPressed: () => Navigator.push(context, MaterialPageRoute(builder:
-                (context) => HomeScreen()
+                (context) => Login()
                 ))
             )
           ],
