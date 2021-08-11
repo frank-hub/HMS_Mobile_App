@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'HomeWidget.dart';
 class HomeScreen extends StatefulWidget {
   @override
@@ -42,16 +42,16 @@ final List<Widget> _children = [
               label: 'Home'
             ),
             BottomNavigationBarItem(
-              icon: new Icon(Icons.message_rounded),
-              label: 'Message',
+              icon: new FaIcon(FontAwesomeIcons.capsules),
+              label: 'Pharmacy',
             ),
             BottomNavigationBarItem(
-              icon: new Icon(Icons.calendar_today_outlined),
+              icon: new FaIcon(FontAwesomeIcons.calendarDay),
               label: 'Bookings'
             ),
             BottomNavigationBarItem(
-              icon: new Icon(Icons.person_pin_outlined),
-              label: 'Profile'
+              icon: new FaIcon(FontAwesomeIcons.syringe),
+              label: 'Lab'
             )
 
           ],
