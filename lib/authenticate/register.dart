@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hms/authenticate/login.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 
-Color orangeColors = Color(0xff6dcae7);
-Color orangeLightColors = Color(0xff5eeadf);
+Color orangeColors = Color(0xFF6C63FF);
+Color orangeLightColors = Color(0xFF6C63FF);
 
 class Register extends StatefulWidget {
 

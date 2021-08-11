@@ -14,9 +14,9 @@ class Login extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
             gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-              Colors.blue[900]!,
-              Colors.blue[800]!,
-              Colors.blue[400]!
+              Color(0xFF6C63FF),
+              Color(0xFF5A54C4),
+              Color(0xFF5B55BE),
             ])),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,31 +113,38 @@ class Login extends StatelessWidget {
                         SizedBox(
                           height: 20,
                         ),
-                        Container(
-                          height: 50,
-                          margin: EdgeInsets.symmetric(horizontal: 50),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(50),
-                              color: Colors.blue[500]),
-                          child: Center(
-                            child:   ElevatedButton(
-                              child: Text( "LOGIN"),
-                              onPressed:  () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(
-                                        builder: (
-                                            context) => HomeScreen()
-                                    ));
-                              },
-                            ),
-                          ),
-                        ),
+                         Center(
+                            child: ConstrainedBox(
+                                constraints: BoxConstraints.tightFor(width: 300, height: 40),
+                               child: ElevatedButton(
+                              style: ButtonStyle(
+
+                            foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0)
+
+                                  )
+
+                              )
+
+                              ),
+                              onPressed: () { },
+                              child: Text('SIGN IN'),
+                            )
+                          ),),
+
                         SizedBox(
                           height: 50,
                         ),
                         Center(
                           child:ElevatedButton(
-                            child: Text( "Sign Up"),
+                            style: ButtonStyle(
+                               foregroundColor:MaterialStateProperty.all<Color>(Color(
+                                   0xFFD2D0EF)),
+                            ),
+                            child: Text( "Sign Up",style: TextStyle(color: Colors.white),),
                             onPressed:  () {
                               Navigator.push(context,
                                   MaterialPageRoute(
