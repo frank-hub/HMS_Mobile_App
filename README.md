@@ -1,4 +1,4 @@
-# hms
+# Hospital Management System
 
 A new Flutter application.
 
