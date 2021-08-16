@@ -3,11 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:hms/authenticate/register.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
+import 'package:hms/services/auth.dart';
+import 'package:provider/provider.dart';
 
-class Login extends StatelessWidget {
-
+class Login extends StatefulWidget {
+  const Login({Key? key}) : super(key: key);
 
   @override
+  _LoginState createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  @override
+  TextEditingController passwordController= new TextEditingController();
+  TextEditingController emailController= new TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  String _errorMessage = '';
+  Future<void> submitForm() async {
+    setState(() {
+      _errorMessage = '';
+    });
+    bool result = await Provider.of<AuthProvider>(context, listen: false).login(emailController.text, passwordController.text);
+    if (result == false) {
+      setState(() {
+        _errorMessage = 'There was a problem with your credentials.';
+      });
+    }
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -72,17 +95,23 @@ class Login extends StatelessWidget {
                               ]),
                           child: Column(
                             children: <Widget>[
-                              Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        bottom: BorderSide(
-                                            color: Colors.grey[200]!))),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                      hintText: "Email or Phone number",
-                                      hintStyle: TextStyle(color: Colors.grey),
-                                      border: InputBorder.none),
+                              Form(
+                                key: _formKey,
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                      border: Border(
+                                          bottom: BorderSide(
+                                              color: Colors.grey[200]!))),
+                                  child: TextFormField(
+                                    controller: emailController,
+                                    validator: (value) => value!.isEmpty ? 'Please enter an email address' : null,
+                                    decoration: InputDecoration(
+                                        hintText: "Email or Phone number",
+                                        hintStyle: TextStyle(color: Colors.grey),
+                                        border: InputBorder.none),
+                                  ),
+
                                 ),
                               ),
                               Container(
@@ -91,11 +120,13 @@ class Login extends StatelessWidget {
                                     border: Border(
                                         bottom: BorderSide(
                                             color: Colors.grey[200]!))),
-                                child: TextField(
+                                child: TextFormField(
+                                  controller: passwordController,
+                                  validator: (value) => value!.isEmpty ? 'Please enter a password' : null,
                                   decoration: InputDecoration(
                                       hintText: "Password",
 
-                                      hintStyle: TextStyle(color: Colors.grey),
+                                      hintStyle: TextStyle(color: Colors.blue),
                                       border: InputBorder.none),
                                   obscureText: true,
                                 ),
@@ -130,11 +161,15 @@ class Login extends StatelessWidget {
                                     )
                                 ),
                                 onPressed: () {
-                                  Navigator.push(context,
-                                      MaterialPageRoute(
-                                          builder: (
-                                              context) => HomeScreen()
-                                      ));
+                                  if (_formKey.currentState!.validate()) {
+                                    _formKey.currentState!.save();
+                                    submitForm();
+                                  }
+                                  // Navigator.push(context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (
+                                  //             context) => HomeScreen()
+                                  //     ));
                                 },
                                 child: Text('SIGN IN'),
                               )
@@ -209,3 +244,5 @@ class Login extends StatelessWidget {
     );
   }
 }
+
+

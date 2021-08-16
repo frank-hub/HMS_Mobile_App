@@ -11,6 +11,7 @@ class _HomeScreenState extends State<HomeScreen> {
 int _currentIndex = 0;
 final List<Widget> _children = [
   HomeWidget(),
+  BookingAppointment(),
   HomeWidget(),
   BookingAppointment(),
   HomeWidget(),
@@ -45,13 +46,10 @@ final List<Widget> _children = [
             BottomNavigationBarItem(
               icon: new FaIcon(FontAwesomeIcons.capsules),
               label: 'Pharmacy',
-
             ),
             BottomNavigationBarItem(
-
               icon: new FaIcon(FontAwesomeIcons.calendarDay),
               label: 'Bookings'
-
             ),
             BottomNavigationBarItem(
               icon: new FaIcon(FontAwesomeIcons.syringe),
