@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hms/screens/booking.dart';
 import 'HomeWidget.dart';
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,9 +10,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 int _currentIndex = 0;
 final List<Widget> _children = [
-  HomeWidget( ),
   HomeWidget(),
   HomeWidget(),
+  BookingAppointment(),
   HomeWidget(),
 ];
 
@@ -25,7 +26,7 @@ final List<Widget> _children = [
           title: Text("HMS"),
           actions: [
             IconButton(icon: const Icon(
-                Icons.question_answer),
+                Icons.person),
                 tooltip: 'FAQ',
                 onPressed: (){}
             ),

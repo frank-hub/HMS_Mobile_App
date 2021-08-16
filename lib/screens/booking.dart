@@ -41,7 +41,7 @@ class _BookingAppointmentState extends State<BookingAppointment> {
           children: [
             Container(
               child: Image(
-              image: AssetImage('assets/images/logo.jpg'),
+              image: AssetImage('assets/images/logo.png'),
               height: 250,
                 ),
     ),

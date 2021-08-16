@@ -97,7 +97,7 @@ class Login extends StatelessWidget {
 
                                       hintStyle: TextStyle(color: Colors.grey),
                                       border: InputBorder.none),
-                                   obscureText: true,
+                                  obscureText: true,
                                 ),
                               ),
                             ],
@@ -113,26 +113,31 @@ class Login extends StatelessWidget {
                         SizedBox(
                           height: 20,
                         ),
-                         Center(
-                            child: ConstrainedBox(
-                                constraints: BoxConstraints.tightFor(width: 300, height: 40),
-                               child: ElevatedButton(
-                              style: ButtonStyle(
+                        Center(
+                          child: ConstrainedBox(
+                              constraints: BoxConstraints.tightFor(width: 300, height: 40),
+                              child: ElevatedButton(
+                                style: ButtonStyle(
 
-                            foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(18.0)
+                                    foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(18.0)
 
-                                  )
+                                        )
 
+                                    )
+                                ),
+                                onPressed: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(
+                                          builder: (
+                                              context) => HomeScreen()
+                                      ));
+                                },
+                                child: Text('SIGN IN'),
                               )
-
-                              ),
-                              onPressed: () { },
-                              child: Text('SIGN IN'),
-                            )
                           ),),
 
                         SizedBox(
@@ -141,8 +146,8 @@ class Login extends StatelessWidget {
                         Center(
                           child:ElevatedButton(
                             style: ButtonStyle(
-                               foregroundColor:MaterialStateProperty.all<Color>(Color(
-                                   0xFFD2D0EF)),
+                              foregroundColor:MaterialStateProperty.all<Color>(Color(
+                                  0xFFD2D0EF)),
                             ),
                             child: Text( "Sign Up",style: TextStyle(color: Colors.white),),
                             onPressed:  () {
