@@ -18,7 +18,7 @@ class _LoginState extends State<Login> {
   TextEditingController passwordController= new TextEditingController();
   TextEditingController emailController= new TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
+  final key = new GlobalKey<ScaffoldState>();
   String _errorMessage = '';
   Future<void> submitForm() async {
     setState(() {
@@ -33,6 +33,7 @@ class _LoginState extends State<Login> {
   }
   Widget build(BuildContext context) {
     return Scaffold(
+      key: key,
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -163,9 +164,10 @@ class _LoginState extends State<Login> {
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
                                     _formKey.currentState!.save();
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(content: Text("My amazing message! O.o")));
                                     submitForm();
-                                  }
-                                  // Navigator.push(context,
+                                  }                                  // Navigator.push(context,
                                   //     MaterialPageRoute(
                                   //         builder: (
                                   //             context) => HomeScreen()
