@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hms/screens/booking.dart';
+import 'package:hms/services/auth.dart';
+import 'package:hms/services/auth2.dart';
+import 'package:provider/provider.dart';
 import 'HomeWidget.dart';
 class HomeScreen extends StatefulWidget {
   @override
@@ -29,7 +32,9 @@ final List<Widget> _children = [
             IconButton(icon: const Icon(
                 Icons.person),
                 tooltip: 'FAQ',
-                onPressed: (){}
+                onPressed: (){
+                  Provider.of<Auth>(context, listen: false).logout();
+                }
             ),
           ],
         ),

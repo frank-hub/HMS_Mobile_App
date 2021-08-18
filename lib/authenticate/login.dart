@@ -4,6 +4,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:hms/authenticate/register.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:hms/services/auth.dart';
+import 'package:hms/services/auth2.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
@@ -27,7 +28,7 @@ class _LoginState extends State<Login> {
     bool result = await Provider.of<AuthProvider>(context, listen: false).login(emailController.text, passwordController.text);
     if (result == false) {
       setState(() {
-        _errorMessage = 'There was a problem with your credentials.';
+        _errorMessage = 'Unauthorized!! Wrong Credentials';
       });
     }
   }
@@ -96,6 +97,7 @@ class _LoginState extends State<Login> {
                               ]),
                           child: Column(
                             children: <Widget>[
+                              Text(_errorMessage,style: TextStyle(color: Colors.red),),
                               Form(
                                 key: _formKey,
                                 child: Container(
@@ -162,11 +164,13 @@ class _LoginState extends State<Login> {
                                     )
                                 ),
                                 onPressed: () {
+                                  Map creds={
+                                    'email' :emailController.text,
+                                    'password':passwordController.text
+
+                                  };
                                   if (_formKey.currentState!.validate()) {
-                                    _formKey.currentState!.save();
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(SnackBar(content: Text("My amazing message! O.o")));
-                                    submitForm();
+                                    Provider.of<Auth>(context,listen: false).login(creds);
                                   }                                  // Navigator.push(context,
                                   //     MaterialPageRoute(
                                   //         builder: (
