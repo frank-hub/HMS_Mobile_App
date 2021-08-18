@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 class User{
-  late String name;
- late String email;
-  late String avatar;
+  final String name;
+ final String email;
+  final int phone;
 
-  User( this.name,this.email, this.avatar);
+  User({ required this.name, required this.email, required this.phone});
 
   User.fromJson(Map<String, dynamic>json):
   name=json['name'],
   email=json['email'],
-  avatar=json['avatar'];
+  phone=json['phone'] as int;
 
 }

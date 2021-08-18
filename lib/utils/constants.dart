@@ -1,3 +1,3 @@
-const API_URL = 'http://46fdb1e40908.ngrok.io';
+const API_URL = 'http://192.168.43.164:8000';
 
 

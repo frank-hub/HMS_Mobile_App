@@ -25,7 +25,7 @@ class _LoginState extends State<Login> {
     setState(() {
       _errorMessage = '';
     });
-    bool result = await Provider.of<AuthProvider>(context, listen: false).login(emailController.text, passwordController.text);
+    bool result = await Provider.of<Auth>(context, listen: false).login(emailController.text, passwordController.text);
     if (result == false) {
       setState(() {
         _errorMessage = 'Unauthorized!! Wrong Credentials';
@@ -170,7 +170,7 @@ class _LoginState extends State<Login> {
 
                                   };
                                   if (_formKey.currentState!.validate()) {
-                                    Provider.of<Auth>(context,listen: false).login(creds);
+                                    submitForm();
                                   }                                  // Navigator.push(context,
                                   //     MaterialPageRoute(
                                   //         builder: (

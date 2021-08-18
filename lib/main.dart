@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         body: Center(
           child: Consumer<Auth>(
             builder:  (context, auth, child){
-              switch (auth.authenticated) {
+              switch (auth.isAuthenticated) {
                 case true:
                   return HomeScreen();
                 default:

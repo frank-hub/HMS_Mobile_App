@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hms/services/auth.dart';
 import 'package:hms/services/auth2.dart';
+import 'package:hms/shared/loading.dart';
 import 'package:provider/provider.dart';
 
 class HomeWidget extends StatefulWidget {
@@ -10,9 +11,10 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+  bool loading =false;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return loading ? Loading() :Container(
       padding: EdgeInsets.all(20),
       child: Consumer<Auth>(builder: (context,auth,child)
         {
@@ -27,7 +29,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     alignment: Alignment.topLeft,
                     overflow: Overflow.visible,
                     children: [
-                      Text("Good Morning,"+auth.user.name,
+                      Text("Good Morning, "+auth.user!.name,
                         style: TextStyle(
                           fontSize: 15,
                           color: Colors.grey,
@@ -36,7 +38,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                       Positioned(
                         top: 20,
                         // bottom: 1,
-                        child: Text(auth.user.email,
+                        child: Text(auth.user!.email,
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.bold,

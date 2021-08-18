@@ -1,52 +1,86 @@
 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart' as Dio;
 import 'package:hms/models/user.dart';
 import 'package:hms/services/dio.dart';
+import 'package:hms/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth extends ChangeNotifier{
-  bool _isLoggedIn = false;
-   late User _user;
-  String _token='';
+  bool _isAuthenticated = false;
+   User? _user;
 
-  bool get authenticated => _isLoggedIn;
-  User get user=>_user;
-  void login(Map creds) async{
-    try {
-      Dio.Response response = await dio().post('/api/auth/login', data: creds);
-      print(response.data);
-      String token=response.data.toString();
+  bool get isAuthenticated => _isAuthenticated;
+
+  User? get user=>_user;
+
+  Future<bool> login(String email, String password) async {
+    final response = await http.post(Uri.parse('$API_URL/api/auth/login'), body: {
+      'email': email,
+      'password': password,
+    }, headers: {
+      'Accept': 'application/json',
+    });
+
+    if (response.statusCode == 200) {
+      String result = response.body;
+      Map<String, dynamic> resp = jsonDecode(result);
+      String token =resp['data']['token'];
       this.tryToken(token: token);
-      _isLoggedIn = true;
+      await saveToken(token);
+      _isAuthenticated = true;
       notifyListeners();
+      return true;
     }
-    catch(e){
-      print(e);
+
+    if (response.statusCode == 422) {
+      return false;
+
     }
+
+    return false;
   }
-  void tryToken({required String token}) async{
+
+
+
+  saveToken(String token) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+  }
+
+  void tryToken({required String token}) async {
     // ignore: unnecessary_null_comparison
-    if(token== null){
+    if (token == null) {
       return;
     }
-    else{
+    else {
       try{
-        Dio.Response response = await dio().get('/api/me', options: Dio.Options(headers: {'Authorization':'Bearer $token'}));
-        this._isLoggedIn=true;
-        this._user=User.fromJson(response.data);
+        final response = await http.get(Uri.parse('$API_URL/api/me'),headers: {'Authorization':'Bearer $token'});
+        Map<String, dynamic> user = jsonDecode(response.body);
+        this._isAuthenticated=true;
+        this._user=User.fromJson(user);
+
         notifyListeners();
-        print(_user);
+        print(user);
       }catch(e){
         print(e);
       }
-
     }
-
   }
-  void logout(){
-    _isLoggedIn=false;
+  Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  logout() async {
+    _isAuthenticated = false;
     notifyListeners();
 
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
   }
 
 }

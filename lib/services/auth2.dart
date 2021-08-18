@@ -12,6 +12,7 @@ class AuthProvider extends ChangeNotifier {
 
   bool get isAuthenticated => _isAuthenticated;
 
+
   Future<bool> login(String email, String password) async {
     final response = await http.post(Uri.parse('$API_URL/api/auth/login'), body: {
       'email': email,
