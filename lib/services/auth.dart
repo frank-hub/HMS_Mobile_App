@@ -1,57 +1,52 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:hms/utils/constants.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart' as Dio;
+import 'package:hms/models/user.dart';
+import 'package:hms/services/dio.dart';
 
+class Auth extends ChangeNotifier{
+  bool _isLoggedIn = false;
+   late User _user;
+  String _token='';
 
-import 'package:shared_preferences/shared_preferences.dart';
-
-class AuthProvider extends ChangeNotifier {
-  bool _isAuthenticated = false;
-
-  bool get isAuthenticated => _isAuthenticated;
-
-  Future<bool> login(String email, String password) async {
-    final response = await http.post(Uri.parse('$API_URL/token'), body: {
-      'email': email,
-      'password': password,
-    }, headers: {
-      'Accept': 'application/json',
-    });
-
-    if (response.statusCode == 200) {
-      String token = response.body;
-      await saveToken(token);
-      _isAuthenticated = true;
+  bool get authenticated => _isLoggedIn;
+  User get user=>_user;
+  void login(Map creds) async{
+    try {
+      Dio.Response response = await dio().post('/api/auth/login', data: creds);
+      print(response.data);
+      String token=response.data.toString();
+      this.tryToken(token: token);
+      _isLoggedIn = true;
       notifyListeners();
-      return true;
+    }
+    catch(e){
+      print(e);
+    }
+  }
+  void tryToken({required String token}) async{
+    // ignore: unnecessary_null_comparison
+    if(token== null){
+      return;
+    }
+    else{
+      try{
+        Dio.Response response = await dio().get('/api/me', options: Dio.Options(headers: {'Authorization':'Bearer $token'}));
+        this._isLoggedIn=true;
+        this._user=User.fromJson(response.data);
+        notifyListeners();
+        print(_user);
+      }catch(e){
+        print(e);
+      }
+
     }
 
-    if (response.statusCode == 422) {
-      return false;
-    }
-
-    return false;
   }
-
-
-
-  saveToken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', token);
-  }
-
-  Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
-  }
-
-  logout() async {
-    _isAuthenticated = false;
+  void logout(){
+    _isLoggedIn=false;
     notifyListeners();
 
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
   }
+
 }
