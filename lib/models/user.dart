@@ -7,9 +7,25 @@ class User{
 
   User({ required this.name, required this.email, required this.phone});
 
-  User.fromJson(Map<String, dynamic>json):
-  name=json['name'],
-  email=json['email'],
-  phone=json['phone'] as int;
+  factory User.fromJson(Map<String, dynamic>json){
+  return User (
+      name:json['name'],
+      email:json['email'],
+      phone:json['phone'] as int
+    );
+  }
 
+}
+class UserData {
+
+  String name;
+  String email;
+  int phone;
+  UserData(
+      {
+        required this.name,
+        required this.email,
+        required this.phone,
+
+      });
 }

@@ -8,6 +8,7 @@ class Wrapper extends StatefulWidget {
 }
 
 class _WrapperState extends State<Wrapper> {
+  bool loading=false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,9 +51,11 @@ class _WrapperState extends State<Wrapper> {
                         )
                     )
                 ),
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder:
+                onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder:
                 (context) => Login()
-                ))
+                ));
+                }
             )
           ],
         ),

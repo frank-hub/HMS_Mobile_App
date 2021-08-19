@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hms/authenticate/login.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
+import 'package:hms/services/auth.dart';
 
 Color orangeColors = Color(0xFF6C63FF);
 Color orangeLightColors = Color(0xFF6C63FF);
@@ -12,6 +13,32 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  String msgStatus = '';
+Auth  _auth=new Auth();
+  final TextEditingController _nameController = new TextEditingController();
+  final TextEditingController _emailController = new TextEditingController();
+  final TextEditingController _phoneController = new TextEditingController();
+  final TextEditingController _passwordController = new TextEditingController();
+
+  Future <void> regUser() async{
+  setState(() {
+    if(_emailController.text.trim().toLowerCase().isNotEmpty &&
+        _passwordController.text.trim().isNotEmpty ){
+     _auth.registerUser (_nameController.text.trim(),_emailController.text.trim().toLowerCase(),_phoneController.text, _passwordController.text.trim()).whenComplete((){
+        if(_auth.status){
+          msgStatus = 'Check email or password';
+        }else{
+          Navigator.push(context,
+              MaterialPageRoute(
+                  builder: (
+                      context) => HomeScreen()
+              ));
+        }
+      });
+    }
+  });
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,21 +56,17 @@ class _RegisterState extends State<Register> {
                 child: ListView(
 
                   children: <Widget>[
-                    _textInput(hint: "Fullname", icon: Icons.person),
-                    _textInput(hint: "Email", icon: Icons.email),
+                    _textInput(hint: "Fullname", icon: Icons.person,controller: _nameController),
+                    _textInput(hint: "Email", icon: Icons.email,controller: _emailController),
                     SizedBox(height: 10.0,),
-                    _textInput(hint: "Phone Number", icon: Icons.call),
-                    _textInput(hint: "Password", icon: Icons.vpn_key),
+                    _textInput(hint: "Phone Number", icon: Icons.call,controller: _phoneController),
+                    _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController),
                     SizedBox(height: 10.0,),
 
                     ButtonWidget(
                           btnText: "SIGNUP",
                           onClick: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(
-                                    builder: (
-                                        context) => HomeScreen()
-                                ));
+                           regUser();
                           },
                         ),
                     SizedBox(height: 20.0,),
