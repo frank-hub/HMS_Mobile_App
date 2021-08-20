@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:intl/intl.dart';
 
 class BookingAppointment extends StatefulWidget {
   const BookingAppointment({Key? key}) : super(key: key);
@@ -16,6 +18,10 @@ class _BookingAppointmentState extends State<BookingAppointment> {
   final TextEditingController _doctorController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
+
+  final format = DateFormat("yyyy-MM-dd");
+  final time_format = DateFormat("hh:mm:ss");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,12 +45,6 @@ class _BookingAppointmentState extends State<BookingAppointment> {
       body: ListView(
          shrinkWrap: true,
           children: [
-            Container(
-              child: Image(
-              image: AssetImage('assets/images/logo.png'),
-              height: 250,
-                ),
-    ),
             SizedBox(height: 20,),
             Form(child:  Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
@@ -176,6 +176,46 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                   ),
                   SizedBox(
                     height: 20,
+                  ),
+                DateTimeField(
+                    format: format,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(
+                        left: 20,
+                        top: 10,
+                        bottom: 10,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(90.0)),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey[350],
+                      hintText: 'Select Date*',
+                      hintStyle: GoogleFonts.lato(
+                        color: Colors.black26,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    controller: _dateController,
+                    // validator: (value) {
+                    //   if (value!.day)
+                    //     return 'Please Enter the Date';
+                    //   // return null;
+                    // },
+
+                    textInputAction: TextInputAction.next,
+                    style: GoogleFonts.lato(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                    onShowPicker: (context, currentValue) {
+                      return showDatePicker(
+                          context: context,
+                          firstDate: currentValue ?? DateTime.now(),
+                          initialDate: currentValue ?? DateTime.now(),
+                          lastDate: DateTime(2100));
+                    },
                   ),
                   Container(
                     alignment: Alignment.center,

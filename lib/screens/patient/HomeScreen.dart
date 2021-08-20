@@ -49,13 +49,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   label: 'Home'
               ),
               BottomNavigationBarItem(
-                icon: new FaIcon(FontAwesomeIcons.capsules),
-                label: 'Pharmacy',
-              ),
-              BottomNavigationBarItem(
                   icon: new FaIcon(FontAwesomeIcons.calendarDay),
                   label: 'Bookings'
               ),
+              BottomNavigationBarItem(
+                icon: new FaIcon(FontAwesomeIcons.capsules),
+                label: 'Pharmacy',
+              ),
+
               BottomNavigationBarItem(
                   icon: new FaIcon(FontAwesomeIcons.syringe),
                   label: 'Lab'

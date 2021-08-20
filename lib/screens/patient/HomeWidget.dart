@@ -45,7 +45,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                             Positioned(
                               top: 20,
                               // bottom: 1,
-                              child: Text(auth.user!.phone.toString(),
+                              child: Text(auth.user!.email.toString(),
                                 style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
