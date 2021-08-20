@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:hms/services/auth.dart';
-import 'package:hms/services/auth2.dart';
 import 'package:hms/shared/loading.dart';
 import 'package:hms/wrapper.dart';
 import 'package:provider/provider.dart';

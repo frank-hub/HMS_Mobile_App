@@ -4,7 +4,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:hms/authenticate/register.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:hms/services/auth.dart';
-import 'package:hms/services/auth2.dart';
+import 'package:hms/shared/loading.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
@@ -20,20 +20,29 @@ class _LoginState extends State<Login> {
   TextEditingController emailController= new TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final key = new GlobalKey<ScaffoldState>();
+  bool loading =false;
   String _errorMessage = '';
   Future<void> submitForm() async {
     setState(() {
       _errorMessage = '';
+      loading=true;
     });
     bool result = await Provider.of<Auth>(context, listen: false).login(emailController.text, passwordController.text);
     if (result == false) {
       setState(() {
         _errorMessage = 'Unauthorized!! Wrong Credentials';
+        loading=false;
+      });
+
+    }
+    else{
+      setState(() {
+        loading=false;
       });
     }
   }
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       key: key,
       body: Container(
         width: double.infinity,
