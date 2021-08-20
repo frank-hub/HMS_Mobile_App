@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hms/authenticate/login.dart';
 import 'package:hms/screens/booking.dart';
-import 'package:hms/services/auth.dart';
-import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'HomeWidget.dart';
 class HomeScreen extends StatefulWidget {
+
+  
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
+
+  
+
   final List<Widget> _children = [
     HomeWidget(),
     BookingAppointment(),
@@ -18,6 +23,20 @@ class _HomeScreenState extends State<HomeScreen> {
     BookingAppointment(),
     HomeWidget(),
   ];
+
+  set __isLoggedIn(bool __isLoggedIn) {}
+
+  logout()  async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    setState(() {
+      __isLoggedIn=false;
+    });
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => Login()));
+  }
 
 
   @override
@@ -33,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Icons.person),
                   tooltip: 'FAQ',
                   onPressed: (){
-                    Provider.of<Auth>(context, listen: false).logout();
+                    logout();
                   }
               ),
             ],

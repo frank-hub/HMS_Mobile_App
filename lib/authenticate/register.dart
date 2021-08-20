@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hms/api/api.dart';
 import 'package:hms/authenticate/login.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:hms/services/auth.dart';
 import 'package:hms/shared/loading.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Color orangeColors = Color(0xFF6C63FF);
 Color orangeLightColors = Color(0xFF6C63FF);
@@ -16,38 +21,13 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   String msgStatus = '';
-Auth  _auth=new Auth();
+
   final TextEditingController _nameController = new TextEditingController();
   final TextEditingController _emailController = new TextEditingController();
   final TextEditingController _phoneController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
   bool loading =false;
-  Future <void> regUser() async{
-    setState(() {
-      msgStatus='';
-     loading=true;
-    });
 
-      bool result = await Provider.of<Auth>(context, listen: false).registerUser(_nameController.text.trim(), _emailController.text.trim().toLowerCase(), _phoneController.text,  _passwordController.text.trim());
-      if (result == false) {
-        setState(() {
-          msgStatus = 'Unauthorized!! Wrong Credentials';
-          loading = false;
-        });
-      }
-      else{
-        setState(() {
-          loading=false;
-          // Navigator.push(context,
-          //     MaterialPageRoute(
-          //         builder: (
-          //             context) => HomeScreen()
-          //     ));
-        });
-      }
-
-
-}
   @override
   Widget build(BuildContext context) {
     return loading? Loading(): Scaffold(
@@ -77,7 +57,7 @@ Auth  _auth=new Auth();
                     ButtonWidget(
                           btnText: "SIGNUP",
                           onClick: () {
-                         regUser();
+                               _handleRegister();
                           },
                         ),
                     SizedBox(height: 20.0,),
@@ -131,6 +111,40 @@ Auth  _auth=new Auth();
       ),
     );
   }
+  void _handleRegister() async {
+    setState(() {
+      loading = true;
+    });
+
+    var data = {
+      'name' : _nameController.text,
+      'email' : _emailController.text,
+      'password' : _passwordController.text,
+      'phone' : _phoneController.text,
+    };
+
+    var res = await CallApi().postData(data, '/auth/register');
+    var body = json.decode(res.body);
+    if (res.statusCode == 200) {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.setString('token', body['data']['token']);
+      print(body['data']['token']);
+      localStorage.setString('user', json.encode(body['data']['user']));
+
+      Navigator.push(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => HomeScreen()));
+
+    }
+    else{
+      msgStatus="Invalid Credentials";
+    }
+    setState(() {
+      loading = false;
+    });
+
+  }
 }
 class HeaderContainer extends StatelessWidget {
   var text = "Signin";
@@ -161,6 +175,7 @@ class HeaderContainer extends StatelessWidget {
       ),
     );
   }
+
 }
 
 class ButtonWidget extends StatelessWidget {
@@ -194,4 +209,5 @@ class ButtonWidget extends StatelessWidget {
       ),
     );
   }
+
 }

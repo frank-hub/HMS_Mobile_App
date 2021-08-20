@@ -1,11 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hms/api/api.dart';
 import 'package:hms/authenticate/register.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:hms/services/auth.dart';
 import 'package:hms/shared/loading.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -22,25 +27,7 @@ class _LoginState extends State<Login> {
   final key = new GlobalKey<ScaffoldState>();
   bool loading =false;
   String _errorMessage = '';
-  Future<void> submitForm() async {
-    setState(() {
-      _errorMessage = '';
-      loading=true;
-    });
-    bool result = await Provider.of<Auth>(context, listen: false).login(emailController.text, passwordController.text);
-    if (result == false) {
-      setState(() {
-        _errorMessage = 'Unauthorized!! Wrong Credentials';
-        loading=false;
-      });
 
-    }
-    else{
-      setState(() {
-        loading=false;
-      });
-    }
-  }
   Widget build(BuildContext context) {
     return loading ? Loading() : Scaffold(
       key: key,
@@ -179,7 +166,7 @@ class _LoginState extends State<Login> {
 
                                   };
                                   if (_formKey.currentState!.validate()) {
-                                    submitForm();
+                                     _login();
                                   }                                  // Navigator.push(context,
                                   //     MaterialPageRoute(
                                   //         builder: (
@@ -257,6 +244,40 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+  void _login() async{
+
+    setState(() {
+      loading = true;
+    });
+
+    var data = {
+      'email' : emailController.text,
+      'password' : passwordController.text
+    };
+
+    var res = await CallApi().postData(data, '/auth/login');
+    var body = json.decode(res.body);
+print(body);
+    if (res.statusCode == 200) {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.setString('token', body['data']['token']);
+      print(body['data']['token']);
+      localStorage.setString('user', json.encode(body['data']['user']));
+
+      Navigator.push(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => HomeScreen()));
+
+    }else{
+      _errorMessage="Invalid Credentials";
+    }
+    setState(() {
+      loading = false;
+    });
+
+
   }
 }
 
