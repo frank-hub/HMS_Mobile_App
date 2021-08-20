@@ -42,8 +42,7 @@ class Auth extends ChangeNotifier{
 
     return false;
   }
-
-  Future registerUser(String name ,String email ,String phone, String password) async{
+  Future <bool>registerUser(String name ,String email ,String phone, String password) async{
 
     final response = await http.post(Uri.parse('$API_URL/api/auth/register'),
         headers: {
@@ -55,24 +54,59 @@ class Auth extends ChangeNotifier{
           "phone": "$phone",
           "password" : "$password"
         } ) ;
-    status = response.body.contains('error');
 
-    var data = json.decode(response.body);
-
-    if(status){
-      print('data : ${data["error"]}');
-    }else{
-      print('data : ${data["token"]}');
-      saveToken(data["token"]);
+    if (response.statusCode == 200) {
+      String result = response.body;
+      Map<String, dynamic> resp = jsonDecode(result);
+      String token =resp['data']['token'];
+      this.tryToken(token: token);
+      await saveToken(token);
+      _isAuthenticated = true;
       notifyListeners();
+      return true;
+    }
+    if (response.statusCode == 422) {
+      return false;
+
     }
 
+    return false;
   }
+
+  // Future registerUser(String name ,String email ,String phone, String password) async{
+  //
+  //   final response = await http.post(Uri.parse('$API_URL/api/auth/register'),
+  //       headers: {
+  //         'Accept':'application/json'
+  //       },
+  //       body: {
+  //         "name": "$name",
+  //         "email": "$email",
+  //         "phone": "$phone",
+  //         "password" : "$password"
+  //       } ) ;
+  //   var data = json.decode(response.body);
+  //   Map<String, dynamic> resp = jsonDecode(data);
+  //   String token =resp['data']['token'];
+  //   this.tryToken(token: token);
+  //   await saveToken(token);
+  //   _isAuthenticated = true;
+  //   status = response.body.contains('error');
+  //
+  //   if(status){
+  //     print('data : ${data["error"]}');
+  //   }else{
+  //     print('data : ${data["token"]}');
+  //
+  //   }
+  //   notifyListeners();
+  //   return true;
+  //
+  // }
 
   saveToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', token);
-
   }
 
   void tryToken({required String token}) async {
@@ -103,7 +137,6 @@ class Auth extends ChangeNotifier{
   logout() async {
     _isAuthenticated = false;
     notifyListeners();
-
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
   }

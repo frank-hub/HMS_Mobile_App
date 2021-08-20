@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hms/authenticate/login.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:hms/services/auth.dart';
+import 'package:hms/shared/loading.dart';
+import 'package:provider/provider.dart';
 
 Color orangeColors = Color(0xFF6C63FF);
 Color orangeLightColors = Color(0xFF6C63FF);
@@ -19,29 +21,36 @@ Auth  _auth=new Auth();
   final TextEditingController _emailController = new TextEditingController();
   final TextEditingController _phoneController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
-
+  bool loading =false;
   Future <void> regUser() async{
-  setState(() {
-    if(_emailController.text.trim().toLowerCase().isNotEmpty &&
-        _passwordController.text.trim().isNotEmpty ){
-     _auth.registerUser (_nameController.text.trim(),_emailController.text.trim().toLowerCase(),_phoneController.text, _passwordController.text.trim()).whenComplete((){
-        if(_auth.status){
-          msgStatus = 'Check email or password';
-        }else{
-          Navigator.push(context,
-              MaterialPageRoute(
-                  builder: (
-                      context) => HomeScreen()
-              ));
-        }
-      });
-    }
-  });
-}
+    setState(() {
+      msgStatus='';
+     loading=true;
+    });
 
+      bool result = await Provider.of<Auth>(context, listen: false).registerUser(_nameController.text.trim(), _emailController.text.trim().toLowerCase(), _phoneController.text,  _passwordController.text.trim());
+      if (result == false) {
+        setState(() {
+          msgStatus = 'Unauthorized!! Wrong Credentials';
+          loading = false;
+        });
+      }
+      else{
+        setState(() {
+          loading=false;
+          // Navigator.push(context,
+          //     MaterialPageRoute(
+          //         builder: (
+          //             context) => HomeScreen()
+          //     ));
+        });
+      }
+
+
+}
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading? Loading(): Scaffold(
       body: Container(
         padding: EdgeInsets.only(bottom: 10),
         child: Column(
@@ -56,6 +65,8 @@ Auth  _auth=new Auth();
                 child: ListView(
 
                   children: <Widget>[
+                    Text(msgStatus,style: TextStyle(color: Colors.red),),
+                    SizedBox(height: 5,),
                     _textInput(hint: "Fullname", icon: Icons.person,controller: _nameController),
                     _textInput(hint: "Email", icon: Icons.email,controller: _emailController),
                     SizedBox(height: 10.0,),
@@ -66,7 +77,7 @@ Auth  _auth=new Auth();
                     ButtonWidget(
                           btnText: "SIGNUP",
                           onClick: () {
-                           regUser();
+                         regUser();
                           },
                         ),
                     SizedBox(height: 20.0,),
