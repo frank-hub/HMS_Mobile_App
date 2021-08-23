@@ -27,6 +27,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _phoneController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
   bool loading =false;
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -40,50 +41,55 @@ class _RegisterState extends State<Register> {
 
             Expanded(
 
-              child: Container(
-                margin: EdgeInsets.only(left: 20, right: 20, top: 10),
-                child: ListView(
+              child: Form(
+                key:_formKey ,
+                child: Container(
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: ListView(
 
-                  children: <Widget>[
-                    Text(msgStatus,style: TextStyle(color: Colors.red),),
-                    SizedBox(height: 5,),
-                    _textInput(hint: "Fullname", icon: Icons.person,controller: _nameController),
-                    _textInput(hint: "Email", icon: Icons.email,controller: _emailController),
-                    SizedBox(height: 10.0,),
-                    _textInput(hint: "Phone Number", icon: Icons.call,controller: _phoneController),
-                    _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController),
-                    SizedBox(height: 10.0,),
+                    children: <Widget>[
+                      Text(msgStatus,style: TextStyle(color: Colors.red),),
+                      SizedBox(height: 5,),
+                      _textInput(hint: "Fullname", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
+                      _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Email' : null,),
+                      SizedBox(height: 10.0,),
+                      _textInput(hint: "Phone Number", icon: Icons.call,controller: _phoneController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Phone Number' : null,),
+                      _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,validator:(value) => value!.isEmpty ? 'Please Enter Your Password' : null,),
+                      SizedBox(height: 10.0,),
 
-                    ButtonWidget(
-                          btnText: "SIGNUP",
-                          onClick: () {
-                               _handleRegister();
-                          },
+                      ButtonWidget(
+                            btnText: "SIGNUP",
+                            onClick: () {
+                              if(_formKey.currentState!.validate()){
+                                 _handleRegister();
+                              }
+                            },
+                          ),
+                      SizedBox(height: 20.0,),
+
+                      GestureDetector(
+                        child: RichText(
+                          text: TextSpan(children: [
+                            TextSpan(
+
+                                text: "Already a member ? ",
+                                style: TextStyle(color: Colors.black)),
+                            TextSpan(
+                                text: "SIGNIN",
+                                style: TextStyle(color: orangeColors)),
+                          ]),
                         ),
-                    SizedBox(height: 20.0,),
+                        onTap:(){
+                          Navigator.push(context,
+                              MaterialPageRoute(
+                                  builder: (
+                                      context) => Login()
+                              ));
+                        } ,
+                      )
 
-                    GestureDetector(
-                      child: RichText(
-                        text: TextSpan(children: [
-                          TextSpan(
-
-                              text: "Already a member ? ",
-                              style: TextStyle(color: Colors.black)),
-                          TextSpan(
-                              text: "SIGNIN",
-                              style: TextStyle(color: orangeColors)),
-                        ]),
-                      ),
-                      onTap:(){
-                        Navigator.push(context,
-                            MaterialPageRoute(
-                                builder: (
-                                    context) => Login()
-                            ));
-                      } ,
-                    )
-
-                  ],
+                    ],
+                  ),
                 ),
               ),
             )
@@ -93,7 +99,7 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  Widget _textInput({controller, hint, icon}) {
+  Widget _textInput({controller, hint, icon,validator,obscure}) {
     return Container(
       margin: EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
@@ -102,6 +108,8 @@ class _RegisterState extends State<Register> {
       ),
       padding: EdgeInsets.only(left: 10),
       child: TextFormField(
+        obscureText: obscure,
+        validator: validator,
         controller: controller,
         decoration: InputDecoration(
           border: InputBorder.none,

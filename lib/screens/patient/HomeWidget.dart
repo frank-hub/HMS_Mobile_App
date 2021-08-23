@@ -20,6 +20,17 @@ class _HomeWidgetState extends State<HomeWidget> {
     _getUserInfo();
     super.initState();
   }
+  String greeting() {
+    var hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'Good Morning';
+    }
+    if (hour < 17) {
+      return 'Good Afternoon';
+    }
+    return 'Good Evening';
+  }
+  PageController pageController = PageController(initialPage: 0);
 
   void _getUserInfo() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -49,7 +60,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 overflow: Overflow.visible,
                 children: [
                   Text(
-                    "Good Morning, " +userData['name'],
+                    greeting()+", " ,
                     style: TextStyle(
                       fontSize: 15,
                       color: Colors.grey,
@@ -59,7 +70,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   Positioned(
                     top: 20,
                     // bottom: 1,
-                    child: Text( userData['phone'].toString(),
+                    child: Text(userData['name'],
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.bold,
