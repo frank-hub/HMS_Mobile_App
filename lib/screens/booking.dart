@@ -8,6 +8,7 @@ import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class BookingAppointment extends StatefulWidget {
   const BookingAppointment({Key? key}) : super(key: key);
 
@@ -28,10 +29,18 @@ class _BookingAppointmentState extends State<BookingAppointment> {
   final time_format = DateFormat("HH:MM");
  final _formkey =GlobalKey<FormState>();
 
+  var userData;
+  @override
+  void initState() {
+    _getUserInfo();
+    super.initState();
+  }
+
   void _handleBooking() async {
     setState(() {
       loading = true;
     });
+
 
     var data = {
       'name' : _nameController.text,
@@ -48,7 +57,23 @@ class _BookingAppointmentState extends State<BookingAppointment> {
     var body = json.decode(res.body);
 
     if (res.statusCode == 200) {
-
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: new Text("Alert!!"),
+            content: new Text("Appointment Booked Successfully!"),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
       Navigator.push(
           context,
           new MaterialPageRoute(
@@ -58,6 +83,16 @@ class _BookingAppointmentState extends State<BookingAppointment> {
 
     setState(() {
       loading = false;
+    });
+
+  }
+  void _getUserInfo() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var userJson = localStorage.getString('user');
+    var user = json.decode(userJson!);
+    setState(() {
+      userData = user;
+
     });
 
   }
@@ -113,6 +148,7 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                       if (value!.isEmpty) return 'Please Enter Patient Name';
                       return null;
                     },
+
                     style: GoogleFonts.lato(
                         fontSize: 18, fontWeight: FontWeight.bold),
                     decoration: InputDecoration(
@@ -140,6 +176,7 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                   TextFormField(
                     keyboardType: TextInputType.phone,
                     controller: _phoneController,
+
                     style: GoogleFonts.lato(
                         fontSize: 18, fontWeight: FontWeight.bold),
                     decoration: InputDecoration(
@@ -383,6 +420,7 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                       onPressed: () {
                       if(_formKey.currentState!.validate()){
                         _handleBooking();
+
                       }
                       },
                       child: Text(

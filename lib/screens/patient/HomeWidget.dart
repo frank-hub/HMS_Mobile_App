@@ -38,6 +38,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     var user = json.decode(userJson!);
     setState(() {
       userData = user;
+
     });
 
   }

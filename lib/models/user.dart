@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class User{
   final String name;
  final String email;
@@ -18,14 +20,11 @@ class User{
 }
 class UserData {
 
-  String name;
-  String email;
-  int phone;
-  UserData(
-      {
-        required this.name,
-        required this.email,
-        required this.phone,
+  void  _getUserInfo() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var userJson = localStorage.getString('user');
+    var user = json.decode(userJson!);
+    return user;
 
-      });
+  }
 }
