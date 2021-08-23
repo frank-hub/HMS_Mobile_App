@@ -246,7 +246,6 @@ class _LoginState extends State<Login> {
     );
   }
   void _login() async{
-
     setState(() {
       loading = true;
     });

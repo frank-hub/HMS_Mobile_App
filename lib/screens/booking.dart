@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:hms/api/api.dart';
+import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class BookingAppointment extends StatefulWidget {
   const BookingAppointment({Key? key}) : super(key: key);
@@ -18,10 +23,44 @@ class _BookingAppointmentState extends State<BookingAppointment> {
   final TextEditingController _doctorController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
-
+   bool loading=false;
   final format = DateFormat("yyyy-MM-dd");
   final time_format = DateFormat("HH:MM");
+ final _formkey =GlobalKey<FormState>();
 
+  void _handleBooking() async {
+    setState(() {
+      loading = true;
+    });
+
+    var data = {
+      'name' : _nameController.text,
+      'phone' : _phoneController.text,
+      'doctor_name' : _doctorController.text,
+      'description' : _descriptionController.text,
+      'date' :  _dateController.text,
+      'time' : _timeController.text,
+
+    };
+
+    var res = await CallApi().postData(data, '/booking/store');
+    print(data);
+    var body = json.decode(res.body);
+
+    if (res.statusCode == 200) {
+
+      Navigator.push(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => HomeScreen()));
+
+    }
+
+    setState(() {
+      loading = false;
+    });
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +85,9 @@ class _BookingAppointmentState extends State<BookingAppointment> {
          shrinkWrap: true,
           children: [
             SizedBox(height: 20,),
-            Form(child:  Container(
+            Form(
+              key: _formKey,
+                child:  Container(
               margin: EdgeInsets.symmetric(horizontal: 20),
               padding: EdgeInsets.only(top: 0),
               child: Column(
@@ -340,7 +381,9 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                         ),
                       ),
                       onPressed: () {
-
+                      if(_formKey.currentState!.validate()){
+                        _handleBooking();
+                      }
                       },
                       child: Text(
                         "Book Appointment",
@@ -361,4 +404,5 @@ class _BookingAppointmentState extends State<BookingAppointment> {
     ],)
     );
   }
+
 }
