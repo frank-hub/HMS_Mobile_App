@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: _isLoggedIn ? HomeScreen() :  Login(),
+        body: _isLoggedIn ? HomeScreen() :  HomeScreen(),
       ),
 
     );
