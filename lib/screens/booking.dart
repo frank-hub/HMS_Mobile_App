@@ -20,7 +20,7 @@ class _BookingAppointmentState extends State<BookingAppointment> {
   final TextEditingController _timeController = TextEditingController();
 
   final format = DateFormat("yyyy-MM-dd");
-  final time_format = DateFormat("hh:mm:ss");
+  final time_format = DateFormat("HH:MM");
 
   @override
   Widget build(BuildContext context) {
@@ -177,46 +177,6 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                   SizedBox(
                     height: 20,
                   ),
-                DateTimeField(
-                    format: format,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.only(
-                        left: 20,
-                        top: 10,
-                        bottom: 10,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(90.0)),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[350],
-                      hintText: 'Select Date*',
-                      hintStyle: GoogleFonts.lato(
-                        color: Colors.black26,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    controller: _dateController,
-                    // validator: (value) {
-                    //   if (value!.day)
-                    //     return 'Please Enter the Date';
-                    //   // return null;
-                    // },
-
-                    textInputAction: TextInputAction.next,
-                    style: GoogleFonts.lato(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                    onShowPicker: (context, currentValue) {
-                      return showDatePicker(
-                          context: context,
-                          firstDate: currentValue ?? DateTime.now(),
-                          initialDate: currentValue ?? DateTime.now(),
-                          lastDate: DateTime(2100));
-                    },
-                  ),
                   Container(
                     alignment: Alignment.center,
                     height: 60,
@@ -224,7 +184,8 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                     child: Stack(
                       alignment: Alignment.centerRight,
                       children: [
-                        TextFormField(
+                        DateTimeField(
+                          format: format,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.only(
                               left: 20,
@@ -246,15 +207,22 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                             ),
                           ),
                           controller: _dateController,
-                          validator: (value) {
-                            if (value!.isEmpty)
-                              return 'Please Enter the Date';
-                            return null;
-                          },
+                          // validator: (value) {
+                          //   if (value!.day)
+                          //     return 'Please Enter the Date';
+                          //   // return null;
+                          // },
 
                           textInputAction: TextInputAction.next,
                           style: GoogleFonts.lato(
                               fontSize: 18, fontWeight: FontWeight.bold),
+                          onShowPicker: (context, currentValue) {
+                            return showDatePicker(
+                                context: context,
+                                firstDate: currentValue ?? DateTime.now(),
+                                initialDate: currentValue ?? DateTime.now(),
+                                lastDate: DateTime(2100));
+                          },
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 5.0),
@@ -291,8 +259,8 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                     child: Stack(
                       alignment: Alignment.centerRight,
                       children: [
-                        TextFormField(
-
+                        DateTimeField(
+                          format: time_format,
                           decoration: InputDecoration(
                             contentPadding: EdgeInsets.only(
                               left: 20,
@@ -314,15 +282,22 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                             ),
                           ),
                           controller: _timeController,
-                          validator: (value) {
-                            if (value!.isEmpty)
-                              return 'Please Enter the Time';
-                            return null;
-                          },
+                          // validator: (value) {
+                          //   if (value!.day)
+                          //     return 'Please Enter the Date';
+                          //   // return null;
+                          // },
 
                           textInputAction: TextInputAction.next,
                           style: GoogleFonts.lato(
                               fontSize: 18, fontWeight: FontWeight.bold),
+                            onShowPicker: (context, currentValue) async {
+                              final time = await showTimePicker(
+                                context: context,
+                                initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                              );
+                              return DateTimeField.convert(time);
+                            },
                         ),
                         Padding(
                           padding: const EdgeInsets.only(right: 5.0),

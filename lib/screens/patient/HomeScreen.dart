@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     BookingAppointment(),
     HomeWidget(),
     BookingAppointment(),
-    HomeWidget(),
+
   ];
 
   set __isLoggedIn(bool __isLoggedIn) {}
