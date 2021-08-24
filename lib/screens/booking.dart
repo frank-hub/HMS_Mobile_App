@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:hms/api/api.dart';
+import 'package:hms/models/user.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
+import 'package:hms/screens/patient/profile.dart';
+import 'package:hms/shared/loading.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,9 +20,11 @@ class BookingAppointment extends StatefulWidget {
 }
 
 class _BookingAppointmentState extends State<BookingAppointment> {
+
+  var userData;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+  late TextEditingController _nameController;
+  late TextEditingController _phoneController;
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _doctorController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
@@ -29,11 +34,12 @@ class _BookingAppointmentState extends State<BookingAppointment> {
   final time_format = DateFormat("HH:MM");
  final _formkey =GlobalKey<FormState>();
 
-  var userData;
+
   @override
   void initState() {
-    _getUserInfo();
     super.initState();
+    _getUserInfo();
+
   }
 
   void _handleBooking() async {
@@ -86,6 +92,7 @@ class _BookingAppointmentState extends State<BookingAppointment> {
     });
 
   }
+
   void _getUserInfo() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var userJson = localStorage.getString('user');
@@ -96,8 +103,12 @@ class _BookingAppointmentState extends State<BookingAppointment> {
     });
 
   }
+
   @override
   Widget build(BuildContext context) {
+    if (userData == null) {
+      return Loading();
+    }
     return Scaffold(
       backgroundColor: Colors.white,
 
@@ -143,12 +154,8 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                     height: 30,
                   ),
                   TextFormField(
-                    controller: _nameController,
-                    validator: (value) {
-                      if (value!.isEmpty) return 'Please Enter Patient Name';
-                      return null;
-                    },
-
+                    controller: _nameController = TextEditingController(text: userData['name']),
+                    enabled: false,
                     style: GoogleFonts.lato(
                         fontSize: 18, fontWeight: FontWeight.bold),
                     decoration: InputDecoration(
@@ -175,8 +182,8 @@ class _BookingAppointmentState extends State<BookingAppointment> {
                   ),
                   TextFormField(
                     keyboardType: TextInputType.phone,
-                    controller: _phoneController,
-
+                    controller:  _phoneController = TextEditingController(text: userData['phone'].toString()),
+                    enabled: false,
                     style: GoogleFonts.lato(
                         fontSize: 18, fontWeight: FontWeight.bold),
                     decoration: InputDecoration(
@@ -444,3 +451,5 @@ class _BookingAppointmentState extends State<BookingAppointment> {
   }
 
 }
+
+

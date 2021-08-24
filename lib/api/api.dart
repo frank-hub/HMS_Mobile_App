@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'package:hms/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 class CallApi{
   final String _url = 'http://192.168.43.77:8000/api';
+  User? _user;
+  User? get user=>_user;
 
   postData(data, apiUrl) async {
     var fullUrl = _url + apiUrl + await _getToken();
@@ -28,5 +31,14 @@ class CallApi{
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var token = localStorage.getString('token');
     return '?token=$token';
+  }
+  Future<User> getUserData() async{
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var myuser = localStorage.getString('user');
+    var user = jsonDecode(myuser!);
+    this._user=User.fromJson(user);
+
+    return User.fromJson(user);
+
   }
 }

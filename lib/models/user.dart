@@ -17,14 +17,14 @@ class User{
     );
   }
 
-}
-class UserData {
-
-  void  _getUserInfo() async {
+  }
+class CurrentUser{
+  _getUserInfo() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var userJson = localStorage.getString('user');
     var user = json.decode(userJson!);
-    return user;
+    return User.fromJson(user);
 
   }
 }
+
