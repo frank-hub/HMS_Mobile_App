@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hms/api/api.dart';
 import 'package:hms/authenticate/login.dart';
+import 'package:hms/authenticate/usertype.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:hms/services/auth.dart';
 import 'package:hms/shared/loading.dart';
@@ -142,7 +143,7 @@ class _RegisterState extends State<Register> {
       Navigator.push(
           context,
           new MaterialPageRoute(
-              builder: (context) => HomeScreen()));
+              builder: (context) => UserType()));
 
     }
     else{
