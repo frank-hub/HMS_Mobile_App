@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:hms/screens/doctor/homescreen.dart';
 
 class UserType extends StatefulWidget {
   const UserType({Key? key}) : super(key: key);
@@ -188,6 +189,8 @@ class _UserTypeState extends State<UserType> {
                                   onPressed: (){
                                     _determinePosition();
                                     Fluttertoast.showToast(msg: _genderRadioBtnVal,toastLength: Toast.LENGTH_SHORT);
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreenDoctor()
+                                    ));
                                   }
                               ),
                             )
