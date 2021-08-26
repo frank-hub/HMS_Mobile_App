@@ -8,7 +8,8 @@ import 'package:hms/authenticate/usertype.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:hms/services/auth.dart';
 import 'package:hms/shared/loading.dart';
-import 'package:provider/provider.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Color orangeColors = Color(0xFF6C63FF);
@@ -16,12 +17,18 @@ Color orangeLightColors = Color(0xFF6C63FF);
 
 class Register extends StatefulWidget {
 
+  final String? userType;
+  const Register( {Key? key, this.userType}): super(key: key);
   @override
   _RegisterState createState() => _RegisterState();
 }
 
 class _RegisterState extends State<Register> {
   String msgStatus = '';
+  var _currentCountry="";
+  var _currentLocation="";
+  var _currentPostalCode="";
+  Position? _currentPosition;
 
   final TextEditingController _nameController = new TextEditingController();
   final TextEditingController _emailController = new TextEditingController();
@@ -29,6 +36,41 @@ class _RegisterState extends State<Register> {
   final TextEditingController _passwordController = new TextEditingController();
   bool loading =false;
   final _formKey = GlobalKey<FormState>();
+  void _getCurrentLocation() async {
+    var position= await Geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    var lastPosition=await Geolocator.getLastKnownPosition();
+    setState(() {
+      _currentPosition=position;
+      _getAddressFromLatLng();
+
+    });
+
+  }
+  _getAddressFromLatLng() async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          _currentPosition!.latitude,
+          _currentPosition!.longitude
+      );
+
+      Placemark place = placemarks[0];
+
+      setState(() {
+        _currentLocation = "${place.locality}";
+         _currentCountry = "${place.country}";
+        _currentPostalCode = "${place.postalCode}";
+
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+  @override
+  void initState() {
+    _getCurrentLocation();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +101,7 @@ class _RegisterState extends State<Register> {
                       SizedBox(height: 10.0,),
 
                       ButtonWidget(
-                            btnText: "SIGNUP",
+                            btnText: "Complete Registration",
                             onClick: () {
                               if(_formKey.currentState!.validate()){
                                  _handleRegister();
@@ -73,7 +115,7 @@ class _RegisterState extends State<Register> {
                           text: TextSpan(children: [
                             TextSpan(
 
-                                text: "Already a member ? ",
+                                text: "Already Registered",
                                 style: TextStyle(color: Colors.black)),
                             TextSpan(
                                 text: "SIGNIN",
@@ -130,6 +172,10 @@ class _RegisterState extends State<Register> {
       'email' : _emailController.text,
       'password' : _passwordController.text,
       'phone' : _phoneController.text,
+      'user_role':widget.userType.toString(),
+      'location':_currentLocation.toString(),
+      'postalcode':_currentPostalCode.toString(),
+      'country':_currentCountry.toString()
     };
 
     var res = await CallApi().postData(data, '/auth/register');
@@ -143,7 +189,7 @@ class _RegisterState extends State<Register> {
       Navigator.push(
           context,
           new MaterialPageRoute(
-              builder: (context) => UserType()));
+              builder: (context) => HomeScreen()));
 
     }
     else{

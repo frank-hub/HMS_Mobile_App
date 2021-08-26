@@ -1,10 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:hms/screens/doctor/homescreen.dart';
+import 'package:hms/authenticate/register.dart';
 
 class UserType extends StatefulWidget {
   const UserType({Key? key}) : super(key: key);
@@ -14,60 +10,14 @@ class UserType extends StatefulWidget {
 }
 
 class _UserTypeState extends State<UserType> {
+
   String _genderRadioBtnVal="patient";
-  String currentAddress = 'My Address';
-  Position? currentposition;
-
-  Future<Position> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      Fluttertoast.showToast(msg: 'Please enable Your Location Service');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        Fluttertoast.showToast(msg: 'Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      Fluttertoast.showToast(
-          msg:
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-
-    try {
-      List<Placemark> placemarks =
-      await placemarkFromCoordinates(position.latitude, position.longitude);
-
-      Placemark place = placemarks[0];
-
-      setState(() {
-        currentposition = position;
-        currentAddress =
-        "${place.locality}, ${place.postalCode}, ${place.country}";
-      });
-    } catch (e) {
-      print(e);
-    }
-    return position;
-  }
-
 
   void _handleGenderChange(String ? value) {
     setState(() {
       _genderRadioBtnVal = value!;
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,21 +98,7 @@ class _UserTypeState extends State<UserType> {
                                   ),
                                 ),
                               ],
-
                             ),
-                            Padding(padding: const EdgeInsets.all(10.0),
-                              child: Column(
-                                children: [
-                                  if(currentAddress != "") Text(
-                                      currentAddress,
-                                      style: TextStyle(fontWeight:FontWeight.bold,color:Colors.indigo) ),
-                                  if(currentposition !=null) Text(
-                                      'Longitute: '+currentposition!.longitude.toString()+', Latitude: '+currentposition!.latitude.toString(),
-                                      style: TextStyle(fontWeight:FontWeight.bold,color:Colors.indigo) ),
-                                ],
-                              ),
-                            ),
-
                             /////////////// SignUp Button ////////////
                             Padding(
                               padding: const EdgeInsets.all(10.0),
@@ -171,7 +107,7 @@ class _UserTypeState extends State<UserType> {
                                     padding: EdgeInsets.only(
                                         top: 8, bottom: 8, left: 10, right: 10),
                                     child: Text(
-                                      'Complete Registration',
+                                      'Next',
                                       textDirection: TextDirection.ltr,
                                       style: TextStyle(
                                         color: Colors.white,
@@ -187,10 +123,14 @@ class _UserTypeState extends State<UserType> {
                                       borderRadius:
                                       new BorderRadius.circular(20.0)),
                                   onPressed: (){
-                                    _determinePosition();
-                                    Fluttertoast.showToast(msg: _genderRadioBtnVal,toastLength: Toast.LENGTH_SHORT);
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreenDoctor()
-                                    ));
+                                    if(_genderRadioBtnVal ==""){
+                                      Fluttertoast.showToast(msg: "Please Select Your Role!!",toastLength: Toast.LENGTH_SHORT);
+                                    }
+                                    Navigator.push(context,
+                                        MaterialPageRoute(
+                                            builder: (
+                                                context) => Register(userType:_genderRadioBtnVal ,)
+                                        ));
                                   }
                               ),
                             )
@@ -198,8 +138,6 @@ class _UserTypeState extends State<UserType> {
                         ),
                       ),
                     ),
-
-
                   ],
                 ),
               ),
@@ -208,6 +146,5 @@ class _UserTypeState extends State<UserType> {
         ),
       ),
     );
-
   }
 }
