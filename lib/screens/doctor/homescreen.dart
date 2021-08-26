@@ -1,19 +1,93 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hms/authenticate/login.dart';
+import 'package:hms/shared/loading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class HomeScreenDoctor extends StatefulWidget {
   @override
   _HomeScreenDoctorState createState() => _HomeScreenDoctorState();
 }
 
 class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
+  var userData;
+  @override
+  void initState() {
+    _getUserInfo();
+    super.initState();
+  }
+  String greeting() {
+    var hour = DateTime.now().hour;
+    if (hour < 12) {
+      return ' Morning';
+    }
+    if (hour < 17) {
+      return ' Afternoon';
+    }
+    return ' Evening';
+  }
+
+
+  void _getUserInfo() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var userJson = localStorage.getString('user');
+    var user = json.decode(userJson!);
+    setState(() {
+      userData = user;
+
+    });
+
+  }
+  set __isLoggedIn(bool __isLoggedIn) {}
+
+  logout()  async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    setState(() {
+      __isLoggedIn=false;
+    });
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => Login()));
+  }
   @override
   Widget build(BuildContext context) {
+    if (userData == null) {
+      return Loading();
+    }
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text("Welcome"),
+          actions: <Widget>[
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () async{
+                    await logout();
+                  },
+                  child: Icon(
+                    Icons.logout,
+                    size: 26.0,
+                  ),
+                )
+            ),
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Icon(
+                      Icons.more_vert
+                  ),
+                )
+            ),
+          ],
         ),
+
         body: Container(
           padding: EdgeInsets.all(10),
           child: Column(
@@ -29,13 +103,13 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Good Morning Dr. Smith",
+                          Text("Good " +greeting()+", "+"Dr. "+userData['name'],
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                           ),
-                          Text("Have a nice evening at work",
+                          Text("Have a nice "+greeting()+" at work",
                           style: TextStyle(
                             color: Colors.teal,
                             fontWeight: FontWeight.w300

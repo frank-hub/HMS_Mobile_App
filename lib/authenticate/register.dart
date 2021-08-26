@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hms/api/api.dart';
 import 'package:hms/authenticate/login.dart';
 import 'package:hms/authenticate/usertype.dart';
+import 'package:hms/screens/doctor/homescreen.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:hms/services/auth.dart';
 import 'package:hms/shared/loading.dart';
@@ -185,11 +186,19 @@ class _RegisterState extends State<Register> {
       localStorage.setString('token', body['data']['token']);
       print(body['data']['token']);
       localStorage.setString('user', json.encode(body['data']['user']));
+      String user_role=widget.userType.toString();
+    if(user_role == "doctor"){
+      Navigator.push(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => HomeScreenDoctor()));
 
+    }else{
       Navigator.push(
           context,
           new MaterialPageRoute(
               builder: (context) => HomeScreen()));
+    }
 
     }
     else{
