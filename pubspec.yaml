@@ -41,6 +41,8 @@ dependencies:
   rflutter_alert: ^2.0.4
   awesome_dialog: ^2.1.1
   geolocator: ^7.4.0
+  geocoding: ^2.0.0
+
 
 dev_dependencies:
   flutter_test:
