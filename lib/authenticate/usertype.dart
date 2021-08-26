@@ -107,7 +107,7 @@ class _UserTypeState extends State<UserType> {
                                     padding: EdgeInsets.only(
                                         top: 8, bottom: 8, left: 10, right: 10),
                                     child: Text(
-                                      'Complete Registration',
+                                      'Next',
                                       textDirection: TextDirection.ltr,
                                       style: TextStyle(
                                         color: Colors.white,

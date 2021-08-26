@@ -101,7 +101,7 @@ class _RegisterState extends State<Register> {
                       SizedBox(height: 10.0,),
 
                       ButtonWidget(
-                            btnText: "SIGNUP",
+                            btnText: "Complete Registration",
                             onClick: () {
                               if(_formKey.currentState!.validate()){
                                  _handleRegister();
