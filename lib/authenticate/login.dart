@@ -259,11 +259,9 @@ class _LoginState extends State<Login> {
 
     var res = await CallApi().postData(data, '/auth/login');
     var body = json.decode(res.body);
-print(body);
     if (res.statusCode == 200) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', body['data']['token']);
-      print(body['data']['token']);
       localStorage.setString('user', json.encode(body['data']['user']));
       String user_role=body['data']['user']['user_role'];
       if(user_role == "doctor"){

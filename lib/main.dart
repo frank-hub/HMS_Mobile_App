@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
       });
     }
   }
-   checkUserType(){
+  checkUserType(){
     if(user_role=="doctor"){
       return HomeScreenDoctor();
     }

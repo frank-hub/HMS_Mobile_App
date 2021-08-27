@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hms/authenticate/login.dart';
 import 'package:hms/screens/booking.dart';
+import 'package:hms/screens/pharmacy/HomeScreenPharmacy.dart';
 import 'package:hms/utils/Oval_right_clipper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'HomeWidget.dart';
@@ -21,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _children = [
     HomeWidget(),
     BookingAppointment(),
-    HomeWidget(),
+    HomeScreenPharmacy(),
     BookingAppointment(),
 
   ];
