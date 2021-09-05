@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hms/models/user.dart';
+import 'package:hms/screens/doctor/doctorslist.dart';
 import 'package:hms/services/auth.dart';
 import 'package:hms/shared/loading.dart';
 import 'package:provider/provider.dart';
@@ -268,7 +269,12 @@ class _HomeWidgetState extends State<HomeWidget> {
                           ],
                         ),
                         IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  new MaterialPageRoute(
+                                      builder: (context) => DoctorList()));
+                            },
                             icon: FaIcon(
                                 FontAwesomeIcons.arrowAltCircleRight))
                       ],
