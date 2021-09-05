@@ -38,7 +38,7 @@ class _MyAppState extends State<MyApp> {
   }
   checkUserType(){
     if(user_role=="doctor"){
-      return HomeScreenDoctor();
+      return ;
     }
     else{
       return HomeScreen();
