@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hms/authenticate/login.dart';
+import 'package:hms/screens/patient/profile.dart';
 import 'package:hms/shared/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class HomeScreenDoctor extends StatefulWidget {
@@ -67,11 +68,14 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
             Padding(
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
-                  onTap: () async{
-                    await logout();
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => Profile()));
                   },
                   child: Icon(
-                    Icons.logout,
+                    Icons.person,
                     size: 26.0,
                   ),
                 )
@@ -79,9 +83,12 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
             Padding(
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () async{
+                    await logout();
+                  },
                   child: Icon(
-                      Icons.more_vert
+                    Icons.logout,
+                    size: 26.0,
                   ),
                 )
             ),

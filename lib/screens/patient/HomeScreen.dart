@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hms/authenticate/login.dart';
 import 'package:hms/screens/booking.dart';
+import 'package:hms/screens/patient/profile.dart';
 import 'package:hms/screens/pharmacy/HomeScreenPharmacy.dart';
 import 'package:hms/utils/Oval_right_clipper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
             builder: (context) => Login()));
   }
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -56,9 +56,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   Icons.person),
                   tooltip: 'FAQ',
                   onPressed: (){
-                    logout();
+                    Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (context) => Profile()));
                   }
               ),
+              IconButton(onPressed:() async{
+                await logout();
+              },
+                  icon: const Icon( Icons.logout))
             ],
           ),
 

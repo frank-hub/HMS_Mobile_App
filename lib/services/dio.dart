@@ -4,7 +4,6 @@ Dio dio(){
 
    dio.options.baseUrl='http://991cd1cec7b9.ngrok.io';
 
-   dio.options.headers['accept']='Application/Json';
 
    return dio;
 }

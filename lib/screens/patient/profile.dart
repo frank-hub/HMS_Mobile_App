@@ -1,11 +1,40 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:hms/shared/loading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+class Profile extends StatefulWidget {
+  const Profile({Key? key}) : super(key: key);
 
-class ProfileEightPage extends StatelessWidget {
+  @override
+  _ProfileState createState() => _ProfileState();
+}
 
-var UserData;
+class _ProfileState extends State<Profile> {
+  var userData;
+  @override
+  void initState() {
+    _getUserInfo();
+    super.initState();
+  }
+
+  void _getUserInfo() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var userJson = localStorage.getString('user');
+    var user = json.decode(userJson!);
+    setState(() {
+      userData = user;
+
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (userData == null) {
+      return Loading();
+    }
     return Scaffold(
         backgroundColor: Colors.grey.shade100,
         extendBodyBehindAppBar: true,
@@ -20,7 +49,7 @@ var UserData;
               ProfileHeader(
                 avatar: NetworkImage(""),
                 coverImage: NetworkImage(""),
-                title: ""+UserData['name'],
+                title: userData['user_role'],
                 actions: <Widget>[
                   MaterialButton(
                     color: Colors.white,
@@ -32,79 +61,78 @@ var UserData;
                 ],
               ),
               const SizedBox(height: 10.0),
-              UserInfo(),
-              UserInfo(),
+            Container(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: <Widget>[
+            Container(
+              padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+              alignment: Alignment.topLeft,
+              child: Text(
+                "User Information",
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ),
+            Card(
+              child: Container(
+                alignment: Alignment.topLeft,
+                padding: EdgeInsets.all(15),
+                child: Column(
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        ...ListTile.divideTiles(
+                          color: Colors.grey,
+                          tiles: [
+                            ListTile(
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 4),
+                              leading: Icon(Icons.my_location),
+                              title: Text("Full Name"),
+                              subtitle: Text(userData['name']),
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.email),
+                              title: Text("Email"),
+                              subtitle: Text(userData['email']),
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.phone),
+                              title: Text("Phone"),
+                              subtitle: Text(userData['phone'].toString()),
+                            ),
+                            ListTile(
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 4),
+                              leading: Icon(Icons.my_location),
+                              title: Text("Location"),
+                              subtitle: Text(userData['location']),
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.person),
+                              title: Text("About Me"),
+                              subtitle: Text(
+                                  "This is a about me link and you can khow about me in this section."),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
             ],
           ),
         ));
-  }
-}
-
-class UserInfo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: Column(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-            alignment: Alignment.topLeft,
-            child: Text(
-              "User Information",
-              style: TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-              ),
-              textAlign: TextAlign.left,
-            ),
-          ),
-          Card(
-            child: Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.all(15),
-              child: Column(
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      ...ListTile.divideTiles(
-                        color: Colors.grey,
-                        tiles: [
-                          ListTile(
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 4),
-                            leading: Icon(Icons.my_location),
-                            title: Text("Location"),
-                            subtitle: Text("Kathmandu"),
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.email),
-                            title: Text("Email"),
-                            subtitle: Text("sudeptech@gmail.com"),
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.phone),
-                            title: Text("Phone"),
-                            subtitle: Text("99--99876-56"),
-                          ),
-                          ListTile(
-                            leading: Icon(Icons.person),
-                            title: Text("About Me"),
-                            subtitle: Text(
-                                "This is a about me link and you can khow about me in this section."),
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
   }
 }
 
