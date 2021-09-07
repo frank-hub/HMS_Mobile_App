@@ -22,6 +22,13 @@ class CallApi{
         headers: _setHeaders()
     );
   }
+  fetchData(data,apiUrl) async {
+    var fullUrl = _url + apiUrl + await _getToken();
+    return await http.get(
+        Uri.parse(fullUrl) ,
+        headers: _setHeaders()
+    );
+  }
   _setHeaders() => {
     'Content-type' : 'application/json',
     'Accept' : 'application/json',
