@@ -1,0 +1,223 @@
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+
+class UpdateDetails extends StatefulWidget {
+  @override
+  _UpdateDetailsState createState() => _UpdateDetailsState();
+}
+
+class _UpdateDetailsState extends State<UpdateDetails> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  late TextEditingController _nameController =TextEditingController();
+
+  late TextEditingController _phoneController = TextEditingController();
+
+  final TextEditingController _dateController = TextEditingController();
+
+  final format = DateFormat("yyyy-MM-dd");
+
+  var gender ="Male";
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(
+          padding: EdgeInsets.all(15),
+          child:  ListView(
+            shrinkWrap: true,
+            children: [
+              SizedBox(height: 20,),
+              Form(
+                  key: _formKey,
+                  child:  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.only(top: 0),
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          padding: EdgeInsets.only(left: 16),
+                          child: Text(
+                            'Update My Details',
+                            style: GoogleFonts.lato(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                    DropdownButton<String>(
+                      value: gender,
+                      elevation: 16,
+                      style: const TextStyle(color: Colors.deepPurple),
+                      underline: Container(
+                        height: 2,
+                        color: Colors.deepPurpleAccent,
+                      ),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          gender = newValue!;
+                        });
+                      },
+                      items: <String>['Male', 'Female', 'Other']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          keyboardType: TextInputType.phone,
+                          controller:  _phoneController,
+                          enabled: false,
+                          style: GoogleFonts.lato(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                          decoration: InputDecoration(
+                            contentPadding:
+                            EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                            border: OutlineInputBorder(
+                              borderRadius:
+                              BorderRadius.all(Radius.circular(90.0)),
+                              borderSide: BorderSide.none,
+                            ),
+                            filled: true,
+                            fillColor: Colors.grey[350],
+                            hintText: 'Mobile*',
+                            hintStyle: GoogleFonts.lato(
+                              color: Colors.black26,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          textInputAction: TextInputAction.next,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          height: 60,
+                          width: MediaQuery.of(context).size.width,
+                          child: Stack(
+                            alignment: Alignment.centerRight,
+                            children: [
+                              DateTimeField(
+                                format: format,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                    left: 20,
+                                    top: 10,
+                                    bottom: 10,
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(90.0)),
+                                    borderSide: BorderSide.none,
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.grey[350],
+                                  hintText: 'Date Of Birth*',
+                                  hintStyle: GoogleFonts.lato(
+                                    color: Colors.black26,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                                controller: _dateController,
+                                // validator: (value) {
+                                //   if (value!.day)
+                                //     return 'Please Enter the Date';
+                                //   // return null;
+                                // },
+
+                                textInputAction: TextInputAction.next,
+                                style: GoogleFonts.lato(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                onShowPicker: (context, currentValue) {
+                                  return showDatePicker(
+                                      context: context,
+                                      firstDate: DateTime(1920),
+                                      initialDate: currentValue ?? DateTime.now(),
+                                      lastDate:currentValue ?? DateTime.now());
+                                },
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 5.0),
+                                child: ClipOval(
+                                  child: Material(
+                                    color: Colors.indigo, // button color
+                                    child: InkWell(
+                                      // inkwell color
+                                      child: SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: Icon(
+                                          Icons.date_range_outlined,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onTap: () {
+
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+
+                        SizedBox(
+                          height: 40,
+                        ),
+                        Container(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 2,
+                              primary: Colors.indigo,
+                              onPrimary: Colors.black,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32.0),
+                              ),
+                            ),
+                            onPressed: () {
+                              if(_formKey.currentState!.validate()){
+
+                              }
+                            },
+                            child: Text(
+                              "Book Appointment",
+                              style: GoogleFonts.lato(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                      ],
+                    ),
+                  )),
+            ],),
+        ),
+      ),
+    );
+  }
+}

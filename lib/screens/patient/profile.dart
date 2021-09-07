@@ -23,6 +23,7 @@ class _ProfileState extends State<Profile> {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var userJson = localStorage.getString('user');
     var user = json.decode(userJson!);
+
     setState(() {
       userData = user;
 
@@ -47,8 +48,8 @@ class _ProfileState extends State<Profile> {
           child: Column(
             children: <Widget>[
               ProfileHeader(
-                avatar: NetworkImage(""),
-                coverImage: NetworkImage(""),
+                avatar: NetworkImage("https://miro.medium.com/max/550/1*KvQn-s0sl81zh1co3GQPNg.jpeg"),
+                coverImage: NetworkImage("https://miro.medium.com/max/550/1*KvQn-s0sl81zh1co3GQPNg.jpeg"),
                 title: userData['user_role'],
                 actions: <Widget>[
                   MaterialButton(

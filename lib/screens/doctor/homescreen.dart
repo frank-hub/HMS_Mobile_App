@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hms/authenticate/login.dart';
+import 'package:hms/screens/doctor/UpdateDetails.dart';
 import 'package:hms/screens/patient/profile.dart';
 import 'package:hms/shared/loading.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -65,6 +66,20 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
         appBar: AppBar(
           title: Text("Welcome"),
           actions: <Widget>[
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                    MaterialPageRoute(builder: (context) =>  UpdateDetails())
+                    );
+                  },
+                  child: Icon(
+                    Icons.doorbell_outlined,
+                    size: 26.0,
+                  ),
+                )
+            ),
             Padding(
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(

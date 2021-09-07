@@ -87,7 +87,7 @@ class _DoctorListState extends State<DoctorList> {
           child: Stack(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(top: 145),
+                padding: EdgeInsets.only(top: 95),
                 height: MediaQuery.of(context).size.height,
                 width: double.infinity,
                 child: ListView.builder(
@@ -97,45 +97,10 @@ class _DoctorListState extends State<DoctorList> {
                     }),
               ),
               Container(
-                height: 140,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: primary,
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30))),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.menu,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        "Doctors",
-                        style: TextStyle(color: Colors.white, fontSize: 24),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.filter_list,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
                 child: Column(
                   children: <Widget>[
                     SizedBox(
-                      height: 110,
+                      height: 20,
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
