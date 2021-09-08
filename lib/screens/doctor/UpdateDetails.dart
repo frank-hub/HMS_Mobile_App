@@ -1,5 +1,6 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -53,27 +54,52 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                         SizedBox(
                           height: 30,
                         ),
-                    DropdownButton<String>(
-                      value: gender,
-                      elevation: 16,
-                      style: const TextStyle(color: Colors.deepPurple),
-                      underline: Container(
-                        height: 2,
-                        color: Colors.deepPurpleAccent,
-                      ),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          gender = newValue!;
-                        });
-                      },
-                      items: <String>['Male', 'Female', 'Other']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                    Row(
+
+                      children: [
+                        Text("Gender",style: TextStyle(fontSize: 20),),
+                        SizedBox(width: 30,),
+                        Container(
+                          width: 250,
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          decoration: BoxDecoration(
+                              color: Colors.grey[350],
+                              borderRadius: BorderRadius.all(Radius.circular(90.0))),
+                          child: DropdownButton<String>(
+                            isExpanded: true,
+                            value: gender,
+                            //elevation: 5,
+                            style: TextStyle(color: Colors.black),
+
+                            items: <String>[
+                              'Male',
+                              'Female',
+                              'Other',
+
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            hint: Text(
+                              "Please Your Gender",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            onChanged: (String ? value) {
+                              setState(() {
+                                gender = value!;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
                     ),
+
+
 
                         SizedBox(
                           height: 20,
@@ -81,7 +107,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                         TextFormField(
                           keyboardType: TextInputType.phone,
                           controller:  _phoneController,
-                          enabled: false,
+
                           style: GoogleFonts.lato(
                               fontSize: 18, fontWeight: FontWeight.bold),
                           decoration: InputDecoration(

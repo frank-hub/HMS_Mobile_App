@@ -84,6 +84,20 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () {
+                    Navigator.push(context,
+                    MaterialPageRoute(builder: (context) =>  UpdateDetails())
+                    );
+                  },
+                  child: Icon(
+                    Icons.doorbell_outlined,
+                    size: 26.0,
+                  ),
+                )
+            ),
+            Padding(
+                padding: EdgeInsets.only(right: 20.0),
+                child: GestureDetector(
+                  onTap: () {
                     Navigator.push(
                         context,
                         new MaterialPageRoute(

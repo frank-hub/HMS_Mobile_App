@@ -13,6 +13,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   var userData;
+  var location;
   @override
   void initState() {
     _getUserInfo();
@@ -26,6 +27,12 @@ class _ProfileState extends State<Profile> {
 
     setState(() {
       userData = user;
+      if(userData['location'] == null){
+        location="Location";
+      }
+      else{
+        location=userData['location'];
+      }
 
     });
 
@@ -112,13 +119,13 @@ class _ProfileState extends State<Profile> {
                                   horizontal: 12, vertical: 4),
                               leading: Icon(Icons.my_location),
                               title: Text("Location"),
-                              subtitle: Text(userData['location']),
+                              subtitle: Text(location),
                             ),
                             ListTile(
                               leading: Icon(Icons.person),
                               title: Text("About Me"),
                               subtitle: Text(
-                                  "This is a about me link and you can khow about me in this section."),
+                                  "This is a about me link and you can know about me in this section."),
                             ),
                           ],
                         ),
