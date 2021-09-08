@@ -20,6 +20,7 @@ class _MyAppState extends State<MyApp> {
   String user_role="";
   @override
   void initState() {
+    WidgetsFlutterBinding.ensureInitialized();
     _checkIfLoggedIn();
     super.initState();
   }
@@ -38,7 +39,7 @@ class _MyAppState extends State<MyApp> {
   }
   checkUserType(){
     if(user_role=="doctor"){
-      return ;
+      return HomeScreenDoctor();
     }
     else{
       return HomeScreen();
