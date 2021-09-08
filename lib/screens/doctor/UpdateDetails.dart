@@ -2,6 +2,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hms/screens/doctor/test.dart';
 import 'package:intl/intl.dart';
 
 class UpdateDetails extends StatefulWidget {
@@ -58,7 +59,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
 
                       children: [
                         Text("Gender",style: TextStyle(fontSize: 20),),
-                        SizedBox(width: 30,),
+                        SizedBox(width: 15,),
                         Container(
                           width: 250,
                           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -222,11 +223,15 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                             ),
                             onPressed: () {
                               if(_formKey.currentState!.validate()){
-
+                                Navigator.push(context,
+                                MaterialPageRoute(builder: (context) =>
+                                MyAppointment()
+                                )
+                                );
                               }
                             },
                             child: Text(
-                              "Book Appointment",
+                              "Update Records",
                               style: GoogleFonts.lato(
                                 color: Colors.white,
                                 fontSize: 18,

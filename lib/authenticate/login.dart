@@ -198,44 +198,7 @@ class _LoginState extends State<Login> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    color: Colors.blue),
-                                child: Center(
-                                  child: SignInButton(
-                                    Buttons.Facebook,
-                                    onPressed: () {},
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Expanded(
-                              child: Container(
-                                height: 50,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    color: Colors.grey),
-                                child: Center(
-                                  child: SignInButton(
-                                    Buttons.Google,
-                                    onPressed: () {},
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        )
+
                       ],
                     ),
                   ),
@@ -286,5 +249,3 @@ class _LoginState extends State<Login> {
 
   }
 }
-
-
