@@ -9,6 +9,7 @@ import 'package:hms/api/api.dart';
 import 'package:hms/models/doctor.dart';
 import 'package:hms/screens/doctor/test.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateDetails extends StatefulWidget {
   @override
@@ -28,21 +29,32 @@ class _UpdateDetailsState extends State<UpdateDetails> {
 
   var gender = "Male";
   var cat = "General";
+  var dob = "1990-09-07";
+  var userData;
+  String msgStatus = '';
   void initState() {
     _fetchJobs();
+    _getUserInfo();
     super.initState();
   }
 
+  void _getUserInfo() async {
+    SharedPreferences local = await SharedPreferences.getInstance();
+    var jsonData = local.getString('user');
+    var user = json.decode(jsonData!);
+    setState(() {
+      userData = user;
+    });
+  }
+
+
   Future<List<Doctor>> _fetchJobs() async {
     var response = await CallApi().getData('/categories');
-    // final response = await http.get('http://localhost:8000/api/categories')
-
-    print(response);
     if (response.statusCode == 200) {
       Map<String, dynamic> map = json.decode(response.body);
 
       List<dynamic>? jsonResponse = map["cartegories"];
-      print(jsonResponse);
+      // print(jsonResponse);
       return jsonResponse!.map((job) => new Doctor.fromJson(job)).toList();
     } else {
       throw Exception('Failed to load Events from API');
@@ -71,6 +83,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                     SizedBox(
                       height: 50,
                     ),
+                    Text(msgStatus,style: TextStyle(color: Colors.red),),
                     Padding(
                       padding: EdgeInsets.all(20),
                       child: Column(
@@ -131,7 +144,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                                           width: 15,
                                         ),
                                         Container(
-                                          width: 250,
+                                          width: 320,
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 20),
                                           decoration: BoxDecoration(
@@ -185,7 +198,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                                           width: 15,
                                         ),
                                         Container(
-                                          width: 235,
+                                          width: 300,
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 20),
                                           decoration: BoxDecoration(
@@ -224,34 +237,6 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                                     SizedBox(
                                       height: 20,
                                     ),
-                                    TextFormField(
-                                      keyboardType: TextInputType.phone,
-                                      controller: _phoneController,
-                                      style: GoogleFonts.lato(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.only(
-                                            left: 20, top: 10, bottom: 10),
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(90.0)),
-                                          borderSide: BorderSide.none,
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.grey[350],
-                                        hintText: 'Mobile*',
-                                        hintStyle: GoogleFonts.lato(
-                                          color: Colors.black26,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w800,
-                                        ),
-                                      ),
-                                      textInputAction: TextInputAction.next,
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
                                     Container(
                                       alignment: Alignment.center,
                                       height: 60,
@@ -282,11 +267,9 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                                               ),
                                             ),
                                             controller: _dateController,
-                                            // validator: (value) {
-                                            //   if (value!.day)
-                                            //     return 'Please Enter the Date';
-                                            //   // return null;
-                                            // },
+                                            validator: (value) {
+                                             dob = value.toString();
+                                            },
 
                                             textInputAction:
                                                 TextInputAction.next,
@@ -348,12 +331,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                                         onPressed: () {
                                           if (_formKey.currentState!
                                               .validate()) {
-                                            print(gender);
-                                            print(cat);
-                                            Fluttertoast.showToast(
-                                                msg: cat + " " + gender,
-                                                toastLength:
-                                                    Toast.LENGTH_SHORT);
+                                            updateDoctor();
                                           }
                                         },
                                         child: Text(
@@ -384,5 +362,29 @@ class _UpdateDetailsState extends State<UpdateDetails> {
         ),
       ),
     );
+  }
+
+  Future<void> updateDoctor() async {
+    var data = {
+    'doc_id' :  userData['id'].toString(),
+    'category' : cat.toString(),
+    'gender' : gender.toString(),
+      'age' : dob.toString(),
+    };
+
+    var res = await CallApi().updateDoc(data,'/doctors/store');
+    var body = json.decode(res.body);
+    print(body);
+    if(body['success'] == true){
+      Fluttertoast.showToast(
+        backgroundColor: Colors.blue,
+          textColor: Colors.white,
+          msg: "Successful",
+          toastLength:
+          Toast.LENGTH_SHORT);
+    }else{
+      msgStatus = "Unsuccessful";
+    }
+
   }
 }
