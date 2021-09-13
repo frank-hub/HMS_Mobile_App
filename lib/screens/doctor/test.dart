@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hms/api/api.dart';
-import 'package:hms/models/doctor.dart';
+import 'package:hms/models/DoctorList.dart';
 
 class MyAppointment extends StatefulWidget {
   @override
@@ -22,11 +22,11 @@ class _MyAppointmentState extends State<MyAppointment> {
 
           Center(
             child: Flexible(
-              child: FutureBuilder<List<Doctor>>(
+              child: FutureBuilder<List<DoctorList>>(
                 future: _fetchJobs(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    List<Doctor>? data = snapshot.data;
+                    List<DoctorList>? data = snapshot.data;
                     return _jobsListView(data);
                   } else if (snapshot.hasError) {
                     return Text("${snapshot.error}");
@@ -48,17 +48,17 @@ class _MyAppointmentState extends State<MyAppointment> {
       ),
     );
   }
-  Future<List<Doctor>> _fetchJobs() async {
+  Future<List<DoctorList>> _fetchJobs() async {
 
-    var response = await CallApi().getData('/categories');
+    var response = await CallApi().getData('/doctors/all');
     // final response = await http.get('http://localhost:8000/api/categories');
     print(response);
     if (response.statusCode == 200) {
       Map<String, dynamic> map = json.decode(response.body);
 
-      List<dynamic> ? jsonResponse = map["cartegories"];
+      List<dynamic> ? jsonResponse = map["doctors"];
       print(jsonResponse);
-      return jsonResponse!.map((job) => new Doctor.fromJson(job)).toList();
+      return jsonResponse!.map((job) => new DoctorList.fromJson(job)).toList();
     } else {
       throw Exception('Failed to load Events from API');
     }

@@ -383,7 +383,12 @@ class _UpdateDetailsState extends State<UpdateDetails> {
           toastLength:
           Toast.LENGTH_SHORT);
     }else{
-      msgStatus = "Unsuccessful";
+      Fluttertoast.showToast(
+          backgroundColor: Colors.blue,
+          textColor: Colors.white,
+          msg: "Already Updated",
+          toastLength:
+          Toast.LENGTH_SHORT);
     }
 
   }

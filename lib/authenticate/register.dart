@@ -186,7 +186,7 @@ class _RegisterState extends State<Register> {
       localStorage.setString('token', body['data']['token']);
       print(body['data']['token']);
       localStorage.setString('user', json.encode(body['data']['user']));
-      String user_role=widget.userType.toString();
+      String user_role = widget.userType.toString();
     if(user_role == "doctor"){
       Navigator.push(
           context,
