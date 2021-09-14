@@ -277,7 +277,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                   Navigator.push(
                                       context,
                                       new MaterialPageRoute(
-                                          builder: (context) => MyAppointment()));
+                                          builder: (context) => DoctorListView()));
                                 },
                                 icon: FaIcon(
                                     FontAwesomeIcons.arrowAltCircleRight))
