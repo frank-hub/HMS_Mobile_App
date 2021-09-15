@@ -144,7 +144,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                                           width: 15,
                                         ),
                                         Container(
-                                          width: 320,
+                                          width: 210,
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 20),
                                           decoration: BoxDecoration(
@@ -198,7 +198,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                                           width: 15,
                                         ),
                                         Container(
-                                          width: 300,
+                                          width: 200,
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 20),
                                           decoration: BoxDecoration(

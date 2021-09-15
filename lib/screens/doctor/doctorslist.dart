@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hms/api/api.dart';
 import 'package:hms/models/DoctorList.dart';
+import 'package:hms/screens/doctor/doctor_details.dart';
 
 class DoctorListView extends StatefulWidget {
   @override
@@ -113,6 +114,11 @@ class _DoctorListViewState extends State<DoctorListView> {
 
   }
   GestureDetector _gestureDetector(int id,String name,String category,String ? location) => GestureDetector(
+    onTap: (){
+      Navigator.push(context, MaterialPageRoute(builder:
+      (context) => DoctorDetails(name,category,location)
+      ));
+    },
       child:Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
