@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hms/api/api.dart';
+import 'package:hms/models/DoctorList.dart';
+import 'package:hms/models/MyAppointments.dart';
 import 'package:hms/models/user.dart';
 import 'package:hms/screens/doctor/doctorslist.dart';
 import 'package:hms/screens/doctor/test.dart';
@@ -42,8 +45,103 @@ class _HomeWidgetState extends State<HomeWidget> {
       userData = user;
 
     });
+  }
+  Future<List<MyAppointments>> _fetchAppointments() async {
+    var data = {
+    'uid' : userData['id'].toString(),
+    };
+    var response = await CallApi().fetchData(data,'/booking/my_bookings');
+    // final response = await http.get('http://localhost:8000/api/categories');
+    print(response);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> map = json.decode(response.body);
+
+      List<dynamic> ? jsonResponse = map["bookings"];
+      print(jsonResponse);
+      return jsonResponse!.map((job) => new MyAppointments.fromJson(job)).toList();
+    } else {
+      throw Exception('Failed to load Events from API');
+    }
+  }
+  ListView _appointmentsListView(data) {
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: data.length,
+        itemBuilder: (context, index) {
+          return Card(
+              child: Container(
+                padding: EdgeInsets.all(8),
+                height: 100,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CircleAvatar(
+                          child: Image.asset(
+                            "assets/images/doctor.png",
+                            height: 70,
+                            width: 70,
+                          ),
+                        ),
+                        Stack(
+                          alignment: Alignment.topLeft,
+                          overflow: Overflow.visible,
+                          children: [
+                            Text(
+                             "Doctor: " +data[index].doctor_name,
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+
+
+                          ],
+
+                        ),
+
+
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Positioned(
+                      top: 20,
+                      // bottom: 1,
+                      child: Text(
+                        "Description: " +data[index].description,
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+
+                        FaIcon(FontAwesomeIcons.clock),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(data[index].date +", @"+data[index].time)
+                      ],
+                    ),
+                  ],
+                ),
+              ));
+
+        });
 
   }
+
   @override
   Widget build(BuildContext context) {
     if (userData == null) {
@@ -228,77 +326,20 @@ class _HomeWidgetState extends State<HomeWidget> {
                   fontSize: 20,
                 ),
               ),
-              Card(
-                  child: Container(
-                    padding: EdgeInsets.all(8),
-                    height: 100,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CircleAvatar(
-                              child: Image.asset(
-                                "assets/images/doctor.png",
-                                height: 70,
-                                width: 70,
-                              ),
-                            ),
-                            Stack(
-                              alignment: Alignment.topLeft,
-                              overflow: Overflow.visible,
-                              children: [
-                                Text(
-                                  "Dr. John Doe,",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 20,
-                                  // bottom: 1,
-                                  child: Text(
-                                    "General Practitioner",
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            IconButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      new MaterialPageRoute(
-                                          builder: (context) => DoctorListView()));
-                                },
-                                icon: FaIcon(
-                                    FontAwesomeIcons.arrowAltCircleRight))
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            FaIcon(FontAwesomeIcons.clock),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text("Friday , March 26 @ 9:00 am")
-                          ],
-                        ),
-                      ],
-                    ),
-                  )),
+              Flexible(
+                child: FutureBuilder<List<MyAppointments>>(
+                  future: _fetchAppointments(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<MyAppointments>? data = snapshot.data;
+                      return _appointmentsListView(data);
+                    } else if (snapshot.hasError) {
+                      return Text("${snapshot.error}");
+                    }
+                    return CircularProgressIndicator();
+                  },
+                ),
+              ),
               SizedBox(
                 height: 20,
               ),

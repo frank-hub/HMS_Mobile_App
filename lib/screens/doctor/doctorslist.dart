@@ -148,7 +148,7 @@ class _DoctorListViewState extends State<DoctorListView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    name,
+                    "Dr. "+name,
                     style: TextStyle(
                         color: primary,
                         fontWeight: FontWeight.bold,

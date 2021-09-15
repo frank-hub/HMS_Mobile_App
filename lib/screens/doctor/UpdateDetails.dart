@@ -369,7 +369,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
     'doc_id' :  userData['id'].toString(),
     'category' : cat.toString(),
     'gender' : gender.toString(),
-      'age' : dob.toString(),
+      'dob' : dob.toString(),
     };
 
     var res = await CallApi().updateDoc(data,'/doctors/store');

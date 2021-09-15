@@ -10,11 +10,7 @@ class DoctorList {
   DoctorList({required this.id,required this.name,required this.email,required this.location ,required this.gender,required this.category, required this.age});
 
   factory DoctorList.fromJson(Map<String , dynamic> json){
-    // id": 13,
-    // "doc_id": 5,
-    // "category": "Orthopedic",
-    // "gender": "Male",
-    // "age":
+
     return DoctorList(
       id: json['id'],
       name: json['name'],
@@ -22,7 +18,7 @@ class DoctorList {
       location: json['location'],
       gender: json['gender'],
       category: json['category'],
-      age: json['age'],
+      age: json['dob'],
     );
   }
 }
