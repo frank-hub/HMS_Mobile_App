@@ -116,7 +116,7 @@ class _DoctorListViewState extends State<DoctorListView> {
   GestureDetector _gestureDetector(int id,String name,String category,String ? location) => GestureDetector(
     onTap: (){
       Navigator.push(context, MaterialPageRoute(builder:
-      (context) => DoctorDetails(name,category,location)
+      (context) => DoctorDetails(id,name,category,location)
       ));
     },
       child:Container(

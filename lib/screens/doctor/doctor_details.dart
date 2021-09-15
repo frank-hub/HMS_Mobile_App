@@ -6,19 +6,22 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hms/api/api.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class DoctorDetails extends StatefulWidget {
-
+  final id;
   final name;
   final category;
   final location;
 
-  DoctorDetails(this.name,this.category,this.location);
+  DoctorDetails(this.id,this.name,this.category,this.location);
 
   @override
-  _DoctorDetailsState createState() => _DoctorDetailsState();
+  DoctorDetailsState createState() => DoctorDetailsState();
 }
 
-class _DoctorDetailsState extends State<DoctorDetails> {
+class DoctorDetailsState extends State<DoctorDetails> {
+
+
   final primary = Color(0xff291747);
   final secondary = Color(0xff6C48AB);
   final _formKey = GlobalKey<FormState>();
@@ -31,6 +34,21 @@ class _DoctorDetailsState extends State<DoctorDetails> {
   bool loading=false;
   final format = DateFormat("yyyy-MM-dd");
   final time_format = DateFormat("HH:MM");
+  var userData;
+  @override
+  void initState() {
+    _getUserInfo();
+    super.initState();
+  }
+
+  void _getUserInfo() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var userJson = localStorage.getString('user');
+    var user = json.decode(userJson!);
+    setState(() {
+      userData = user;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -345,11 +363,12 @@ class _DoctorDetailsState extends State<DoctorDetails> {
       loading = true;
     });
 
-
     var data = {
-      'name' : "_nameController.text",
-      'phone' : "_phoneController.text",
-      'doctor_name' : _doctorController.text,
+      'uid': userData['id'],
+      'name' : userData['name'],
+      'phone' : userData['phone'],
+      'doctor_id' : widget.id,
+      'doctor_name' : widget.name,
       'description' : _descriptionController.text,
       'date' :  _dateController.text,
       'time' : _timeController.text,
