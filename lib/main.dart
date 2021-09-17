@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hms/authenticate/login.dart';
-import 'package:hms/authenticate/usertype.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
+import 'package:hms/screens/splashscreen.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 void main() => runApp(MyApp());
@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: _isLoggedIn ? checkUserType():  Login(),
+        body: _isLoggedIn ? checkUserType(): Login(),
       ),
 
     );

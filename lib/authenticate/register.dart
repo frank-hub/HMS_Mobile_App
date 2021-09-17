@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hms/api/api.dart';
 import 'package:hms/authenticate/login.dart';
-import 'package:hms/authenticate/usertype.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
-import 'package:hms/services/auth.dart';
 import 'package:hms/shared/loading.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
@@ -35,6 +33,7 @@ class _RegisterState extends State<Register> {
   final TextEditingController _emailController = new TextEditingController();
   final TextEditingController _phoneController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
+  final TextEditingController _confirmpasswordController = new TextEditingController();
   bool loading =false;
   final _formKey = GlobalKey<FormState>();
   void _getCurrentLocation() async {
@@ -98,7 +97,16 @@ class _RegisterState extends State<Register> {
                       _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Email' : null,),
                       SizedBox(height: 10.0,),
                       _textInput(hint: "Phone Number", icon: Icons.call,controller: _phoneController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Phone Number' : null,),
-                      _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,validator:(value) => value!.isEmpty ? 'Please Enter Your Password' : null,),
+                      _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,  validator: (val) => val.length < 8? 'Enter a password 8+ chars long'
+                          : null,),
+                      _textInput(hint: "Confirm Password", icon: Icons.vpn_key,controller: _confirmpasswordController,obscure: true,
+                        validator: (val) {
+                          if (val.isEmpty)
+                            return 'Enter a password 6+ chars long';
+                          if (val != _passwordController.text)
+                            return 'Password Do Not Match';
+                          return null;
+                        },),
                       SizedBox(height: 10.0,),
 
                       ButtonWidget(
