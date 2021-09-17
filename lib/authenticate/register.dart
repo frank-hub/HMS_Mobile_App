@@ -10,6 +10,8 @@ import 'package:hms/shared/loading.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+
 
 Color orangeColors = Color(0xFF6C63FF);
 Color orangeLightColors = Color(0xFF6C63FF);
@@ -35,6 +37,11 @@ class _RegisterState extends State<Register> {
   final TextEditingController _passwordController = new TextEditingController();
   final TextEditingController _confirmpasswordController = new TextEditingController();
   bool loading =false;
+  final TextEditingController controller = TextEditingController();
+  String initialCountry = 'NG';
+  PhoneNumber number = PhoneNumber(isoCode: 'NG', );
+
+
   final _formKey = GlobalKey<FormState>();
   void _getCurrentLocation() async {
     var position= await Geolocator
@@ -96,8 +103,49 @@ class _RegisterState extends State<Register> {
                       _textInput(hint: "Fullname", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
                       _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Email' : null,),
                       SizedBox(height: 10.0,),
-                      _textInput(hint: "Phone Number", icon: Icons.call,controller: _phoneController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Phone Number' : null,),
-                      _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,  validator: (val) => val.length < 8? 'Enter a password 8+ chars long'
+                  Container(
+                    margin: EdgeInsets.only(top: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      color: Colors.white,
+                    ),
+                    padding: EdgeInsets.only(left: 10),
+                    child: InternationalPhoneNumberInput(
+                      onInputChanged: (PhoneNumber number) {
+                        print(number.phoneNumber);
+                      },
+
+                      onInputValidated: (bool value) {
+                        print(value);
+                      },
+                      selectorConfig: SelectorConfig(
+                        selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                      ),
+                      ignoreBlank: false,
+                      autoValidateMode: AutovalidateMode.disabled,
+                      selectorTextStyle: TextStyle(color: Colors.black),
+                      initialValue: number,
+                      textFieldController: _phoneController,
+                      formatInput: false,
+                      keyboardType:
+                      TextInputType.numberWithOptions(signed: true, decimal: true),
+                      inputDecoration:InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Phone Number",
+
+                      ),
+
+                      inputBorder: OutlineInputBorder(
+                        borderRadius:  BorderRadius.all(Radius.circular(20)),
+
+                      ),
+                      onSaved: (PhoneNumber number) {
+                        print('On Saved: $number');
+                      },
+                    ),),
+
+
+                     _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,  validator: (val) => val.length < 8? 'Enter a password 8+ chars long'
                           : null,),
                       _textInput(hint: "Confirm Password", icon: Icons.vpn_key,controller: _confirmpasswordController,obscure: true,
                         validator: (val) {
@@ -112,9 +160,11 @@ class _RegisterState extends State<Register> {
                       ButtonWidget(
                             btnText: "Complete Registration",
                             onClick: () {
-                              if(_formKey.currentState!.validate()){
-                                 _handleRegister();
-                              }
+                              Fluttertoast.showToast(msg: ""+number.phoneNumber.toString(),toastLength: Toast.LENGTH_SHORT);
+                              // if(_formKey.currentState!.validate()){
+                              //
+                              //    // _handleRegister();
+                              // }
                             },
                           ),
                       SizedBox(height: 20.0,),

@@ -42,6 +42,9 @@ dependencies:
   awesome_dialog: ^2.1.1
   geolocator: ^7.4.0
   geocoding: ^2.0.0
+  country_picker: ^2.0.8
+  intl_phone_number_input: ^0.7.0+2
+
 
 
 dev_dependencies:
