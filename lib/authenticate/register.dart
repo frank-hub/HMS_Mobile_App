@@ -160,11 +160,11 @@ class _RegisterState extends State<Register> {
                       ButtonWidget(
                             btnText: "Complete Registration",
                             onClick: () {
-                              Fluttertoast.showToast(msg: ""+number.phoneNumber.toString(),toastLength: Toast.LENGTH_SHORT);
-                              // if(_formKey.currentState!.validate()){
-                              //
-                              //    // _handleRegister();
-                              // }
+
+                              if(_formKey.currentState!.validate()){
+
+                                 // _handleRegister();
+                              }
                             },
                           ),
                       SizedBox(height: 20.0,),
