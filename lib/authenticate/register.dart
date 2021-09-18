@@ -11,6 +11,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:email_validator/email_validator.dart';
 
 
 Color orangeColors = Color(0xFF6C63FF);
@@ -38,8 +39,9 @@ class _RegisterState extends State<Register> {
   final TextEditingController _confirmpasswordController = new TextEditingController();
   bool loading =false;
   final TextEditingController controller = TextEditingController();
-  String initialCountry = 'NG';
-  PhoneNumber number = PhoneNumber(isoCode: 'NG', );
+  String initialCountry = 'US';
+  PhoneNumber number = PhoneNumber(isoCode: 'US', );
+  String phone="";
 
 
   final _formKey = GlobalKey<FormState>();
@@ -79,6 +81,7 @@ class _RegisterState extends State<Register> {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return loading? Loading(): Scaffold(
@@ -101,7 +104,7 @@ class _RegisterState extends State<Register> {
                       Text(msgStatus,style: TextStyle(color: Colors.red),),
                       SizedBox(height: 5,),
                       _textInput(hint: "Fullname", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
-                      _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Email' : null,),
+                      _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator: (value) => EmailValidator.validate(value) ? null : "Please enter a valid email",),
                       SizedBox(height: 10.0,),
                   Container(
                     margin: EdgeInsets.only(top: 20),
@@ -113,6 +116,10 @@ class _RegisterState extends State<Register> {
                     child: InternationalPhoneNumberInput(
                       onInputChanged: (PhoneNumber number) {
                         print(number.phoneNumber);
+
+                        setState(() {
+                          phone=number.phoneNumber.toString();
+                        });
                       },
 
                       onInputValidated: (bool value) {
@@ -150,7 +157,7 @@ class _RegisterState extends State<Register> {
                       _textInput(hint: "Confirm Password", icon: Icons.vpn_key,controller: _confirmpasswordController,obscure: true,
                         validator: (val) {
                           if (val.isEmpty)
-                            return 'Enter a password 6+ chars long';
+                            return 'Enter a password 8+ chars long';
                           if (val != _passwordController.text)
                             return 'Password Do Not Match';
                           return null;
@@ -163,7 +170,7 @@ class _RegisterState extends State<Register> {
 
                               if(_formKey.currentState!.validate()){
 
-                                 // _handleRegister();
+                                 _handleRegister();
                               }
                             },
                           ),
@@ -230,7 +237,7 @@ class _RegisterState extends State<Register> {
       'name' : _nameController.text,
       'email' : _emailController.text,
       'password' : _passwordController.text,
-      'phone' : _phoneController.text,
+      'phone' : phone,
       'user_role':widget.userType.toString(),
       'location':_currentLocation.toString(),
       'postalcode':_currentPostalCode.toString(),

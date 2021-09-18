@@ -44,6 +44,7 @@ dependencies:
   geocoding: ^2.0.0
   country_picker: ^2.0.8
   intl_phone_number_input: ^0.7.0+2
+  email_validator: ^2.0.1
 
 
 
