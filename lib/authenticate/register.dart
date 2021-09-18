@@ -152,8 +152,27 @@ class _RegisterState extends State<Register> {
                     ),),
 
 
-                     _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,  validator: (val) => val.length < 8? 'Enter a password 8+ chars long'
-                          : null,),
+                     _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,
+                         validator: (val) {
+                       if (val.trim().isEmpty) {
+                          return 'This field is required';
+                      }
+                       if(val.length < 8){
+                         return 'Enter a password 8+ chars long';
+                       }if((!val.contains(RegExp(r'[a-z]')))){
+                         return 'Password must have lower case';
+
+                       }
+                       if((!val.contains(RegExp(r'[A-Z]')))){
+                         return 'Password must have at least one uppercase';
+
+                       }
+                       if((!val.contains(RegExp(r'[0-9]')))){
+                         return 'Password must have one number';
+
+                       }
+                          return null;
+                     }),
                       _textInput(hint: "Confirm Password", icon: Icons.vpn_key,controller: _confirmpasswordController,obscure: true,
                         validator: (val) {
                           if (val.isEmpty)

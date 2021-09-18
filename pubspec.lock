@@ -139,6 +139,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  flutter_pw_validator:
+    dependency: "direct main"
+    description:
+      name: flutter_pw_validator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.2.1"
   flutter_signin_button:
     dependency: "direct main"
     description:

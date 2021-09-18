@@ -45,6 +45,7 @@ dependencies:
   country_picker: ^2.0.8
   intl_phone_number_input: ^0.7.0+2
   email_validator: ^2.0.1
+  flutter_pw_validator: ^1.2.1
 
 
 
