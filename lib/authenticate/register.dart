@@ -30,6 +30,7 @@ class _RegisterState extends State<Register> {
   var _currentLocation="";
   var _currentPostalCode="";
   Position? _currentPosition;
+  var myn;
 
   final TextEditingController _nameController = new TextEditingController();
   final TextEditingController _emailController = new TextEditingController();
@@ -38,8 +39,8 @@ class _RegisterState extends State<Register> {
   final TextEditingController _confirmpasswordController = new TextEditingController();
   bool loading =false;
   final TextEditingController controller = TextEditingController();
-  String initialCountry = 'NG';
-  PhoneNumber number = PhoneNumber(isoCode: 'NG', );
+  String initialCountry = 'KE';
+  PhoneNumber number = PhoneNumber(isoCode: 'KE', );
 
 
   final _formKey = GlobalKey<FormState>();
@@ -112,7 +113,9 @@ class _RegisterState extends State<Register> {
                     padding: EdgeInsets.only(left: 10),
                     child: InternationalPhoneNumberInput(
                       onInputChanged: (PhoneNumber number) {
-                        print(number.phoneNumber);
+                        setState(() {
+                          myn = number.phoneNumber;
+                        });
                       },
 
                       onInputValidated: (bool value) {
@@ -163,7 +166,7 @@ class _RegisterState extends State<Register> {
 
                               if(_formKey.currentState!.validate()){
 
-                                 // _handleRegister();
+                                 _handleRegister();
                               }
                             },
                           ),
@@ -222,23 +225,24 @@ class _RegisterState extends State<Register> {
     );
   }
   void _handleRegister() async {
-    setState(() {
-      loading = true;
-    });
+    // setState(() {
+    //   loading = true;
+    // });
 
     var data = {
       'name' : _nameController.text,
       'email' : _emailController.text,
       'password' : _passwordController.text,
-      'phone' : _phoneController.text,
+      'phone' : _phoneController,
       'user_role':widget.userType.toString(),
       'location':_currentLocation.toString(),
       'postalcode':_currentPostalCode.toString(),
       'country':_currentCountry.toString()
     };
-
+  print(number.phoneNumber.toString());
     var res = await CallApi().postData(data, '/auth/register');
     var body = json.decode(res.body);
+    print(body);
     if (res.statusCode == 200) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', body['data']['token']);
