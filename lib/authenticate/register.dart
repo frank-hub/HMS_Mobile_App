@@ -11,6 +11,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:email_validator/email_validator.dart';
 
 
 Color orangeColors = Color(0xFF6C63FF);
@@ -30,7 +31,6 @@ class _RegisterState extends State<Register> {
   var _currentLocation="";
   var _currentPostalCode="";
   Position? _currentPosition;
-  var myn;
 
   final TextEditingController _nameController = new TextEditingController();
   final TextEditingController _emailController = new TextEditingController();
@@ -39,8 +39,9 @@ class _RegisterState extends State<Register> {
   final TextEditingController _confirmpasswordController = new TextEditingController();
   bool loading =false;
   final TextEditingController controller = TextEditingController();
-  String initialCountry = 'KE';
-  PhoneNumber number = PhoneNumber(isoCode: 'KE', );
+  String initialCountry = 'US';
+  PhoneNumber number = PhoneNumber(isoCode: 'US', );
+  String phone="";
 
 
   final _formKey = GlobalKey<FormState>();
@@ -80,6 +81,7 @@ class _RegisterState extends State<Register> {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return loading? Loading(): Scaffold(
@@ -102,7 +104,7 @@ class _RegisterState extends State<Register> {
                       Text(msgStatus,style: TextStyle(color: Colors.red),),
                       SizedBox(height: 5,),
                       _textInput(hint: "Fullname", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
-                      _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Email' : null,),
+                      _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator: (value) => EmailValidator.validate(value) ? null : "Please enter a valid email",),
                       SizedBox(height: 10.0,),
                   Container(
                     margin: EdgeInsets.only(top: 20),
@@ -113,8 +115,10 @@ class _RegisterState extends State<Register> {
                     padding: EdgeInsets.only(left: 10),
                     child: InternationalPhoneNumberInput(
                       onInputChanged: (PhoneNumber number) {
+                        print(number.phoneNumber);
+
                         setState(() {
-                          myn = number.phoneNumber;
+                          phone=number.phoneNumber.toString();
                         });
                       },
 
@@ -148,12 +152,31 @@ class _RegisterState extends State<Register> {
                     ),),
 
 
-                     _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,  validator: (val) => val.length < 8? 'Enter a password 8+ chars long'
-                          : null,),
+                     _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,
+                         validator: (val) {
+                       if (val.trim().isEmpty) {
+                          return 'This field is required';
+                      }
+                       if(val.length < 8){
+                         return 'Enter a password 8+ chars long';
+                       }if((!val.contains(RegExp(r'[a-z]')))){
+                         return 'Password must have lower case';
+
+                       }
+                       if((!val.contains(RegExp(r'[A-Z]')))){
+                         return 'Password must have at least one uppercase';
+
+                       }
+                       if((!val.contains(RegExp(r'[0-9]')))){
+                         return 'Password must have one number';
+
+                       }
+                          return null;
+                     }),
                       _textInput(hint: "Confirm Password", icon: Icons.vpn_key,controller: _confirmpasswordController,obscure: true,
                         validator: (val) {
                           if (val.isEmpty)
-                            return 'Enter a password 6+ chars long';
+                            return 'Enter a password 8+ chars long';
                           if (val != _passwordController.text)
                             return 'Password Do Not Match';
                           return null;
@@ -225,24 +248,23 @@ class _RegisterState extends State<Register> {
     );
   }
   void _handleRegister() async {
-    // setState(() {
-    //   loading = true;
-    // });
+    setState(() {
+      loading = true;
+    });
 
     var data = {
       'name' : _nameController.text,
       'email' : _emailController.text,
       'password' : _passwordController.text,
-      'phone' : _phoneController,
+      'phone' : phone,
       'user_role':widget.userType.toString(),
       'location':_currentLocation.toString(),
       'postalcode':_currentPostalCode.toString(),
       'country':_currentCountry.toString()
     };
-  print(number.phoneNumber.toString());
+
     var res = await CallApi().postData(data, '/auth/register');
     var body = json.decode(res.body);
-    print(body);
     if (res.statusCode == 200) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', body['data']['token']);
