@@ -16,6 +16,9 @@ class _DoctorListViewState extends State<DoctorListView> {
 
   final primary = Color(0xff291747);
   final secondary = Color(0xff6C48AB);
+
+  TextEditingController editingController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,9 +64,12 @@ class _DoctorListViewState extends State<DoctorListView> {
                         elevation: 5.0,
                         borderRadius: BorderRadius.all(Radius.circular(30)),
                         child: TextField(
-                          // controller: TextEditingController(text: locations[0]),
+                          controller: editingController,
                           cursorColor: Theme.of(context).primaryColor,
                           style: dropdownMenuItem,
+                            onChanged: (value) {
+                              setState(() {});
+                            },
                           decoration: InputDecoration(
                               hintText: "Search Doctor",
                               hintStyle: TextStyle(
@@ -90,6 +96,8 @@ class _DoctorListViewState extends State<DoctorListView> {
       ),
     );
   }
+
+
   Future<List<DoctorList>> _fetchJobs() async {
     var response = await CallApi().getData('/doctors/all');
     // final response = await http.get('http://localhost:8000/api/categories');
@@ -109,8 +117,10 @@ class _DoctorListViewState extends State<DoctorListView> {
         scrollDirection: Axis.vertical,
         itemCount: data.length,
         itemBuilder: (context, index) {
+
           return _gestureDetector(data[index].id, data[index].name,data[index].category,data[index].location);
         });
+
 
   }
   GestureDetector _gestureDetector(int id,String name,String category,String ? location) => GestureDetector(

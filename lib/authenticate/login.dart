@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -24,12 +25,12 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   @override
   TextEditingController passwordController = new TextEditingController();
-  TextEditingController emailController= new TextEditingController();
+  TextEditingController userNameController= new TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final key = new GlobalKey<ScaffoldState>();
   bool loading =false;
   String _errorMessage = '';
-
+   var data;
   Widget build(BuildContext context) {
     return loading ? Loading() : Scaffold(
       key: key,
@@ -105,7 +106,7 @@ class _LoginState extends State<Login> {
                                           bottom: BorderSide(
                                               color: Colors.grey[200]!))),
                                   child: TextFormField(
-                                    controller: emailController,
+                                    controller: userNameController,
                                     validator: (value) => value!.isEmpty ? 'Please enter an email address' : null,
                                     decoration: InputDecoration(
                                         hintText: "Email or Phone number",
@@ -162,11 +163,7 @@ class _LoginState extends State<Login> {
                                     )
                                 ),
                                 onPressed: () {
-                                  Map creds={
-                                    'email' :emailController.text,
-                                    'password':passwordController.text
 
-                                  };
                                   if (_formKey.currentState!.validate()) {
                                      _login();
                                   }                                  // Navigator.push(context,
@@ -214,12 +211,24 @@ class _LoginState extends State<Login> {
     setState(() {
       loading = true;
     });
-
-    var data = {
-      'email' : emailController.text,
-      'password' : passwordController.text
-    };
-
+    
+    if(EmailValidator.validate(userNameController.text)) {
+      var data1 = {
+        'email': userNameController.text,
+        'password': passwordController.text
+      };
+      setState(() {
+        data=data1;
+      });
+    }else{
+      var data2 = {
+        'phone': userNameController.text,
+        'password': passwordController.text
+      };
+      setState(() {
+        data=data2;
+      });
+    }
     var res = await CallApi().postData(data, '/auth/login');
     var body = json.decode(res.body);
     if (res.statusCode == 200) {
