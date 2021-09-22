@@ -50,13 +50,15 @@ class _HomeWidgetState extends State<HomeWidget> {
     var data = {
     'uid' : userData['id'].toString(),
     };
-    var response = await CallApi().fetchData(data,'/booking/my_bookings');
+
+    print(data);
+    var response = await CallApi().fetchData(data,'/booking/my_booking/'+userData['id'].toString());
     // final response = await http.get('http://localhost:8000/api/categories');
     print(response);
     if (response.statusCode == 200) {
       Map<String, dynamic> map = json.decode(response.body);
 
-      List<dynamic> ? jsonResponse = map["bookings"];
+      List<dynamic> ? jsonResponse = map["booking"];
       print(jsonResponse);
       return jsonResponse!.map((job) => new MyAppointments.fromJson(job)).toList();
     } else {
