@@ -1,210 +1,292 @@
-import 'dart:convert';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:hms/api/api.dart';
-import 'package:hms/models/DoctorList.dart';
-import 'package:hms/screens/doctor/doctor_details.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-class DoctorListView extends StatefulWidget {
+import 'doctor_details.dart';
+
+class Test extends StatefulWidget {
   @override
-  _DoctorListViewState createState() => _DoctorListViewState();
+  _TestState createState() => new _TestState();
 }
 
-class _DoctorListViewState extends State<DoctorListView> {
+class _TestState extends State<Test> {
+  TextEditingController controller = new TextEditingController();
   final TextStyle dropdownMenuItem =
   TextStyle(color: Colors.black, fontSize: 18);
-
   final primary = Color(0xff291747);
   final secondary = Color(0xff6C48AB);
+  // Get json result and convert it to model. Then add
+  Future<Null> getUserDetails() async {
+    final response = await http.get(Uri.parse(url));
+    final responseJson = json.decode(response.body);
+    TextStyle(color: Colors.black, fontSize: 18);
 
-  TextEditingController editingController = TextEditingController();
+
+    final primary = Color(0xff291747);
+    final secondary = Color(0xff6C48AB);
+    setState(() {
+      for (Map<String, dynamic> user in responseJson['doctors']) {
+        _userDetails.add(UserDetails.fromJson(user));
+
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserDetails();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return new Scaffold(
       backgroundColor: Color(0xfff0f0f0),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.only(top: 3),
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: Stack(
-            fit: StackFit.expand,
-            children:[
-              Container(
-                padding: EdgeInsets.only(top: 80),
-                height: MediaQuery.of(context).size.height,
-                width: double.infinity,
-                child:Center(
-                  child: Flexible(
-                    child: FutureBuilder<List<DoctorList>>(
-                      future: _fetchJobs(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          List<DoctorList>? data = snapshot.data;
-                          return _jobsListView(data);
-                        } else if (snapshot.hasError) {
-                          return Text("${snapshot.error}");
-                        }
-                        return CircularProgressIndicator();
-                      },
+      body: Container(
+        padding: EdgeInsets.all(12),
+        child: new Column(
+          children: <Widget>[
+            new Container(
+              child: new Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new Card(
+                  child: new ListTile(
+                    leading: new Icon(Icons.search),
+                    title: new TextField(
+                      controller: controller,
+                      decoration: new InputDecoration(
+                          hintText: 'Search', border: InputBorder.none),
+                      onChanged: onSearchTextChanged,
                     ),
+                    trailing: new IconButton(icon: new Icon(Icons.cancel), onPressed: () {
+                      controller.clear();
+                      onSearchTextChanged('');
+                    },),
                   ),
                 ),
               ),
-              Container(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Material(
-                        elevation: 5.0,
-                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                        child: TextField(
-                          controller: editingController,
-                          cursorColor: Theme.of(context).primaryColor,
-                          style: dropdownMenuItem,
-                            onChanged: (value) {
-                              setState(() {});
-                            },
-                          decoration: InputDecoration(
-                              hintText: "Search Doctor",
-                              hintStyle: TextStyle(
-                                  color: Colors.black38, fontSize: 16),
-                              prefixIcon: Material(
-                                elevation: 0.0,
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(30)),
-                                child: Icon(Icons.search),
-                              ),
-                              border: InputBorder.none,
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 25, vertical: 13)),
+            ),
+            new Expanded(
+              child: _searchResult.length != 0 || controller.text.isNotEmpty
+                  ? new ListView.builder(
+                itemCount: _searchResult.length,
+                itemBuilder: (context, i) {
+                  return new GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder:
+                            (context) => DoctorDetails(_searchResult[i].id,_searchResult[i].name,_searchResult[i].name,_searchResult[i].id)
+                        ));
+                      },
+                      child:Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Colors.white,
                         ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                        width: double.infinity,
+                        height: 110,
+                        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              width: 50,
+                              height: 50,
+                              margin: EdgeInsets.only(right: 15),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                border: Border.all(width: 3, color: secondary),
+                                image: DecorationImage(
+                                    image: NetworkImage("http://pngimg.com/uploads/doctor/doctor_PNG15988.png"),
+                                    fit: BoxFit.fill),
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Dr. "+_searchResult[i].name,
+                                    style: TextStyle(
+                                        color: primary,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                  SizedBox(
+                                    height: 6,
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.location_on,
+                                        color: secondary,
+                                        size: 20,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(_searchResult[i].name,
+                                          style: TextStyle(
+                                              color: primary, fontSize: 13, letterSpacing: .3)),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 6,
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.school,
+                                        color: secondary,
+                                        size: 20,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(_searchResult[i].email,
+                                          style: TextStyle(
+                                              color: primary, fontSize: 13, letterSpacing: .3)),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                  );
+                },
+              )
+                  : new ListView.builder(
+                itemCount: _userDetails.length,
+                itemBuilder: (context, index) {
+                  return new GestureDetector(
+                      onTap: (){
 
-            ],
-          ),
+                      },
+                      child:Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: Colors.white,
+                        ),
+                        width: double.infinity,
+                        height: 110,
+                        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              width: 50,
+                              height: 50,
+                              margin: EdgeInsets.only(right: 15),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                border: Border.all(width: 3, color: secondary),
+                                image: DecorationImage(
+                                    image: NetworkImage("http://pngimg.com/uploads/doctor/doctor_PNG15988.png"),
+                                    fit: BoxFit.fill),
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Dr. "+_userDetails[index].name,
+                                    style: TextStyle(
+                                        color: primary,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                  SizedBox(
+                                    height: 6,
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.location_on,
+                                        color: secondary,
+                                        size: 20,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(_userDetails[index].location.toString(),
+                                          style: TextStyle(
+                                              color: primary, fontSize: 13, letterSpacing: .3)),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 6,
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.school,
+                                        color: secondary,
+                                        size: 20,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(_userDetails[index].category,
+                                          style: TextStyle(
+                                              color: primary, fontSize: 13, letterSpacing: .3)),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-
-  Future<List<DoctorList>> _fetchJobs() async {
-    var response = await CallApi().getData('/doctors/all');
-    // final response = await http.get('http://localhost:8000/api/categories');
-    print(response);
-    if (response.statusCode == 200) {
-      Map<String, dynamic> map = json.decode(response.body);
-
-      List<dynamic> ? jsonResponse = map["doctors"];
-      print(jsonResponse);
-      return jsonResponse!.map((job) => new DoctorList.fromJson(job)).toList();
-    } else {
-      throw Exception('Failed to load Events from API');
+  onSearchTextChanged(String text) async {
+    _searchResult.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
     }
+
+    _userDetails.forEach((userDetail) {
+      if (userDetail.name.contains(text) || userDetail.category.contains(text) || userDetail.location!.contains(text))
+        _searchResult.add(userDetail);
+    });
+
+    setState(() {});
   }
-  ListView _jobsListView(data) {
-    return ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: data.length,
-        itemBuilder: (context, index) {
+}
 
-          return _gestureDetector(data[index].id, data[index].name,data[index].category,data[index].location);
-        });
+List<UserDetails> _searchResult = [];
 
+List<UserDetails> _userDetails = [];
 
+final String url = 'http://192.168.1.4:8000/api/doctors/all';
+class UserDetails {
+  final int id;
+  final String name, email,category, profileUrl;
+  final String ? location;
+  UserDetails({required this.id, required this.name, required this.email,required this.location ,required this.category, this.profileUrl = 'http://pngimg.com/uploads/doctor/doctor_PNG15988.png'});
+
+  factory UserDetails.fromJson(Map<String, dynamic> json) {
+    return new UserDetails(
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],
+      location: json['location'],
+      category: json['category'],
+    );
   }
-  GestureDetector _gestureDetector(int id,String name,String category,String ? location) => GestureDetector(
-    onTap: (){
-      Navigator.push(context, MaterialPageRoute(builder:
-      (context) => DoctorDetails(id,name,category,location)
-      ));
-    },
-      child:Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          color: Colors.white,
-        ),
-        width: double.infinity,
-        height: 110,
-        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              width: 50,
-              height: 50,
-              margin: EdgeInsets.only(right: 15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                border: Border.all(width: 3, color: secondary),
-                image: DecorationImage(
-                    image: NetworkImage("http://pngimg.com/uploads/doctor/doctor_PNG15988.png"),
-                    fit: BoxFit.fill),
-              ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Dr. "+name,
-                    style: TextStyle(
-                        color: primary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
-                  ),
-                  SizedBox(
-                    height: 6,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.location_on,
-                        color: secondary,
-                        size: 20,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(location.toString(),
-                          style: TextStyle(
-                              color: primary, fontSize: 13, letterSpacing: .3)),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 6,
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.school,
-                        color: secondary,
-                        size: 20,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(category,
-                          style: TextStyle(
-                              color: primary, fontSize: 13, letterSpacing: .3)),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      )
-  );
+
 }
