@@ -18,6 +18,8 @@ class _TestState extends State<Test> {
   final secondary = Color(0xff6C48AB);
   // Get json result and convert it to model. Then add
   Future<Null> getUserDetails() async {
+    _userDetails.clear();
+    _searchResult.clear();
     final response = await http.get(Uri.parse(url));
     final responseJson = json.decode(response.body);
     TextStyle(color: Colors.black, fontSize: 18);
@@ -75,7 +77,7 @@ class _TestState extends State<Test> {
                   return new GestureDetector(
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder:
-                            (context) => DoctorDetails(_searchResult[i].id,_searchResult[i].name,_searchResult[i].name,_searchResult[i].id)
+                            (context) => DoctorDetails(_searchResult[i].id,_searchResult[i].name,_searchResult[i].category,_searchResult[i].location)
                         ));
                       },
                       child:Container(
@@ -126,7 +128,7 @@ class _TestState extends State<Test> {
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Text(_searchResult[i].name,
+                                      Text(_searchResult[i].location.toString(),
                                           style: TextStyle(
                                               color: primary, fontSize: 13, letterSpacing: .3)),
                                     ],
@@ -144,7 +146,7 @@ class _TestState extends State<Test> {
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Text(_searchResult[i].email,
+                                      Text(_searchResult[i].category,
                                           style: TextStyle(
                                               color: primary, fontSize: 13, letterSpacing: .3)),
                                     ],
