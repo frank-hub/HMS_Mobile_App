@@ -46,6 +46,7 @@ dependencies:
   intl_phone_number_input: ^0.7.0+2
   email_validator: ^2.0.1
   flutter_pw_validator: ^1.2.1
+  is_first_run: ^1.0.0
 
 
 

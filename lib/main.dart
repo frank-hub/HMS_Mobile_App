@@ -5,6 +5,7 @@ import 'package:hms/authenticate/login.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:hms/screens/splashscreen.dart';
+import 'package:is_first_run/is_first_run.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 void main() => runApp(MyApp());
@@ -18,10 +19,12 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   bool _isLoggedIn = false;
   String user_role="";
+  bool? _isFirstRun;
   @override
   void initState() {
     WidgetsFlutterBinding.ensureInitialized();
     _checkIfLoggedIn();
+    _checkFirstRun();
     super.initState();
   }
   void _checkIfLoggedIn() async{
@@ -45,13 +48,28 @@ class _MyAppState extends State<MyApp> {
       return HomeScreen();
     }
   }
+  void _checkFirstRun() async {
+    bool ifr = await IsFirstRun.isFirstRun();
+    setState(() {
+      _isFirstRun = ifr;
+    });
+  }
+  splashscreen() {
+
+    if(_isFirstRun !=null){
+      return SplashScreen();
+    }else{
+      return Login();
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: _isLoggedIn ? checkUserType(): Login(),
+        body: _isLoggedIn ? checkUserType(): splashscreen(),
       ),
 
     );
