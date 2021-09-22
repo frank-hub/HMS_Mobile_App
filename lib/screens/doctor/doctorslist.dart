@@ -274,7 +274,7 @@ List<UserDetails> _searchResult = [];
 
 List<UserDetails> _userDetails = [];
 
-final String url = 'http://192.168.1.4:8000/api/doctors/all';
+final String url = 'https://hms.horebinsurance.co.ke/api/doctors/all';
 class UserDetails {
   final int id;
   final String name, email,category, profileUrl;
