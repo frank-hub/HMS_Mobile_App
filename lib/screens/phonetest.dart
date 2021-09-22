@@ -9,7 +9,7 @@ class DoctorListView extends StatefulWidget {
   @override
   _DoctorListViewState createState() => _DoctorListViewState();
 }
-_userDetails[index].name
+
 class _DoctorListViewState extends State<DoctorListView> {
   final TextStyle dropdownMenuItem =
   TextStyle(color: Colors.black, fontSize: 18);

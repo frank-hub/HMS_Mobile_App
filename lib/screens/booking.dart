@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:hms/api/api.dart';
@@ -23,17 +24,9 @@ class _BookingAppointmentState extends State<BookingAppointment> {
 
   var userData;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  late TextEditingController _nameController;
-  late TextEditingController _phoneController;
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _doctorController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _timeController = TextEditingController();
-   bool loading=false;
-  final format = DateFormat("yyyy-MM-dd");
-  final time_format = DateFormat("HH:MM");
- final _formkey =GlobalKey<FormState>();
 
+  TextEditingController searchController = TextEditingController();
+   bool loading=false;
 
   @override
   void initState() {
@@ -49,12 +42,7 @@ class _BookingAppointmentState extends State<BookingAppointment> {
 
 
     var data = {
-      'name' : _nameController.text,
-      'phone' : _phoneController.text,
-      'doctor_name' : _doctorController.text,
-      'description' : _descriptionController.text,
-      'date' :  _dateController.text,
-      'time' : _timeController.text,
+      'name' : '',
 
     };
 
@@ -110,343 +98,107 @@ class _BookingAppointmentState extends State<BookingAppointment> {
       return Loading();
     }
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xfff0f0f0),
 
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Text(
-          'Appointment booking',
-          style: GoogleFonts.lato(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        ),
-      ),
-      body: ListView(
-         shrinkWrap: true,
+      body: Container(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 20,),
-            Form(
-              key: _formKey,
-                child:  Container(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              padding: EdgeInsets.only(top: 0),
-              child: Column(
-                children: [
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(left: 16),
-                    child: Text(
-                      'Enter Patient Details',
-                      style: GoogleFonts.lato(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  TextFormField(
-                    controller: _nameController = TextEditingController(text: userData['name']),
-                    enabled: false,
-                    style: GoogleFonts.lato(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                    decoration: InputDecoration(
-                      contentPadding:
-                      EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                      border: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(90.0)),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[350],
-                      hintText: 'Patient Name*',
-                      hintStyle: GoogleFonts.lato(
-                        color: Colors.black26,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    textInputAction: TextInputAction.next,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.phone,
-                    controller:  _phoneController = TextEditingController(text: userData['phone'].toString()),
-                    enabled: false,
-                    style: GoogleFonts.lato(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                    decoration: InputDecoration(
-                      contentPadding:
-                      EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                      border: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(90.0)),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[350],
-                      hintText: 'Mobile*',
-                      hintStyle: GoogleFonts.lato(
-                        color: Colors.black26,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                    textInputAction: TextInputAction.next,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    controller: _descriptionController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    style: GoogleFonts.lato(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                    decoration: InputDecoration(
-                      contentPadding:
-                      EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                      border: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(90.0)),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[350],
-                      hintText: 'Description',
-                      hintStyle: GoogleFonts.lato(
-                        color: Colors.black26,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
+            new Container(
+              child: new Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new Card(
+                  child: new ListTile(
+                    leading: new Icon(Icons.search),
+                    title: new TextField(
+                      controller: searchController,
+                      decoration: new InputDecoration(
+                          hintText: 'Search', border: InputBorder.none),
 
-                    textInputAction: TextInputAction.next,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    controller: _doctorController,
-                    style: GoogleFonts.lato(
-                        fontSize: 18, fontWeight: FontWeight.bold),
-                    decoration: InputDecoration(
-                      contentPadding:
-                      EdgeInsets.only(left: 20, top: 10, bottom: 10),
-                      border: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(90.0)),
-                        borderSide: BorderSide.none,
-                      ),
-                      filled: true,
-                      fillColor: Colors.grey[350],
-                      hintText: 'Doctor Name*',
-                      hintStyle: GoogleFonts.lato(
-                        color: Colors.black26,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800,
-                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 60,
-                    width: MediaQuery.of(context).size.width,
-                    child: Stack(
-                      alignment: Alignment.centerRight,
-                      children: [
-                        DateTimeField(
-                          format: format,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(
-                              left: 20,
-                              top: 10,
-                              bottom: 10,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(90.0)),
-                              borderSide: BorderSide.none,
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[350],
-                            hintText: 'Select Date*',
-                            hintStyle: GoogleFonts.lato(
-                              color: Colors.black26,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          controller: _dateController,
-                          // validator: (value) {
-                          //   if (value!.day)
-                          //     return 'Please Enter the Date';
-                          //   // return null;
-                          // },
+                    trailing: new IconButton(icon: new Icon(Icons.cancel), onPressed: () {
 
-                          textInputAction: TextInputAction.next,
-                          style: GoogleFonts.lato(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                          onShowPicker: (context, currentValue) {
-                            return showDatePicker(
-                                context: context,
-                                firstDate: currentValue ?? DateTime.now(),
-                                initialDate: currentValue ?? DateTime.now(),
-                                lastDate: DateTime(2100));
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 5.0),
-                          child: ClipOval(
-                            child: Material(
-                              color: Colors.indigo, // button color
-                              child: InkWell(
-                                // inkwell color
-                                child: SizedBox(
-                                  width: 40,
-                                  height: 40,
-                                  child: Icon(
-                                    Icons.date_range_outlined,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                onTap: () {
-
-                                },
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+                    },),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 60,
-                    width: MediaQuery.of(context).size.width,
-                    child: Stack(
-                      alignment: Alignment.centerRight,
-                      children: [
-                        DateTimeField(
-                          format: time_format,
-                          decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(
-                              left: 20,
-                              top: 10,
-                              bottom: 10,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius:
-                              BorderRadius.all(Radius.circular(90.0)),
-                              borderSide: BorderSide.none,
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[350],
-                            hintText: 'Select Time*',
-                            hintStyle: GoogleFonts.lato(
-                              color: Colors.black26,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                          controller: _timeController,
-                          // validator: (value) {
-                          //   if (value!.day)
-                          //     return 'Please Enter the Date';
-                          //   // return null;
-                          // },
-
-                          textInputAction: TextInputAction.next,
-                          style: GoogleFonts.lato(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                            onShowPicker: (context, currentValue) async {
-                              final time = await showTimePicker(
-                                context: context,
-                                initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                              );
-                              return DateTimeField.convert(time);
-                            },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 5.0),
-                          child: ClipOval(
-                            child: Material(
-                              color: Colors.indigo, // button color
-                              child: InkWell(
-                                // inkwell color
-                                child: SizedBox(
-                                  width: 40,
-                                  height: 40,
-                                  child: Icon(
-                                    Icons.timer_outlined,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                onTap: () {
-
-                                },
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 2,
-                        primary: Colors.indigo,
-                        onPrimary: Colors.black,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32.0),
-                        ),
-                      ),
-                      onPressed: () {
-                      if(_formKey.currentState!.validate()){
-                        _handleBooking();
-
-                      }
-                      },
-                      child: Text(
-                        "Book Appointment",
-                        style: GoogleFonts.lato(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                ],
+                ),
               ),
-            )),
-    ],)
+            ),
+            Text("Near By Labs",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+            ),
+            Container(
+              height: 150,
+              child: Expanded(
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  children: [
+                    Card(
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          children: [
+                            SizedBox(width: 10,),
+                            CircleAvatar(
+                              radius: 40.0,
+                              backgroundImage:
+                              NetworkImage("https://e7.pngegg.com/pngimages/439/108/png-clipart-medical-laboratory-analisi-clinica-physician-pharmacist-doctor-patient-service-laboratory.png"),
+                              backgroundColor: Colors.transparent,
+                            ),
+                            SizedBox(width: 10,),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SizedBox(height: 10,),
+                                Text("Mj Labs",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                                Text("Nairobi Kenya",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    FaIcon(FontAwesomeIcons.mapMarked ,
+                                      size: 15,
+                                      color: Colors.grey,
+                                    ),
+                                    SizedBox(width: 10,),
+                                    Text("14 KM Away",
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      )
     );
   }
 

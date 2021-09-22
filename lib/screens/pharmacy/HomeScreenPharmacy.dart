@@ -9,6 +9,7 @@ class HomeScreenPharmacy extends StatefulWidget {
 }
 
 class _HomeScreenPharmacyState extends State<HomeScreenPharmacy> {
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,6 +19,25 @@ class _HomeScreenPharmacyState extends State<HomeScreenPharmacy> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            new Container(
+              child: new Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new Card(
+                  child: new ListTile(
+                    leading: new Icon(Icons.search),
+                    title: new TextField(
+                      controller: searchController,
+                      decoration: new InputDecoration(
+                          hintText: 'Search', border: InputBorder.none),
+
+                    ),
+                    trailing: new IconButton(icon: new Icon(Icons.cancel), onPressed: () {
+
+                    },),
+                  ),
+                ),
+              ),
+            ),
             Text("Pharmacy Stores",
             style: TextStyle(
               fontWeight: FontWeight.bold,
