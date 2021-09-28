@@ -165,7 +165,9 @@ class _TestState extends State<Test> {
                 itemBuilder: (context, index) {
                   return new GestureDetector(
                       onTap: (){
-
+                        Navigator.push(context, MaterialPageRoute(builder:
+                            (context) => DoctorDetails(_userDetails[index].id,_userDetails[index].name,_userDetails[index].category,_userDetails[index].location)
+                        ));
                       },
                       child:Container(
                         decoration: BoxDecoration(

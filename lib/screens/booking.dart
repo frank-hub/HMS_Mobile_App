@@ -101,41 +101,17 @@ class _BookingAppointmentState extends State<BookingAppointment> {
       backgroundColor: Color(0xfff0f0f0),
 
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            new Container(
-              child: new Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: new Card(
-                  child: new ListTile(
-                    leading: new Icon(Icons.search),
-                    title: new TextField(
-                      controller: searchController,
-                      decoration: new InputDecoration(
-                          hintText: 'Search', border: InputBorder.none),
-
-                    ),
-                    trailing: new IconButton(icon: new Icon(Icons.cancel), onPressed: () {
-
-                    },),
-                  ),
-                ),
-              ),
-            ),
-            Text("Near By Labs",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
-            ),
             Container(
               height: 150,
               child: Expanded(
+                flex:5,
                 child: ListView(
-                  scrollDirection: Axis.horizontal,
+                    scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   children: [
                     Card(

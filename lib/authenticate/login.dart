@@ -10,6 +10,10 @@ import 'package:hms/authenticate/register.dart';
 import 'package:hms/authenticate/usertype.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
+import 'package:hms/screens/static/about.dart';
+import 'package:hms/screens/static/help.dart';
+import 'package:hms/screens/static/policies.dart';
+import 'package:hms/screens/static/usermanual.dart';
 import 'package:hms/services/auth.dart';
 import 'package:hms/shared/loading.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +37,21 @@ class _LoginState extends State<Login> {
    var data;
   Widget build(BuildContext context) {
     return loading ? Loading() : Scaffold(
+      appBar: AppBar(
+        title: Text('Login'),
+        backgroundColor: Color(0xFF6C63FF),
+        actions: <Widget>[
+          PopupMenuButton<int>(
+            onSelected: (item) => handleClick(item),
+            itemBuilder: (context) => [
+              PopupMenuItem<int>(value: 0, child: Text('About Us')),
+              PopupMenuItem<int>(value: 1, child: Text('Policies')),
+              PopupMenuItem<int>(value: 2, child: Text('User Manual')),
+              PopupMenuItem<int>(value: 3, child: Text('Help')),
+            ],
+          ),
+        ],
+      ),
       key: key,
       body: Container(
         width: double.infinity,
@@ -207,6 +226,36 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+
+  void handleClick(int item) {
+    switch (item) {
+      case 0:
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => AboutUs()));
+        break;
+      case 1:
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => Policies()));
+        break;
+      case 2:
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => UserManual()));
+        break;
+      case 3:
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => Help()));
+        break;
+    }
+  }
+
   void _login() async{
     setState(() {
       loading = true;
