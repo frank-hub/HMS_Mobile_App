@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +38,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return loading ? Loading() : Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('HMS'),
         backgroundColor: Color(0xFF6C63FF),
         actions: <Widget>[
           PopupMenuButton<int>(
@@ -66,21 +65,24 @@ class _LoginState extends State<Login> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
-              height: 80,
+              height: 30,
             ),
             Padding(
               padding: EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-
-                  SizedBox(
-                    height: 10,
+                Center(
+                  child:   Image.asset('assets/images/logo.png',
+                    width: 150,
                   ),
-                  Text(
-                    "Welcome Back",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
+                ),
+               Center(
+                 child:    Text(
+                   "Welcome Back",
+                   style: TextStyle(color: Colors.white, fontSize: 18,),
+                 ),
+               )
                 ],
               ),
             ),
@@ -154,7 +156,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         SizedBox(
-                          height: 30,
+                          height: 40,
                         ),
                         Text(
                           "Forgot Password?",
@@ -194,7 +196,7 @@ class _LoginState extends State<Login> {
                           ),),
 
                         SizedBox(
-                          height: 30,
+                          height: 50,
                         ),
                         Center(
                           child:ElevatedButton(
@@ -212,22 +214,6 @@ class _LoginState extends State<Login> {
                             },
                           ),
                         ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(right: 210.0),
-                          child: GestureDetector(
-                            child: Text("Need Help (Helpline)",
-                           style: TextStyle(
-                             color:Colors.brown,
-                             fontStyle: FontStyle.italic,
-                             fontSize: 18,
-                           ),
-                            ),
-                          ),
-
-                        )
 
                       ],
                     ),
