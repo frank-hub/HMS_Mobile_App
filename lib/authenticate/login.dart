@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
@@ -72,10 +73,7 @@ class _LoginState extends State<Login> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    "Login",
-                    style: TextStyle(color: Colors.white, fontSize: 40),
-                  ),
+
                   SizedBox(
                     height: 10,
                   ),
@@ -156,7 +154,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         SizedBox(
-                          height: 40,
+                          height: 30,
                         ),
                         Text(
                           "Forgot Password?",
@@ -196,7 +194,7 @@ class _LoginState extends State<Login> {
                           ),),
 
                         SizedBox(
-                          height: 50,
+                          height: 30,
                         ),
                         Center(
                           child:ElevatedButton(
@@ -214,6 +212,22 @@ class _LoginState extends State<Login> {
                             },
                           ),
                         ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(right: 210.0),
+                          child: GestureDetector(
+                            child: Text("Need Help (Helpline)",
+                           style: TextStyle(
+                             color:Colors.brown,
+                             fontStyle: FontStyle.italic,
+                             fontSize: 18,
+                           ),
+                            ),
+                          ),
+
+                        )
 
                       ],
                     ),
