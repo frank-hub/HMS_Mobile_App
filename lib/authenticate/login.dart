@@ -213,7 +213,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 30,
                         ),
                         Container(
                           margin: const EdgeInsets.only(right: 210.0),
