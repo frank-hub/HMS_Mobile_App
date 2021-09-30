@@ -1,18 +1,23 @@
+
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hms/shared/loaders/loader1.dart';
+import 'package:hms/shared/loaders/loader2.dart';
 
 
 class Loading extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Center(
-        child: SpinKitFadingCircle(
-          color:    Color(0xFF6C63FF),
-          size: 60.0,
+    return Scaffold(
+
+      body: Container(
+        child: Center(
+
+          child: LoaderTwo(),
+
         ),
       ),
     );
   }
 }
+

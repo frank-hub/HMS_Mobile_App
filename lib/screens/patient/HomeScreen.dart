@@ -45,61 +45,90 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Future<bool> showExitPopup() async {
+      return await showDialog( //show confirm dialogue
+        //the return value will be from "Yes" or "No" options
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text('Exit App'),
+          content: Text('Do you want to exit an App?'),
+          actions:[
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              //return false when click on "NO"
+              child:Text('No'),
+            ),
+
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              //return true when click on "Yes"
+              child:Text('Yes'),
+            ),
+
+          ],
+        ),
+      )??false; //if showDialouge had returned null, then return false
+    }
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Color(0xFF6C63FF),
-            toolbarHeight: 70,
-            title: Text("HMS"),
-            actions: [
-              IconButton(icon: const Icon(
-                  Icons.person),
-                  tooltip: 'FAQ',
-                  onPressed: (){
-                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => Profile()));
-                  }
+      home: WillPopScope(
+        onWillPop: showExitPopup,
+          child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: Color(0xFF6C63FF),
+                toolbarHeight: 70,
+                title: Text("HMS"),
+                actions: [
+                  IconButton(icon: const Icon(
+                      Icons.person),
+                      tooltip: 'FAQ',
+                      onPressed: (){
+                        Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (context) => Profile()));
+                      }
+                  ),
+                  IconButton(onPressed:() async{
+                    await logout();
+                  },
+                      icon: const Icon( Icons.logout))
+                ],
               ),
-              IconButton(onPressed:() async{
-                await logout();
-              },
-                  icon: const Icon( Icons.logout))
-            ],
+
+              bottomNavigationBar: BottomNavigationBar(
+                currentIndex: _currentIndex,
+                onTap: onTabTapped,
+                selectedItemColor: Color(0xFF6C63FF),
+                unselectedItemColor: Colors.grey,
+                items: [
+                  BottomNavigationBarItem(
+                      icon: new Icon(Icons.home),
+                      label: 'Home'
+                  ),
+                  BottomNavigationBarItem(
+                      icon: new FaIcon(FontAwesomeIcons.calendarDay),
+                      label: 'Doctors'
+                  ),
+                  BottomNavigationBarItem(
+                    icon: new FaIcon(FontAwesomeIcons.capsules),
+                    label: 'Pharmacy',
+                  ),
+
+                  BottomNavigationBarItem(
+                      icon: new FaIcon(FontAwesomeIcons.syringe),
+                      label: 'Lab'
+                  )
+
+                ],
+
+              ),
+              body: _children[_currentIndex]
           ),
-
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: _currentIndex,
-            onTap: onTabTapped,
-            selectedItemColor: Color(0xFF6C63FF),
-            unselectedItemColor: Colors.grey,
-            items: [
-              BottomNavigationBarItem(
-                  icon: new Icon(Icons.home),
-                  label: 'Home'
-              ),
-              BottomNavigationBarItem(
-                  icon: new FaIcon(FontAwesomeIcons.calendarDay),
-                  label: 'Doctors'
-              ),
-              BottomNavigationBarItem(
-                icon: new FaIcon(FontAwesomeIcons.capsules),
-                label: 'Pharmacy',
-              ),
-
-              BottomNavigationBarItem(
-                  icon: new FaIcon(FontAwesomeIcons.syringe),
-                  label: 'Lab'
-              )
-
-            ],
-
-          ),
-          body: _children[_currentIndex]
-      ),
+          )
     );
+
   }
 
   void onTabTapped(int index) {
