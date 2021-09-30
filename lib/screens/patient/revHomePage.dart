@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hms/screens/doctor/revPharmacy.dart';
 import 'package:hms/screens/patient/revDoctor.dart';
 
 
@@ -165,13 +166,11 @@ class _PatientHomeState extends State<PatientHome> {
                                                  )
                                              ),
                                              onPressed: () {
-
-
-                                               // Navigator.push(context,
-                                               //     MaterialPageRoute(
-                                               //         builder: (
-                                               //             context) => HomeScreen()
-                                               //     ));
+                                               Navigator.push(context,
+                                                   MaterialPageRoute(
+                                                       builder: (
+                                                           context) => RevPharmacy()
+                                                   ));
                                              },
                                              child: Text('Labaratory'),
                                            )
@@ -197,13 +196,11 @@ class _PatientHomeState extends State<PatientHome> {
                                                  )
                                              ),
                                              onPressed: () {
-
-
-                                               // Navigator.push(context,
-                                               //     MaterialPageRoute(
-                                               //         builder: (
-                                               //             context) => HomeScreen()
-                                               //     ));
+                                               Navigator.push(context,
+                                                   MaterialPageRoute(
+                                                       builder: (
+                                                           context) => RevPharmacy()
+                                                   ));
                                              },
                                              child: Text('Pharmacy'),
                                            )
