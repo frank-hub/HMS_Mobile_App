@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hms/screens/patient/revDoctor.dart';
 
 
 class PatientHome extends StatefulWidget {
@@ -136,11 +137,11 @@ class _PatientHomeState extends State<PatientHome> {
                                              onPressed: () {
 
 
-                                               // Navigator.push(context,
-                                               //     MaterialPageRoute(
-                                               //         builder: (
-                                               //             context) => HomeScreen()
-                                               //     ));
+                                               Navigator.push(context,
+                                                   MaterialPageRoute(
+                                                       builder: (
+                                                           context) => RevDoctor()
+                                                   ));
                                              },
                                              child: Text('Doctor'),
                                            )

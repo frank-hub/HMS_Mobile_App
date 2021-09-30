@@ -10,6 +10,7 @@ import 'package:hms/authenticate/register.dart';
 import 'package:hms/authenticate/usertype.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
+import 'package:hms/screens/patient/revHomePage.dart';
 import 'package:hms/screens/static/about.dart';
 import 'package:hms/screens/static/help.dart';
 import 'package:hms/screens/static/policies.dart';
@@ -310,7 +311,7 @@ class _LoginState extends State<Login> {
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => HomeScreen()));
+                builder: (context) => PatientHome()));
       }
     }else{
       _errorMessage="Invalid Credentials";
