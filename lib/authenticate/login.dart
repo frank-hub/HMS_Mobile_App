@@ -214,7 +214,22 @@ class _LoginState extends State<Login> {
                             },
                           ),
                         ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(right: 210.0),
+                          child: GestureDetector(
+                            child: Text("Need Help (Helpline)",
+                              style: TextStyle(
+                                color:Colors.brown,
+                                fontStyle: FontStyle.italic,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
 
+                        )
                       ],
                     ),
                   ),

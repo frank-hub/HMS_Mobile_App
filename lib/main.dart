@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hms/authenticate/login.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
+import 'package:hms/screens/patient/revHomePage.dart';
 import 'package:hms/screens/splashscreen.dart';
 import 'package:is_first_run/is_first_run.dart';
 
@@ -69,7 +70,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: _isLoggedIn ? checkUserType(): Login(),
+        body: PatientHome(),
+        //_isLoggedIn ? checkUserType(): Login(),
       ),
 
     );
