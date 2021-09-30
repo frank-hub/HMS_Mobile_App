@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
         context: context,
         builder: (context) => AlertDialog(
           title: Text('Exit App'),
-          content: Text('Do you want to exit an App?'),
+          content: Text('Do you want to exit?'),
           actions:[
             ElevatedButton(
               onPressed: () => Navigator.of(context).pop(false),

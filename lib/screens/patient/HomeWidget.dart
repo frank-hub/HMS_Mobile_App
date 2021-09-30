@@ -46,6 +46,12 @@ class _HomeWidgetState extends State<HomeWidget> {
 
     });
   }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    // animationController.dispose() instead of your controller.dispose
+  }
   Future<List<MyAppointments>> _fetchAppointments() async {
     var data = {
     'uid' : userData['id'].toString(),
