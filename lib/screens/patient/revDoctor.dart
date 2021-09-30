@@ -15,7 +15,9 @@ class _RevDoctorState extends State<RevDoctor> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
         toolbarHeight: 100,
+        backgroundColor: Color(0xFF5A54C4),
         title: Center(
           child: Image.asset("assets/images/logo.png",
             height: 150,
@@ -152,6 +154,19 @@ class _RevDoctorState extends State<RevDoctor> {
                     ],
                   ),
                 )
+            ),
+            Container(
+              margin: const EdgeInsets.only(right: 210.0),
+              child: GestureDetector(
+                child: Text("Need Help (Helpline)",
+                  style: TextStyle(
+                    color:Colors.brown,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+
             )
           ],
         ),
