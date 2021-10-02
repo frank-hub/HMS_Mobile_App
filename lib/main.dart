@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hms/authenticate/login.dart';
+import 'package:hms/payment/paymentmethod.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:hms/screens/patient/revHomePage.dart';
@@ -70,7 +71,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: _isLoggedIn ? checkUserType(): Login(),
+        body: PaymentMethod(),
+        //_isLoggedIn ? checkUserType(): Login(),
       ),
 
     );
