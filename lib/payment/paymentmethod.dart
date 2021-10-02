@@ -16,10 +16,8 @@ class _PaymentMethodState extends State<PaymentMethod> {
   final TextStyle subtitle = TextStyle(fontSize: 12.0, color: Colors.grey);
   final TextStyle label = TextStyle(fontSize: 14.0, color: Colors.grey);
 
-  String dateToday =  new DateFormat('yyyy-MM-dd').format(DateTime.now());
-
-  var timeToday =  new DateFormat().add_jm().format(DateTime.now());
-
+  var dateToday ;
+  var timeToday ;
   ValueChanged<String?> _valueChangedHandler() {
     return (value) => setState(() => _groupValue = value!);
   }
@@ -127,7 +125,14 @@ class _PaymentMethodState extends State<PaymentMethod> {
 
                                    )
                                ),
+
                                onPressed: () {
+
+                                 setState(() {
+                                   dateToday= new DateFormat('yyyy-MM-dd').format(DateTime.now());
+                                   timeToday= new DateFormat().add_jm().format(DateTime.now());
+
+                                 });
                                  _paymentSuccessDialog(context);
                                  //Fluttertoast.showToast(msg: ""+_groupValue.toString(),toastLength: Toast.LENGTH_SHORT);
                                  // Navigator.push(context,
@@ -177,7 +182,6 @@ class _PaymentMethodState extends State<PaymentMethod> {
   _paymentSuccessDialog(BuildContext context) {
     showDialog(
         context: context,
-
         builder: (BuildContext context) {
           return PaymentSuccessDialog();
         });
