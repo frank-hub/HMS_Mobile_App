@@ -186,7 +186,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
   Widget PaymentSuccessDialog() {
     return Center(
       child: SizedBox(
-        height: 370,
+        height: 390,
         child: Dialog(
           child: Padding(
             padding: const EdgeInsets.all(16.0),

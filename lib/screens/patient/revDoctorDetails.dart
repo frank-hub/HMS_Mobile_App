@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hms/payment/paymentmethod.dart';
 // ignore: camel_case_types
 class revDoctorDetails extends StatefulWidget {
   const revDoctorDetails({Key? key}) : super(key: key);
@@ -118,7 +119,9 @@ class _revDoctorDetailsState extends State<revDoctorDetails> {
                         ),
                         ),
                         onTap: (){
-
+                          Navigator.push(context, MaterialPageRoute(builder:
+                          (context) => PaymentMethod()
+                          ));
                         },
                       ),
                     ),

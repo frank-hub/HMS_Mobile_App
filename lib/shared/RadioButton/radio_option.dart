@@ -51,7 +51,7 @@ class MyRadioOption<T> extends StatelessWidget {
       children: [
       Text(
       text,
-      style: const TextStyle(color: Colors.black, fontSize: 24),
+      style: const TextStyle(color: Colors.black, fontSize: 20),
     )  ,
 
 
