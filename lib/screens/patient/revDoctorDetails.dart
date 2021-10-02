@@ -83,7 +83,7 @@ class _revDoctorDetailsState extends State<revDoctorDetails> {
                             Row(
                               children: <Widget>[
                                 Icon(
-                                  Icons.location_on,
+                                  Icons.attach_money,
                                   color: secondary,
                                   size: 30,
                                 ),
@@ -102,24 +102,41 @@ class _revDoctorDetailsState extends State<revDoctorDetails> {
                   ),
                 ],
               ),
-              Container(
-                height: 50,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  color: Colors.lightBlue
-                ),
-                child: Center(
-                  child: GestureDetector(
-                    child: Text("Get Appointment",
-                    style: TextStyle(
-                      color: Colors.white
+              Column(
+                children: [
+                  Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.lightBlue
                     ),
-                    ),
-                    onTap: (){
+                    child: Center(
+                      child: GestureDetector(
+                        child: Text("Get Appointment",
+                        style: TextStyle(
+                          color: Colors.white
+                        ),
+                        ),
+                        onTap: (){
 
-                    },
+                        },
+                      ),
+                    ),
                   ),
-                ),
+                  Container(
+                    margin: const EdgeInsets.only(right: 210.0),
+                    child: GestureDetector(
+                      child: Text("Need Help (Helpline)",
+                        style: TextStyle(
+                          color:Colors.brown,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+
+                  )
+                ],
               )
             ],
           ),
