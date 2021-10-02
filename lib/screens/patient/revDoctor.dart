@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hms/screens/patient/revDoctorDetails.dart';
 class RevDoctor extends StatefulWidget {
   const RevDoctor({Key? key}) : super(key: key);
 
@@ -58,7 +59,8 @@ class _RevDoctorState extends State<RevDoctor> {
             ),
             GestureDetector(
                 onTap: (){
-
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => revDoctorDetails()));
                 },
                 child:Container(
                   decoration: BoxDecoration(
