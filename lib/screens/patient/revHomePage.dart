@@ -161,9 +161,7 @@ class _PatientHomeState extends State<PatientHome> {
                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                                      RoundedRectangleBorder(
                                                          borderRadius: BorderRadius.circular(18.0)
-
                                                      )
-
                                                  )
                                              ),
                                              onPressed: () {

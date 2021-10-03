@@ -24,7 +24,7 @@ class _LabHomeState extends State<LabHome> {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -59,20 +59,13 @@ class _LabHomeState extends State<LabHome> {
                 onTap: (){
 
                 },
-                child:Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    color: Colors.white,
-                  ),
-                  width: double.infinity,
-                  height: 150,
-                  margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-
-                      Card(
+                child:Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Card(
+                      child: Container(
+                        width: 380,
+                        padding: EdgeInsets.all(8),
                         child: Row(
                           children: [
                             Image.asset("assets/images/logo.png",
@@ -113,33 +106,29 @@ class _LabHomeState extends State<LabHome> {
                                         fontSize: 20,
                                       ),
                                     ),
-                                    SizedBox(width: 17,),
-                                    ElevatedButton(
-                                      onPressed: (){
-                                        Navigator.push(context,
-                                            MaterialPageRoute(builder:
-                                                (context) => PharmacyDetials()
-                                            )
-                                        );
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.grey[200],
-                                        onPrimary: Colors.green,
-                                      ),
-                                      child:Text("New", style: TextStyle(color: Colors.red),),
-
-                                    )
                                   ],
                                 ),
-                                SizedBox(height: 10,)
+                                SizedBox(height: 5,),
+                                Container(
+                                  height: 34,
+                                  width: 54,
+                                  child: Center(child: Text("New",
+                                  style: TextStyle(
+                                    color: Colors.white
+                                  ),
+                                  )),
+                                  decoration: BoxDecoration(
+                                      color: Colors.redAccent
+                                  ),
+                                )
                               ],
                             )
                           ],
                         ),
                       ),
+                    ),
 
-                    ],
-                  ),
+                  ],
                 )
             ),
 

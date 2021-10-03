@@ -71,8 +71,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: PaymentMethod(),
-        //_isLoggedIn ? checkUserType(): Login(),
+        body: _isLoggedIn ? checkUserType(): Login(),
       ),
 
     );
