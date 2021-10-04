@@ -26,7 +26,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        
         title: const Text('PAYMENT'),
         backgroundColor: Color(0xFF5A54C4),
       ),
