@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hms/authenticate/register.dart';
+import 'package:hms/authenticate/RegisterUser.dart';
 
 class UserType extends StatefulWidget {
   const UserType({Key? key}) : super(key: key);
