@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hms/screens/patient/revLabDetails.dart';
 import 'package:hms/screens/pharmacy/PharmacyDetails.dart';
 class LabHome extends StatefulWidget {
   const LabHome({Key? key}) : super(key: key);
@@ -57,7 +58,9 @@ class _LabHomeState extends State<LabHome> {
             ),
             GestureDetector(
                 onTap: (){
-
+                  Navigator.push(context, MaterialPageRoute(builder:
+                  (context) => RevLabDetails()
+                  ));
                 },
                 child:Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
