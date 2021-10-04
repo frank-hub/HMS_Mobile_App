@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hms/api/api.dart';
-import 'package:hms/authenticate/RegisterUser.dart';
+import 'package:hms/authenticate/register.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
