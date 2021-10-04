@@ -36,6 +36,9 @@ class _RegisterState extends State<Register> {
   final TextEditingController _emailController = new TextEditingController();
   final TextEditingController _phoneController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
+
+  final TextEditingController _IdController = new TextEditingController();
+  final TextEditingController _addressController = new TextEditingController();
   final TextEditingController _confirmpasswordController = new TextEditingController();
   bool loading =false;
   final TextEditingController controller = TextEditingController();
@@ -84,13 +87,14 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+
     return loading? Loading(): Scaffold(
       body: Container(
         padding: EdgeInsets.only(bottom: 10),
         child: Column(
           children: <Widget>[
 
-            HeaderContainer("Signup For Service Delivery"),
+            HeaderContainer("Register For Service Delivery"),
 
             Expanded(
 
@@ -105,6 +109,9 @@ class _RegisterState extends State<Register> {
                       SizedBox(height: 5,),
                       _textInput(hint: "Fullname", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
                       _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator: (value) => EmailValidator.validate(value) ? null : "Please enter a valid email",),
+                      _textInput(hint: "Location", icon: Icons.place,controller: _addressController,obscure: false,validator:(value) => value!.isEmpty ? null : "Please enter an address",),
+                      _textInput(hint: "ID", icon: Icons.confirmation_number_outlined,controller: _IdController,obscure: false,validator:(value) => value!.isEmpty ? null : "Please enter your ID",),
+
                       SizedBox(height: 10.0,),
                   Container(
                     margin: EdgeInsets.only(top: 20),
@@ -200,10 +207,10 @@ class _RegisterState extends State<Register> {
                           text: TextSpan(children: [
                             TextSpan(
 
-                                text: "Already Registered",
+                                text: "Already Registered ",
                                 style: TextStyle(color: Colors.black)),
                             TextSpan(
-                                text: "SIGNIN",
+                                text: " SIGNIN",
                                 style: TextStyle(color: orangeColors)),
                           ]),
                         ),
@@ -229,7 +236,7 @@ class _RegisterState extends State<Register> {
 
   Widget _textInput({controller, hint, icon,validator,obscure}) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         color: Colors.white,
@@ -310,6 +317,20 @@ class HeaderContainer extends StatelessWidget {
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(100))),
       child: Stack(
         children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Center(
+                  child:   Image.asset('assets/images/logo.png',
+                    width: 150,
+                  ),
+                ),
+
+              ],
+            ),
+          ),
           Positioned(
               bottom: 40,
               right: 20,

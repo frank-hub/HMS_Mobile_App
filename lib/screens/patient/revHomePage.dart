@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hms/authenticate/RegisterSeller.dart';
 import 'package:hms/authenticate/registerUser.dart';
 import 'package:hms/screens/doctor/revPharmacy.dart';
 import 'package:hms/screens/labaratory/labhome.dart';
@@ -228,7 +229,7 @@ class _PatientHomeState extends State<PatientHome> {
                                      Navigator.push(context,
                                          MaterialPageRoute(
                                              builder: (
-                                                 context) => SignUp()
+                                                 context) => RegisterSeller()
                                          ));
 
                                    },

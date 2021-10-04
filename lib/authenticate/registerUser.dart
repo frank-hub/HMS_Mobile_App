@@ -1,213 +1,229 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hms/api/api.dart';
-import 'package:hms/authenticate/loginScreen.dart';
+import 'package:hms/authenticate/login.dart';
+import 'package:hms/screens/doctor/homescreen.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
+import 'package:hms/shared/loading.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:email_validator/email_validator.dart';
 
 
-
+Color orangeColors = Color(0xFF6C63FF);
+Color orangeLightColors = Color(0xFF6C63FF);
 
 class SignUp extends StatefulWidget {
+
+  final String? userType;
+  const SignUp( {Key? key, this.userType}): super(key: key);
   @override
   _SignUpState createState() => _SignUpState();
 }
 
 class _SignUpState extends State<SignUp> {
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController mailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+  String msgStatus = '';
+  var _currentCountry="";
+  var _currentLocation="";
+  var _currentPostalCode="";
+  Position? _currentPosition;
 
-  bool _isLoading = false;
+  final TextEditingController _nameController = new TextEditingController();
+  final TextEditingController _emailController = new TextEditingController();
+  final TextEditingController _phoneController = new TextEditingController();
+  final TextEditingController _passwordController = new TextEditingController();
+  final TextEditingController _confirmpasswordController = new TextEditingController();
+  bool loading =false;
+  final TextEditingController controller = TextEditingController();
+  String initialCountry = 'US';
+  PhoneNumber number = PhoneNumber(isoCode: 'US', );
+  String phone="";
+
+
+  final _formKey = GlobalKey<FormState>();
+  void _getCurrentLocation() async {
+    var position= await Geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    var lastPosition=await Geolocator.getLastKnownPosition();
+    setState(() {
+      _currentPosition=position;
+      _getAddressFromLatLng();
+
+    });
+
+  }
+  _getAddressFromLatLng() async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          _currentPosition!.latitude,
+          _currentPosition!.longitude
+      );
+
+      Placemark place = placemarks[0];
+
+      setState(() {
+        _currentLocation = "${place.locality}";
+        _currentCountry = "${place.country}";
+        _currentPostalCode = "${place.postalCode}";
+
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+  @override
+  void initState() {
+    _getCurrentLocation();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading? Loading(): Scaffold(
       body: Container(
-        child: Stack(
+        padding: EdgeInsets.only(bottom: 10),
+        child: Column(
           children: <Widget>[
-            /////////////  background/////////////
-            new Container(
-              decoration: new BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  stops: [0.0, 0.4, 0.9],
-                  colors: [
-                    Color(0xFFFF835F),
-                    Color(0xFFFC663C),
-                    Color(0xFFFF3F1A),
-                  ],
-                ),
+            Center(
+              child:   Image.asset('assets/images/logo.png',
+                width: 150,
               ),
             ),
+            SizedBox(height: 10,),
 
-            Positioned(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Card(
-                      elevation: 4.0,
-                      color: Colors.white,
-                      margin: EdgeInsets.only(left: 20, right: 20),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            /////////////// name////////////
-                            TextField(
-                              style: TextStyle(color: Color(0xFF000000)),
-                              controller: firstNameController,
-                              cursorColor: Color(0xFF9b9b9b),
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.account_circle,
-                                  color: Colors.grey,
-                                ),
-                                hintText: "Firstname",
-                                hintStyle: TextStyle(
-                                    color: Color(0xFF9b9b9b),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ),
-                            TextField(
-                              style: TextStyle(color: Color(0xFF000000)),
-                              controller: lastNameController,
-                              cursorColor: Color(0xFF9b9b9b),
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.account_circle,
-                                  color: Colors.grey,
-                                ),
-                                hintText: "Lastname",
-                                hintStyle: TextStyle(
-                                    color: Color(0xFF9b9b9b),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ),
+            HeaderContainer("Signup For Service Delivery"),
 
-                            /////////////// Email ////////////
-                            TextField(
-                              style: TextStyle(color: Color(0xFF000000)),
-                              controller: mailController,
-                              cursorColor: Color(0xFF9b9b9b),
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.mail,
-                                  color: Colors.grey,
-                                ),
-                                hintText: "Email ",
-                                hintStyle: TextStyle(
-                                    color: Color(0xFF9b9b9b),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ),
+            Expanded(
 
-                            /////////////// password ////////////
-                            TextField(
-                              style: TextStyle(color: Color(0xFF000000)),
-                              cursorColor: Color(0xFF9b9b9b),
-                              controller: passwordController,
-                              keyboardType: TextInputType.text,
-                              obscureText: true,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.vpn_key,
-                                  color: Colors.grey,
-                                ),
-                                hintText: "Password",
-                                hintStyle: TextStyle(
-                                    color: Color(0xFF9b9b9b),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ),
-                            TextField(
-                              style: TextStyle(color: Color(0xFF000000)),
-                              controller: phoneController,
-                              cursorColor: Color(0xFF9b9b9b),
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(
-                                  Icons.mobile_screen_share,
-                                  color: Colors.grey,
-                                ),
-                                hintText: "Phone",
-                                hintStyle: TextStyle(
-                                    color: Color(0xFF9b9b9b),
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ),
+              child: Form(
+                key:_formKey ,
+                child: Container(
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 10),
+                  child: ListView(
 
-                            /////////////// SignUp Button ////////////
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: FlatButton(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 8, bottom: 8, left: 10, right: 10),
-                                    child: Text(
-                                      _isLoading ? 'Creating...' : 'Create account',
-                                      textDirection: TextDirection.ltr,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 15.0,
-                                        decoration: TextDecoration.none,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ),
-                                  color: Colors.red,
-                                  disabledColor: Colors.grey,
-                                  shape: new RoundedRectangleBorder(
-                                      borderRadius:
-                                      new BorderRadius.circular(20.0)),
-                                  onPressed: _isLoading ? null :  _handleLogin
-                              ),
-                            ),
-                          ],
+                    children: <Widget>[
+                      Text(msgStatus,style: TextStyle(color: Colors.red),),
+                      SizedBox(height: 5,),
+                      _textInput(hint: "Fullname", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
+                      _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator: (value) => EmailValidator.validate(value) ? null : "Please enter a valid email",),
+                      SizedBox(height: 10.0,),
+                      Container(
+                        margin: EdgeInsets.only(top: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          color: Colors.white,
                         ),
-                      ),
-                    ),
+                        padding: EdgeInsets.only(left: 10),
+                        child: InternationalPhoneNumberInput(
+                          onInputChanged: (PhoneNumber number) {
+                            print(number.phoneNumber);
 
-                    /////////////// already have an account ////////////
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              new MaterialPageRoute(
-                                  builder: (context) => LogIn()));
-                        },
-                        child: Text(
-                          'Already have an Account',
-                          textDirection: TextDirection.ltr,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15.0,
-                            decoration: TextDecoration.none,
-                            fontWeight: FontWeight.normal,
+                            setState(() {
+                              phone=number.phoneNumber.toString();
+                            });
+                          },
+
+                          onInputValidated: (bool value) {
+                            print(value);
+                          },
+                          selectorConfig: SelectorConfig(
+                            selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
                           ),
-                        ),
+                          ignoreBlank: false,
+                          autoValidateMode: AutovalidateMode.disabled,
+                          selectorTextStyle: TextStyle(color: Colors.black),
+                          initialValue: number,
+                          textFieldController: _phoneController,
+                          formatInput: false,
+                          keyboardType:
+                          TextInputType.numberWithOptions(signed: true, decimal: true),
+                          inputDecoration:InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Phone Number",
+
+                          ),
+
+                          inputBorder: OutlineInputBorder(
+                            borderRadius:  BorderRadius.all(Radius.circular(20)),
+
+                          ),
+                          onSaved: (PhoneNumber number) {
+                            print('On Saved: $number');
+                          },
+                        ),),
+
+
+                      _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,
+                          validator: (val) {
+                            if (val.trim().isEmpty) {
+                              return 'This field is required';
+                            }
+                            if(val.length < 8){
+                              return 'Enter a password 8+ chars long';
+                            }if((!val.contains(RegExp(r'[a-z]')))){
+                              return 'Password must have lower case';
+
+                            }
+                            if((!val.contains(RegExp(r'[A-Z]')))){
+                              return 'Password must have at least one uppercase';
+
+                            }
+                            if((!val.contains(RegExp(r'[0-9]')))){
+                              return 'Password must have one number';
+
+                            }
+                            return null;
+                          }),
+                      _textInput(hint: "Confirm Password", icon: Icons.vpn_key,controller: _confirmpasswordController,obscure: true,
+                        validator: (val) {
+                          if (val.isEmpty)
+                            return 'Enter a password 8+ chars long';
+                          if (val != _passwordController.text)
+                            return 'Password Do Not Match';
+                          return null;
+                        },),
+                      SizedBox(height: 10.0,),
+
+                      ButtonWidget(
+                        btnText: "Complete Registration",
+                        onClick: () {
+
+                          if(_formKey.currentState!.validate()){
+
+                            _handleRegister();
+                          }
+                        },
                       ),
-                    ),
-                  ],
+                      SizedBox(height: 20.0,),
+
+                      GestureDetector(
+                        child: RichText(
+                          text: TextSpan(children: [
+                            TextSpan(
+
+                                text: "Already Registered",
+                                style: TextStyle(color: Colors.black)),
+                            TextSpan(
+                                text: "SIGNIN",
+                                style: TextStyle(color: orangeColors)),
+                          ]),
+                        ),
+                        onTap:(){
+                          Navigator.push(context,
+                              MaterialPageRoute(
+                                  builder: (
+                                      context) => Login()
+                              ));
+                        } ,
+                      )
+
+                    ],
+                  ),
                 ),
               ),
             )
@@ -216,40 +232,136 @@ class _SignUpState extends State<SignUp> {
       ),
     );
   }
-  void _handleLogin() async {
+
+  Widget _textInput({controller, hint, icon,validator,obscure}) {
+    return Container(
+      margin: EdgeInsets.only(top: 20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        color: Colors.white,
+      ),
+      padding: EdgeInsets.only(left: 10),
+      child: TextFormField(
+        obscureText: obscure,
+        validator: validator,
+        controller: controller,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: hint,
+          prefixIcon: Icon(icon),
+        ),
+      ),
+    );
+  }
+  void _handleRegister() async {
     setState(() {
-      _isLoading = true;
+      loading = true;
     });
 
     var data = {
-      'firstName' : firstNameController.text,
-      'lastName' : lastNameController.text,
-      'email' : mailController.text,
-      'password' : passwordController.text,
-      'phone' : phoneController.text,
+      'name' : _nameController.text,
+      'email' : _emailController.text,
+      'password' : _passwordController.text,
+      'phone' : phone,
+      'user_role':widget.userType.toString(),
+      'location':_currentLocation.toString(),
+      'postalcode':_currentPostalCode.toString(),
+      'country':_currentCountry.toString()
     };
 
-    var res = await CallApi().postData(data, 'register');
+    var res = await CallApi().postData(data, '/auth/register');
     var body = json.decode(res.body);
-    if(body['success']){
+    if (res.statusCode == 200) {
       SharedPreferences localStorage = await SharedPreferences.getInstance();
-      localStorage.setString('token', body['token']);
-      localStorage.setString('user', json.encode(body['user']));
+      localStorage.setString('token', body['data']['token']);
+      print(body['data']['token']);
+      localStorage.setString('user', json.encode(body['data']['user']));
+      String user_role = widget.userType.toString();
+      if(user_role == "doctor"){
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => HomeScreenDoctor()));
 
-      Navigator.push(
-          context,
-          new MaterialPageRoute(
-              builder: (context) => HomeScreen()));
+      }else{
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => HomeScreen()));
+      }
+
     }
-
-
-
-
+    else{
+      msgStatus="Invalid Credentials";
+    }
     setState(() {
-      _isLoading = false;
+      loading = false;
     });
 
-
-
   }
+}
+class HeaderContainer extends StatelessWidget {
+  var text = "register";
+  HeaderContainer(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.3,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [orangeColors, orangeLightColors],
+              end: Alignment.bottomCenter,
+              begin: Alignment.topCenter),
+          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(100))),
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+              bottom: 40,
+              right: 20,
+              child: Text(
+                text,
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              )),
+
+
+        ],
+      ),
+    );
+  }
+
+}
+
+class ButtonWidget extends StatelessWidget {
+  String? btnText = "";
+  var onClick;
+
+  ButtonWidget({this.btnText, this.onClick});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onClick,
+      child: Container(
+        width: double.infinity,
+        height: 40,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [orangeColors, orangeLightColors],
+              end: Alignment.centerLeft,
+              begin: Alignment.centerRight),
+          borderRadius: BorderRadius.all(
+            Radius.circular(100),
+          ),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          btnText!,
+          style: TextStyle(
+              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+
 }

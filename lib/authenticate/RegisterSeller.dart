@@ -89,73 +89,71 @@ class _RegisterSellerState extends State<RegisterSeller> {
         padding: EdgeInsets.only(bottom: 10),
         child: Column(
           children: <Widget>[
-            Center(
-              child:   Image.asset('assets/images/logo.png',
-                width: 150,
-              ),
-            ),
-            SizedBox(height: 10,),
 
-            HeaderContainer("Signup For Service Delivery"),
+            HeaderContainer("Register To Offer Services"),
 
             Expanded(
 
               child: Form(
                 key:_formKey ,
                 child: Container(
-                  margin: EdgeInsets.only(left: 20, right: 20, top: 10),
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 5),
                   child: ListView(
 
                     children: <Widget>[
                       Text(msgStatus,style: TextStyle(color: Colors.red),),
                       SizedBox(height: 5,),
-                      _textInput(hint: "Fullname", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
-                      _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator: (value) => EmailValidator.validate(value) ? null : "Please enter a valid email",),
-                      SizedBox(height: 10.0,),
-                      Container(
-                        margin: EdgeInsets.only(top: 20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          color: Colors.white,
-                        ),
-                        padding: EdgeInsets.only(left: 10),
-                        child: InternationalPhoneNumberInput(
-                          onInputChanged: (PhoneNumber number) {
-                            print(number.phoneNumber);
+                      _textInput(hint: "FullName(Dr/Lab)", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
+                     // _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator: (value) => EmailValidator.validate(value) ? null : "Please enter a valid email",),
+                      _textInput(hint: "Licence No.)", icon: Icons.local_police,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
+                      _textInput(hint: "Location", icon: Icons.place,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
+                      _textInput(hint: "Charges", icon: Icons.price_change,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
 
-                            setState(() {
-                              phone=number.phoneNumber.toString();
-                            });
-                          },
-
-                          onInputValidated: (bool value) {
-                            print(value);
-                          },
-                          selectorConfig: SelectorConfig(
-                            selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                          ),
-                          ignoreBlank: false,
-                          autoValidateMode: AutovalidateMode.disabled,
-                          selectorTextStyle: TextStyle(color: Colors.black),
-                          initialValue: number,
-                          textFieldController: _phoneController,
-                          formatInput: false,
-                          keyboardType:
-                          TextInputType.numberWithOptions(signed: true, decimal: true),
-                          inputDecoration:InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Phone Number",
-
-                          ),
-
-                          inputBorder: OutlineInputBorder(
-                            borderRadius:  BorderRadius.all(Radius.circular(20)),
-
-                          ),
-                          onSaved: (PhoneNumber number) {
-                            print('On Saved: $number');
-                          },
-                        ),),
+                      SizedBox(height: 5.0,),
+                      // Container(
+                      //   margin: EdgeInsets.only(top: 20),
+                      //   decoration: BoxDecoration(
+                      //     borderRadius: BorderRadius.all(Radius.circular(20)),
+                      //     color: Colors.white,
+                      //   ),
+                      //   padding: EdgeInsets.only(left: 10),
+                      //   child: InternationalPhoneNumberInput(
+                      //     onInputChanged: (PhoneNumber number) {
+                      //       print(number.phoneNumber);
+                      //
+                      //       setState(() {
+                      //         phone=number.phoneNumber.toString();
+                      //       });
+                      //     },
+                      //
+                      //     onInputValidated: (bool value) {
+                      //       print(value);
+                      //     },
+                      //     selectorConfig: SelectorConfig(
+                      //       selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                      //     ),
+                      //     ignoreBlank: false,
+                      //     autoValidateMode: AutovalidateMode.disabled,
+                      //     selectorTextStyle: TextStyle(color: Colors.black),
+                      //     initialValue: number,
+                      //     textFieldController: _phoneController,
+                      //     formatInput: false,
+                      //     keyboardType:
+                      //     TextInputType.numberWithOptions(signed: true, decimal: true),
+                      //     inputDecoration:InputDecoration(
+                      //       border: InputBorder.none,
+                      //       hintText: "Phone Number",
+                      //
+                      //     ),
+                      //
+                      //     inputBorder: OutlineInputBorder(
+                      //       borderRadius:  BorderRadius.all(Radius.circular(20)),
+                      //
+                      //     ),
+                      //     onSaved: (PhoneNumber number) {
+                      //       print('On Saved: $number');
+                      //     },
+                      //   ),),
 
 
                       _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,
@@ -199,17 +197,17 @@ class _RegisterSellerState extends State<RegisterSeller> {
                           }
                         },
                       ),
-                      SizedBox(height: 20.0,),
+                      SizedBox(height: 10.0,),
 
                       GestureDetector(
                         child: RichText(
                           text: TextSpan(children: [
                             TextSpan(
 
-                                text: "Already Registered",
+                                text: "Already Registered ",
                                 style: TextStyle(color: Colors.black)),
                             TextSpan(
-                                text: "SIGNIN",
+                                text: " SIGNIN",
                                 style: TextStyle(color: orangeColors)),
                           ]),
                         ),
@@ -235,7 +233,7 @@ class _RegisterSellerState extends State<RegisterSeller> {
 
   Widget _textInput({controller, hint, icon,validator,obscure}) {
     return Container(
-      margin: EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         color: Colors.white,
@@ -316,6 +314,21 @@ class HeaderContainer extends StatelessWidget {
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(100))),
       child: Stack(
         children: <Widget>[
+
+          Padding(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Center(
+                  child:   Image.asset('assets/images/logo.png',
+                    width: 150,
+                  ),
+                ),
+
+              ],
+            ),
+          ),
           Positioned(
               bottom: 40,
               right: 20,
