@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hms/authenticate/registerScreen.dart';
 import 'package:hms/screens/doctor/revPharmacy.dart';
 import 'package:hms/screens/labaratory/labhome.dart';
 import 'package:hms/screens/patient/revDoctor.dart';
@@ -224,6 +225,11 @@ class _PatientHomeState extends State<PatientHome> {
                                      ),
                                    ),
                                    onTap: (){
+                                     Navigator.push(context,
+                                         MaterialPageRoute(
+                                             builder: (
+                                                 context) => SignUp()
+                                         ));
 
                                    },
                                  ),
