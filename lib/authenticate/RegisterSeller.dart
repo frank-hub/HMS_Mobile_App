@@ -89,6 +89,12 @@ class _RegisterSellerState extends State<RegisterSeller> {
         padding: EdgeInsets.only(bottom: 10),
         child: Column(
           children: <Widget>[
+            Center(
+              child:   Image.asset('assets/images/logo.png',
+                width: 150,
+              ),
+            ),
+            SizedBox(height: 10,),
 
             HeaderContainer("Signup For Service Delivery"),
 
@@ -295,7 +301,7 @@ class _RegisterSellerState extends State<RegisterSeller> {
   }
 }
 class HeaderContainer extends StatelessWidget {
-  var text = "Signin";
+  var text = "register";
   HeaderContainer(this.text);
 
   @override
