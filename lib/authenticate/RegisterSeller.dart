@@ -37,7 +37,7 @@ class _RegisterSellerState extends State<RegisterSeller> {
   final TextEditingController _phoneController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
   final TextEditingController _licenseController = new TextEditingController();
-  final TextEditingController _locationController = new TextEditingController();
+  final TextEditingController _addressController = new TextEditingController();
   final TextEditingController _chargesController = new TextEditingController();
 
   final TextEditingController _confirmpasswordController = new TextEditingController();
@@ -109,55 +109,55 @@ class _RegisterSellerState extends State<RegisterSeller> {
                       SizedBox(height: 5,),
                       _textInput(hint: "FullName(Dr/Lab)", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
                       _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator: (value) => EmailValidator.validate(value) ? null : "Please enter a valid email",),
-                      _textInput(hint: "Licence No.)", icon: Icons.local_police,controller: _licenseController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
-                      _textInput(hint: "Location", icon: Icons.place,controller: _locationController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
-                      _textInput(hint: "Charges", icon: Icons.price_change,controller: _chargesController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
+                      _textInput(hint: "Licence No.)", icon: Icons.local_police,controller: _licenseController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your license' : null, ),
+                      _textInput(hint: "Location", icon: Icons.place,controller: _addressController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Location' : null, ),
+                      _textInput(hint: "Charges", icon: Icons.price_change,controller: _chargesController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your charges' : null, ),
 
                       SizedBox(height: 5.0,),
-                      // Container(
-                      //   margin: EdgeInsets.only(top: 20),
-                      //   decoration: BoxDecoration(
-                      //     borderRadius: BorderRadius.all(Radius.circular(20)),
-                      //     color: Colors.white,
-                      //   ),
-                      //   padding: EdgeInsets.only(left: 10),
-                      //   child: InternationalPhoneNumberInput(
-                      //     onInputChanged: (PhoneNumber number) {
-                      //       print(number.phoneNumber);
-                      //
-                      //       setState(() {
-                      //         phone=number.phoneNumber.toString();
-                      //       });
-                      //     },
-                      //
-                      //     onInputValidated: (bool value) {
-                      //       print(value);
-                      //     },
-                      //     selectorConfig: SelectorConfig(
-                      //       selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                      //     ),
-                      //     ignoreBlank: false,
-                      //     autoValidateMode: AutovalidateMode.disabled,
-                      //     selectorTextStyle: TextStyle(color: Colors.black),
-                      //     initialValue: number,
-                      //     textFieldController: _phoneController,
-                      //     formatInput: false,
-                      //     keyboardType:
-                      //     TextInputType.numberWithOptions(signed: true, decimal: true),
-                      //     inputDecoration:InputDecoration(
-                      //       border: InputBorder.none,
-                      //       hintText: "Phone Number",
-                      //
-                      //     ),
-                      //
-                      //     inputBorder: OutlineInputBorder(
-                      //       borderRadius:  BorderRadius.all(Radius.circular(20)),
-                      //
-                      //     ),
-                      //     onSaved: (PhoneNumber number) {
-                      //       print('On Saved: $number');
-                      //     },
-                      //   ),),
+                      Container(
+                        margin: EdgeInsets.only(top: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          color: Colors.white,
+                        ),
+                        padding: EdgeInsets.only(left: 10),
+                        child: InternationalPhoneNumberInput(
+                          onInputChanged: (PhoneNumber number) {
+                            print(number.phoneNumber);
+
+                            setState(() {
+                              phone=number.phoneNumber.toString();
+                            });
+                          },
+
+                          onInputValidated: (bool value) {
+                            print(value);
+                          },
+                          selectorConfig: SelectorConfig(
+                            selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                          ),
+                          ignoreBlank: false,
+                          autoValidateMode: AutovalidateMode.disabled,
+                          selectorTextStyle: TextStyle(color: Colors.black),
+                          initialValue: number,
+                          textFieldController: _phoneController,
+                          formatInput: false,
+                          keyboardType:
+                          TextInputType.numberWithOptions(signed: true, decimal: true),
+                          inputDecoration:InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Phone Number",
+
+                          ),
+
+                          inputBorder: OutlineInputBorder(
+                            borderRadius:  BorderRadius.all(Radius.circular(20)),
+
+                          ),
+                          onSaved: (PhoneNumber number) {
+                            print('On Saved: $number');
+                          },
+                        ),),
 
 
                       _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,
@@ -265,8 +265,12 @@ class _RegisterSellerState extends State<RegisterSeller> {
       'email' : _emailController.text,
       'password' : _passwordController.text,
       'phone' : phone,
-      'user_role':widget.userType.toString(),
+      'user_role':'Doctor',
+      'no_id':'1250',
+      'address' : _addressController.text,
       'location':_currentLocation.toString(),
+      'license' : _licenseController.text,
+      'charges' : _chargesController.text,
       'postalcode':_currentPostalCode.toString(),
       'country':_currentCountry.toString()
     };
