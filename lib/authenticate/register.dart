@@ -6,6 +6,7 @@ import 'package:hms/api/api.dart';
 import 'package:hms/authenticate/login.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
+import 'package:hms/screens/patient/revHomePage.dart';
 import 'package:hms/shared/loading.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
@@ -108,7 +109,7 @@ class _RegisterState extends State<Register> {
                       SizedBox(height: 5,),
                       _textInput(hint: "Fullname", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
                       _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator: (value) => EmailValidator.validate(value) ? null : "Please enter a valid email",),
-                      _textInput(hint: "Location", icon: Icons.place,controller: _addressController,obscure: false,validator:(value) => value!.isEmpty ? "Please enter an address" : null,),
+                      _textInput(hint: "Address", icon: Icons.place,controller: _addressController,obscure: false,validator:(value) => value!.isEmpty ? "Please enter an address" : null,),
                       _textInput(hint: "ID", icon: Icons.confirmation_number_outlined,controller: _IdController,obscure: false,validator:(value) => value!.isEmpty ?  "Please enter your ID" : null,),
 
 
@@ -266,7 +267,7 @@ class _RegisterState extends State<Register> {
       'password' : _passwordController.text,
       'phone' : phone,
       'user_role':'patient',
-      'location':_addressController.text,
+      'address':_addressController.text,
       'postalcode':_currentPostalCode.toString(),
       'country':_currentCountry.toString()
     };
@@ -289,7 +290,7 @@ class _RegisterState extends State<Register> {
       Navigator.push(
           context,
           new MaterialPageRoute(
-              builder: (context) => HomeScreen()));
+              builder: (context) => PatientHome()));
     }
 
     }
