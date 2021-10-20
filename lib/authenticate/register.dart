@@ -36,7 +36,6 @@ class _RegisterState extends State<Register> {
   final TextEditingController _emailController = new TextEditingController();
   final TextEditingController _phoneController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
-
   final TextEditingController _IdController = new TextEditingController();
   final TextEditingController _addressController = new TextEditingController();
   final TextEditingController _confirmpasswordController = new TextEditingController();
@@ -101,7 +100,7 @@ class _RegisterState extends State<Register> {
               child: Form(
                 key:_formKey ,
                 child: Container(
-                  margin: EdgeInsets.only(left: 20, right: 20, top: 10),
+                  margin: EdgeInsets.only(left: 20, right: 20,),
                   child: ListView(
 
                     children: <Widget>[
@@ -109,12 +108,12 @@ class _RegisterState extends State<Register> {
                       SizedBox(height: 5,),
                       _textInput(hint: "Fullname", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
                       _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator: (value) => EmailValidator.validate(value) ? null : "Please enter a valid email",),
-                      _textInput(hint: "Location", icon: Icons.place,controller: _addressController,obscure: false,validator:(value) => value!.isEmpty ? null : "Please enter an address",),
-                      _textInput(hint: "ID", icon: Icons.confirmation_number_outlined,controller: _IdController,obscure: false,validator:(value) => value!.isEmpty ? null : "Please enter your ID",),
+                      _textInput(hint: "Location", icon: Icons.place,controller: _addressController,obscure: false,validator:(value) => value!.isEmpty ? "Please enter an address" : null,),
+                      _textInput(hint: "ID", icon: Icons.confirmation_number_outlined,controller: _IdController,obscure: false,validator:(value) => value!.isEmpty ?  "Please enter your ID" : null,),
 
-                      SizedBox(height: 10.0,),
+
                   Container(
-                    margin: EdgeInsets.only(top: 20),
+                    margin: EdgeInsets.only(top: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       color: Colors.white,
@@ -263,9 +262,11 @@ class _RegisterState extends State<Register> {
       'name' : _nameController.text,
       'email' : _emailController.text,
       'password' : _passwordController.text,
+      'no_id' : _IdController.text,
+      'password' : _passwordController.text,
       'phone' : phone,
-      'user_role':widget.userType.toString(),
-      'location':_currentLocation.toString(),
+      'user_role':'patient',
+      'location':_addressController.text,
       'postalcode':_currentPostalCode.toString(),
       'country':_currentCountry.toString()
     };
@@ -308,7 +309,7 @@ class HeaderContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.3,
+      height: MediaQuery.of(context).size.height * 0.25,
       decoration: BoxDecoration(
           gradient: LinearGradient(
               colors: [orangeColors, orangeLightColors],

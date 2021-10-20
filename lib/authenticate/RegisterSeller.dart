@@ -36,6 +36,10 @@ class _RegisterSellerState extends State<RegisterSeller> {
   final TextEditingController _emailController = new TextEditingController();
   final TextEditingController _phoneController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
+  final TextEditingController _licenseController = new TextEditingController();
+  final TextEditingController _locationController = new TextEditingController();
+  final TextEditingController _chargesController = new TextEditingController();
+
   final TextEditingController _confirmpasswordController = new TextEditingController();
   bool loading =false;
   final TextEditingController controller = TextEditingController();
@@ -104,10 +108,10 @@ class _RegisterSellerState extends State<RegisterSeller> {
                       Text(msgStatus,style: TextStyle(color: Colors.red),),
                       SizedBox(height: 5,),
                       _textInput(hint: "FullName(Dr/Lab)", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
-                     // _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator: (value) => EmailValidator.validate(value) ? null : "Please enter a valid email",),
-                      _textInput(hint: "Licence No.)", icon: Icons.local_police,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
-                      _textInput(hint: "Location", icon: Icons.place,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
-                      _textInput(hint: "Charges", icon: Icons.price_change,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
+                      _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator: (value) => EmailValidator.validate(value) ? null : "Please enter a valid email",),
+                      _textInput(hint: "Licence No.)", icon: Icons.local_police,controller: _licenseController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
+                      _textInput(hint: "Location", icon: Icons.place,controller: _locationController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
+                      _textInput(hint: "Charges", icon: Icons.price_change,controller: _chargesController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
 
                       SizedBox(height: 5.0,),
                       // Container(

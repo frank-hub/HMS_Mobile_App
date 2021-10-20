@@ -3,7 +3,9 @@ import 'package:hms/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 class CallApi{
-  final String _url = 'https://hms.horebinsurance.co.ke/api';
+  //final String _url = 'https://hms.horebinsurance.co.ke/api';
+  final String _url = 'https://192.168.43.1:8000/api';
+
   User? _user;
   User? get user=>_user;
 
