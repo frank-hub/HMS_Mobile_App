@@ -264,7 +264,7 @@ class _RegisterState extends State<Register> {
       'email' : _emailController.text,
       'password' : _passwordController.text,
       'no_id' : _IdController.text,
-      'password' : _passwordController.text,
+      'location' : _currentLocation.toString(),
       'phone' : phone,
       'user_role':'patient',
       'address':_addressController.text,

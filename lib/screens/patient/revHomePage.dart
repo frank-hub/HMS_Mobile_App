@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hms/authenticate/RegisterSeller.dart';
+import 'package:hms/authenticate/login.dart';
 import 'package:hms/authenticate/registerUser.dart';
 import 'package:hms/screens/doctor/revPharmacy.dart';
 import 'package:hms/screens/labaratory/labhome.dart';
 import 'package:hms/screens/patient/revDoctor.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class PatientHome extends StatefulWidget {
@@ -21,6 +23,19 @@ class _PatientHomeState extends State<PatientHome> {
     super.dispose();
     // animationController.dispose() instead of your controller.dispose
   }
+  set __isLoggedIn(bool __isLoggedIn) {}
+  logout()  async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    setState(() {
+      __isLoggedIn=false;
+    });
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => Login()));
+  }
+
   @override
   Widget build(BuildContext context) {
     Future<bool> showExitPopup() async {
@@ -52,6 +67,17 @@ class _PatientHomeState extends State<PatientHome> {
         home: WillPopScope(
           onWillPop: showExitPopup,
           child: Scaffold(
+
+            appBar: AppBar(
+              backgroundColor: Color(0xFF6C63FF),
+              title: Text("HMS"),
+              actions: [
+                IconButton(onPressed:() async{
+                  await logout();
+                },
+                    icon: const Icon( Icons.logout))
+              ],
+            ),
              body:  Container(
                width: double.infinity,
                decoration: BoxDecoration(
@@ -64,7 +90,7 @@ class _PatientHomeState extends State<PatientHome> {
                  crossAxisAlignment: CrossAxisAlignment.start,
                  children: <Widget>[
                    SizedBox(
-                     height: 30,
+                     height: 10,
                    ),
                    Padding(
                      padding: EdgeInsets.all(20),
