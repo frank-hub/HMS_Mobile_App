@@ -177,7 +177,7 @@ class _PatientHomeState extends State<PatientHome> {
                                            )
                                        ),),
                                      SizedBox(
-                                       height: 30,
+                                       height: 20,
                                      ),
                                      Center(
                                        child: ConstrainedBox(
