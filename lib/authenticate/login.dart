@@ -9,8 +9,11 @@ import 'package:hms/api/api.dart';
 import 'package:hms/authenticate/register.dart';
 import 'package:hms/authenticate/usertype.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
+import 'package:hms/screens/labaratory/labhome.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
+import 'package:hms/screens/patient/revDoctor.dart';
 import 'package:hms/screens/patient/revHomePage.dart';
+import 'package:hms/screens/pharmacy/HomeScreenPharmacy.dart';
 import 'package:hms/screens/static/about.dart';
 import 'package:hms/screens/static/help.dart';
 import 'package:hms/screens/static/policies.dart';
@@ -297,17 +300,33 @@ class _LoginState extends State<Login> {
     var res = await CallApi().postData(data, '/auth/login');
     var body = json.decode(res.body);
     if (res.statusCode == 200) {
+
       SharedPreferences localStorage = await SharedPreferences.getInstance();
       localStorage.setString('token', body['data']['token']);
       localStorage.setString('user', json.encode(body['data']['user']));
       String user_role=body['data']['user']['user_role'];
-      if(user_role == "doctor"){
+      Fluttertoast.showToast(msg: "User: "+user_role);
+      if(user_role == "Doctor"){
         Navigator.push(
             context,
             new MaterialPageRoute(
                 builder: (context) => HomeScreenDoctor()));
 
-      }else{
+      }
+      else if(user_role == "Pharmacy"){
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => HomeScreenPharmacy()));
+
+      }else if(user_role == "Laboratory"){
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => LabHome()));
+
+      }
+      else{
         Navigator.push(
             context,
             new MaterialPageRoute(

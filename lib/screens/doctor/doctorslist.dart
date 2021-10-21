@@ -264,7 +264,7 @@ class _TestState extends State<Test> {
     }
 
     _userDetails.forEach((userDetail) {
-      if (userDetail.name.contains(text) || userDetail.category.contains(text) || userDetail.location!.contains(text))
+      if (userDetail.name.toLowerCase().contains(text.toLowerCase()) || userDetail.category.toLowerCase().contains(text.toLowerCase()) || userDetail.location!.toLowerCase().contains(text.toLowerCase()))
         _searchResult.add(userDetail);
     });
 
