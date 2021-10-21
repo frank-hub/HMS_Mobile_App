@@ -70,7 +70,7 @@ class _RegisterState extends State<Register> {
 
       setState(() {
         _currentLocation = "${place.locality}";
-         _currentCountry = "${place.country}";
+        _currentCountry = "${place.country}";
         _currentPostalCode = "${place.postalCode}";
 
       });
@@ -113,73 +113,73 @@ class _RegisterState extends State<Register> {
                       _textInput(hint: "ID", icon: Icons.confirmation_number_outlined,controller: _IdController,obscure: false,validator:(value) => value!.isEmpty ?  "Please enter your ID" : null,),
 
 
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                      color: Colors.white,
-                    ),
-                    padding: EdgeInsets.only(left: 10),
-                    child: InternationalPhoneNumberInput(
-                      onInputChanged: (PhoneNumber number) {
-                        print(number.phoneNumber);
+                      Container(
+                        margin: EdgeInsets.only(top: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          color: Colors.white,
+                        ),
+                        padding: EdgeInsets.only(left: 10),
+                        child: InternationalPhoneNumberInput(
+                          onInputChanged: (PhoneNumber number) {
+                            print(number.phoneNumber);
 
-                        setState(() {
-                          phone=number.phoneNumber.toString();
-                        });
-                      },
+                            setState(() {
+                              phone=number.phoneNumber.toString();
+                            });
+                          },
 
-                      onInputValidated: (bool value) {
-                        print(value);
-                      },
-                      selectorConfig: SelectorConfig(
-                        selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-                      ),
-                      ignoreBlank: false,
-                      autoValidateMode: AutovalidateMode.disabled,
-                      selectorTextStyle: TextStyle(color: Colors.black),
-                      initialValue: number,
-                      textFieldController: _phoneController,
-                      formatInput: false,
-                      keyboardType:
-                      TextInputType.numberWithOptions(signed: true, decimal: true),
-                      inputDecoration:InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "Phone Number",
+                          onInputValidated: (bool value) {
+                            print(value);
+                          },
+                          selectorConfig: SelectorConfig(
+                            selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+                          ),
+                          ignoreBlank: false,
+                          autoValidateMode: AutovalidateMode.disabled,
+                          selectorTextStyle: TextStyle(color: Colors.black),
+                          initialValue: number,
+                          textFieldController: _phoneController,
+                          formatInput: false,
+                          keyboardType:
+                          TextInputType.numberWithOptions(signed: true, decimal: true),
+                          inputDecoration:InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Phone Number",
 
-                      ),
+                          ),
 
-                      inputBorder: OutlineInputBorder(
-                        borderRadius:  BorderRadius.all(Radius.circular(20)),
+                          inputBorder: OutlineInputBorder(
+                            borderRadius:  BorderRadius.all(Radius.circular(20)),
 
-                      ),
-                      onSaved: (PhoneNumber number) {
-                        print('On Saved: $number');
-                      },
-                    ),),
+                          ),
+                          onSaved: (PhoneNumber number) {
+                            print('On Saved: $number');
+                          },
+                        ),),
 
 
-                     _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,
-                         validator: (val) {
-                       if (val.trim().isEmpty) {
-                          return 'This field is required';
-                      }
-                       if(val.length < 8){
-                         return 'Enter a password 8+ chars long';
-                       }if((!val.contains(RegExp(r'[a-z]')))){
-                         return 'Password must have lower case';
+                      _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,
+                          validator: (val) {
+                            if (val.trim().isEmpty) {
+                              return 'This field is required';
+                            }
+                            if(val.length < 8){
+                              return 'Enter a password 8+ chars long';
+                            }if((!val.contains(RegExp(r'[a-z]')))){
+                              return 'Password must have lower case';
 
-                       }
-                       if((!val.contains(RegExp(r'[A-Z]')))){
-                         return 'Password must have at least one uppercase';
+                            }
+                            if((!val.contains(RegExp(r'[A-Z]')))){
+                              return 'Password must have at least one uppercase';
 
-                       }
-                       if((!val.contains(RegExp(r'[0-9]')))){
-                         return 'Password must have one number';
+                            }
+                            if((!val.contains(RegExp(r'[0-9]')))){
+                              return 'Password must have one number';
 
-                       }
-                          return null;
-                     }),
+                            }
+                            return null;
+                          }),
                       _textInput(hint: "Confirm Password", icon: Icons.vpn_key,controller: _confirmpasswordController,obscure: true,
                         validator: (val) {
                           if (val.isEmpty)
@@ -191,15 +191,15 @@ class _RegisterState extends State<Register> {
                       SizedBox(height: 10.0,),
 
                       ButtonWidget(
-                            btnText: "Complete Registration",
-                            onClick: () {
+                        btnText: "Complete Registration",
+                        onClick: () {
 
-                              if(_formKey.currentState!.validate()){
+                          if(_formKey.currentState!.validate()){
 
-                                 _handleRegister();
-                              }
-                            },
-                          ),
+                            _handleRegister();
+                          }
+                        },
+                      ),
                       SizedBox(height: 20.0,),
 
                       GestureDetector(
@@ -280,18 +280,18 @@ class _RegisterState extends State<Register> {
       print(body['data']['token']);
       localStorage.setString('user', json.encode(body['data']['user']));
       String user_role = widget.userType.toString();
-    if(user_role == "doctor"){
-      Navigator.push(
-          context,
-          new MaterialPageRoute(
-              builder: (context) => HomeScreenDoctor()));
+      if(user_role == "doctor"){
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => HomeScreenDoctor()));
 
-    }else{
-      Navigator.push(
-          context,
-          new MaterialPageRoute(
-              builder: (context) => PatientHome()));
-    }
+      }else{
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => PatientHome()));
+      }
 
     }
     else{

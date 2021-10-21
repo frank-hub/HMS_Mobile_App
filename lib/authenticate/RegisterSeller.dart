@@ -26,6 +26,14 @@ class RegisterSeller extends StatefulWidget {
 }
 
 class _RegisterSellerState extends State<RegisterSeller> {
+  String _genderRadioBtnVal="patient";
+
+  void _handleGenderChange(String ? value) {
+    setState(() {
+      _genderRadioBtnVal = value!;
+    });
+  }
+
   String msgStatus = '';
   var _currentCountry="";
   var _currentLocation="";
@@ -39,6 +47,7 @@ class _RegisterSellerState extends State<RegisterSeller> {
   final TextEditingController _licenseController = new TextEditingController();
   final TextEditingController _addressController = new TextEditingController();
   final TextEditingController _chargesController = new TextEditingController();
+  final TextEditingController _idController = new TextEditingController();
 
   final TextEditingController _confirmpasswordController = new TextEditingController();
   bool loading =false;
@@ -86,36 +95,104 @@ class _RegisterSellerState extends State<RegisterSeller> {
   }
 
 
+  String dropdownvalue = "--Select Your Service--";
+  var items =  ['--Select Your Service--','Doctor','Pharmacy','Laboratory'];
+
   @override
   Widget build(BuildContext context) {
     return loading? Loading(): Scaffold(
       body: Container(
-        padding: EdgeInsets.only(bottom: 10),
         child: Column(
           children: <Widget>[
-
-            HeaderContainer("Register To Offer Services"),
-
+            Center(
+              child: HeaderContainer("Register As A Seller"),
+            ),
             Expanded(
 
               child: Form(
                 key:_formKey ,
                 child: Container(
-                  margin: EdgeInsets.only(left: 20, right: 20, top: 5),
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 1),
                   child: ListView(
 
                     children: <Widget>[
                       Text(msgStatus,style: TextStyle(color: Colors.red),),
-                      SizedBox(height: 5,),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.start,
+                      //   children: [
+                      //     Text("Select Your Role : ",style: TextStyle(color: Colors.black,fontSize: 25),),
+                      //     ListTile(
+                      //       title: Text("Patient",style: TextStyle(fontWeight:FontWeight.bold,color:Colors.indigo),),
+                      //       leading: Radio(
+                      //         value: "patient",
+                      //         groupValue: _genderRadioBtnVal,
+                      //         onChanged: _handleGenderChange,
+                      //         activeColor: Colors.green,
+                      //       ),
+                      //     ),
+                      //     ListTile(
+                      //       title: Text("Doctor",style: TextStyle(fontWeight:FontWeight.bold,color:Colors.indigo),),
+                      //       leading: Radio(
+                      //         value: "doctor",
+                      //         groupValue: _genderRadioBtnVal,
+                      //         onChanged: _handleGenderChange,
+                      //         activeColor: Colors.green,
+                      //       ),
+                      //     ),
+                      //     ListTile(
+                      //       title: Text("Pharmacy",style: TextStyle(fontWeight:FontWeight.bold,color:Colors.indigo),),
+                      //       leading: Radio(
+                      //         value: "pharmacy",
+                      //         groupValue: _genderRadioBtnVal,
+                      //         onChanged: _handleGenderChange,
+                      //         activeColor: Colors.green,
+                      //       ),
+                      //     ),
+                      //     ListTile(
+                      //       title: Text("Lab",style: TextStyle(fontWeight:FontWeight.bold,color:Colors.indigo),),
+                      //       leading: Radio(
+                      //         value: "lab",
+                      //         groupValue: _genderRadioBtnVal,
+                      //         onChanged: _handleGenderChange,
+                      //         activeColor: Colors.green,
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      DropdownButton(
+                        value: dropdownvalue,
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        items:items.map((String items) {
+                          return DropdownMenuItem(
+                              value: items,
+                              child: Text(items)
+                          );
+                        }
+                        ).toList(),
+                        onChanged: (String? newValue){
+                          setState(() {
+                            dropdownvalue = newValue!;
+                          });
+                        },
+                      ),
                       _textInput(hint: "FullName(Dr/Lab)", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
                       _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator: (value) => EmailValidator.validate(value) ? null : "Please enter a valid email",),
-                      _textInput(hint: "Licence No.)", icon: Icons.local_police,controller: _licenseController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your license' : null, ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(width: 180,child:
+                          _textInput(hint: "ID No.", icon: Icons.badge,controller: _idController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your license' : null, ),
+                          ),
+                          SizedBox(width: 180,child:
+                          _textInput(hint: "Licence No.", icon: Icons.local_police,controller: _licenseController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your license' : null, ),
+                          ),
+                            ],
+                      ),
                       _textInput(hint: "Location", icon: Icons.place,controller: _addressController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Location' : null, ),
                       _textInput(hint: "Charges", icon: Icons.price_change,controller: _chargesController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your charges' : null, ),
 
-                      SizedBox(height: 5.0,),
                       Container(
-                        margin: EdgeInsets.only(top: 20),
+                        margin: EdgeInsets.only(top: 5),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                           color: Colors.white,
@@ -158,37 +235,45 @@ class _RegisterSellerState extends State<RegisterSeller> {
                             print('On Saved: $number');
                           },
                         ),),
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 180,
+                            child:  _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,
+                                validator: (val) {
+                                  if (val.trim().isEmpty) {
+                                    return 'This field is required';
+                                  }
+                                  if(val.length < 8){
+                                    return 'Enter a password 8+ chars long';
+                                  }if((!val.contains(RegExp(r'[a-z]')))){
+                                    return 'Password must have lower case';
 
+                                  }
+                                  if((!val.contains(RegExp(r'[A-Z]')))){
+                                    return 'Password must have at least one uppercase';
 
-                      _textInput(hint: "Password", icon: Icons.vpn_key,controller: _passwordController,obscure: true,
-                          validator: (val) {
-                            if (val.trim().isEmpty) {
-                              return 'This field is required';
-                            }
-                            if(val.length < 8){
-                              return 'Enter a password 8+ chars long';
-                            }if((!val.contains(RegExp(r'[a-z]')))){
-                              return 'Password must have lower case';
+                                  }
+                                  if((!val.contains(RegExp(r'[0-9]')))){
+                                    return 'Password must have one number';
 
-                            }
-                            if((!val.contains(RegExp(r'[A-Z]')))){
-                              return 'Password must have at least one uppercase';
-
-                            }
-                            if((!val.contains(RegExp(r'[0-9]')))){
-                              return 'Password must have one number';
-
-                            }
-                            return null;
-                          }),
-                      _textInput(hint: "Confirm Password", icon: Icons.vpn_key,controller: _confirmpasswordController,obscure: true,
-                        validator: (val) {
-                          if (val.isEmpty)
-                            return 'Enter a password 8+ chars long';
-                          if (val != _passwordController.text)
-                            return 'Password Do Not Match';
-                          return null;
-                        },),
+                                  }
+                                  return null;
+                                }),
+                          ),
+                          SizedBox(
+                            width: 180,
+                            child:  _textInput(hint: "Confirm Password", icon: Icons.vpn_key,controller: _confirmpasswordController,obscure: true,
+                              validator: (val) {
+                                if (val.isEmpty)
+                                  return 'Enter a password 8+ chars long';
+                                if (val != _passwordController.text)
+                                  return 'Password Do Not Match';
+                                return null;
+                              },),
+                          )
+                        ],
+                      ),
                       SizedBox(height: 10.0,),
 
                       ButtonWidget(
@@ -265,8 +350,8 @@ class _RegisterSellerState extends State<RegisterSeller> {
       'email' : _emailController.text,
       'password' : _passwordController.text,
       'phone' : phone,
-      'user_role':'Doctor',
-      'no_id':'1250',
+      'user_role': dropdownvalue.toString(),
+      'no_id':_idController.text,
       'address' : _addressController.text,
       'location':_currentLocation.toString(),
       'license' : _licenseController.text,
@@ -274,7 +359,7 @@ class _RegisterSellerState extends State<RegisterSeller> {
       'postalcode':_currentPostalCode.toString(),
       'country':_currentCountry.toString()
     };
-
+    print(data['user_role']);
     var res = await CallApi().postData(data, '/auth/register');
     var body = json.decode(res.body);
     if (res.statusCode == 200) {
@@ -282,7 +367,7 @@ class _RegisterSellerState extends State<RegisterSeller> {
       localStorage.setString('token', body['data']['token']);
       print(body['data']['token']);
       localStorage.setString('user', json.encode(body['data']['user']));
-      String user_role = widget.userType.toString();
+      String user_role = dropdownvalue.toString();
       if(user_role == "doctor"){
         Navigator.push(
             context,
@@ -313,7 +398,7 @@ class HeaderContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.3,
+      height: MediaQuery.of(context).size.height * 0.25,
       decoration: BoxDecoration(
           gradient: LinearGradient(
               colors: [orangeColors, orangeLightColors],

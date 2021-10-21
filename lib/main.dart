@@ -64,8 +64,6 @@ class _MyAppState extends State<MyApp> {
       return Login();
     }
   }
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -73,7 +71,6 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         body: _isLoggedIn ? checkUserType(): Login(),
       ),
-
     );
   }
 }
