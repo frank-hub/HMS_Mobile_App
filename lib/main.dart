@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hms/authenticate/login.dart';
 import 'package:hms/payment/paymentmethod.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
+import 'package:hms/screens/labaratory/labhome.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:hms/screens/patient/revHomePage.dart';
 import 'package:hms/screens/splashscreen.dart';
@@ -45,6 +46,10 @@ class _MyAppState extends State<MyApp> {
   checkUserType(){
     if(user_role=="doctor"){
       return HomeScreenDoctor();
+    }else if(user_role=="laboratory"){
+      return LabHome();
+    }else if(user_role=="pharmacy"){
+      return LabHome();
     }
     else{
       return PatientHome();

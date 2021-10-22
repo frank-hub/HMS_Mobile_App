@@ -6,7 +6,11 @@ import 'package:hms/api/api.dart';
 import 'package:hms/authenticate/login.dart';
 import 'package:hms/screens/doctor/doctorslist.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
+import 'package:hms/screens/labaratory/labhome.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
+import 'package:hms/screens/patient/revDoctor.dart';
+import 'package:hms/screens/patient/revHomePage.dart';
+import 'package:hms/screens/pharmacy/HomeScreenPharmacy.dart';
 import 'package:hms/shared/loading.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
@@ -347,18 +351,18 @@ class _RegisterSellerState extends State<RegisterSeller> {
     });
 
     var data = {
-      'name' : _nameController.text,
-      'email' : _emailController.text,
-      'password' : _passwordController.text,
-      'phone' : phone,
+      'name': _nameController.text,
+      'email': _emailController.text,
+      'password': _passwordController.text,
+      'phone': phone,
       'user_role': dropdownvalue.toString(),
-      'no_id':_idController.text,
-      'address' : _addressController.text,
-      'location':_currentLocation.toString(),
-      'license' : _licenseController.text,
-      'charges' : _chargesController.text,
-      'postalcode':_currentPostalCode.toString(),
-      'country':_currentCountry.toString()
+      'no_id': _idController.text,
+      'address': _addressController.text,
+      'location': _currentLocation.toString(),
+      'license': _licenseController.text,
+      'charges': _chargesController.text,
+      'postalcode': _currentPostalCode.toString(),
+      'country': _currentCountry.toString()
     };
     print(data['user_role']);
     var res = await CallApi().postData(data, '/auth/register');
@@ -369,27 +373,35 @@ class _RegisterSellerState extends State<RegisterSeller> {
       print(body['data']['token']);
       localStorage.setString('user', json.encode(body['data']['user']));
       String user_role = dropdownvalue.toString();
-      if(user_role == "doctor"){
+      if (user_role == "Doctor") {
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => HomeScreenDoctor()));
-
-      }else{
+                builder: (context) => RevDoctor()));
+      } else if (user_role == "Pharmacy") {
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => HomeScreen()));
+                builder: (context) => HomeScreenPharmacy()));
+      } else if (user_role == "Laboratory") {
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => LabHome()));
       }
-
+      else {
+        Navigator.push(
+            context,
+            new MaterialPageRoute(
+                builder: (context) => PatientHome()));
+      }
     }
-    else{
-      msgStatus="Invalid Credentials";
+    else {
+      msgStatus = "Invalid Credentials";
     }
     setState(() {
       loading = false;
     });
-
   }
 }
 class HeaderContainer extends StatelessWidget {
