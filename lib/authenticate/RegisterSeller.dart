@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hms/api/api.dart';
 import 'package:hms/authenticate/login.dart';
+import 'package:hms/screens/doctor/doctorslist.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:hms/shared/loading.dart';
