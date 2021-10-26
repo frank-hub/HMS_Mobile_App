@@ -9,20 +9,19 @@ import 'package:hms/payment/paymentmethod.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-class DoctorDetails extends StatefulWidget {
+class LabDetails extends StatefulWidget {
   final id;
   final name;
-  final category;
   final charges;
   final location;
 
-  DoctorDetails(this.id,this.name,this.category,this.location,this.charges);
+  LabDetails(this.id,this.name,this.location,this.charges);
 
   @override
-  DoctorDetailsState createState() => DoctorDetailsState();
+  LabDetailsState createState() => LabDetailsState();
 }
 
-class DoctorDetailsState extends State<DoctorDetails> {
+class LabDetailsState extends State<LabDetails> {
 
 
   final primary = Color(0xff291747);
@@ -121,21 +120,7 @@ class DoctorDetailsState extends State<DoctorDetails> {
                           SizedBox(
                             height: 4,
                           ),
-                          Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.school,
-                                color: secondary,
-                                size: 20,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(widget.category,
-                                  style: TextStyle(
-                                      color: primary, fontSize: 13, letterSpacing: .3)),
-                            ],
-                          ),
+
                           SizedBox(
                             height: 3,
                           ),
@@ -365,7 +350,7 @@ class DoctorDetailsState extends State<DoctorDetails> {
                           }
                         },
                         child: Text(
-                          "Book Appointment",
+                          "Book Lab Appointment",
                           style: GoogleFonts.lato(
                             color: Colors.white,
                             fontSize: 18,
@@ -393,15 +378,14 @@ class DoctorDetailsState extends State<DoctorDetails> {
       'uid': userData['id'],
       'name' : userData['name'],
       'phone' : userData['phone'],
-      'doctor_id' : widget.id,
-      'doctor_name' : widget.name,
-      'description' : _descriptionController.text,
+      'location' : widget.location,
+      'lab_name' : widget.name,
       'date' :  _dateController.text,
       'time' : _timeController.text,
 
     };
 
-    var res = await CallApi().postData(data, '/booking/store');
+    var res = await CallApi().postData(data, '/labbooking/store');
     print(data);
     var body = json.decode(res.body);
 
@@ -411,7 +395,7 @@ class DoctorDetailsState extends State<DoctorDetails> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: new Text("Alert!!"),
-            content: new Text("Appointment Booked Successfully!"),
+            content: new Text("Lab Booking Successfully!"),
             actions: <Widget>[
               new FlatButton(
                 child: new Text("OK"),
@@ -428,11 +412,11 @@ class DoctorDetailsState extends State<DoctorDetails> {
           (context) => PaymentMethod(name:widget.name,charges: widget.charges,)
       ));
 
-    setState(() {
-      loading = false;
-    });
+      setState(() {
+        loading = false;
+      });
 
-  }
+    }
   }
 
 }

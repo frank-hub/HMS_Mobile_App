@@ -20,8 +20,9 @@ class _TestState extends State<Test> {
   Future<Null> getUserDetails() async {
     _userDetails.clear();
     _searchResult.clear();
-    final response = await http.get(Uri.parse(url));
+    final response = await http.get(Uri.parse(_url));
     final responseJson = json.decode(response.body);
+    print(responseJson);
     TextStyle(color: Colors.black, fontSize: 18);
 
 
@@ -58,7 +59,7 @@ class _TestState extends State<Test> {
                     title: new TextField(
                       controller: controller,
                       decoration: new InputDecoration(
-                          hintText: 'Search', border: InputBorder.none),
+                          hintText: 'Search Tobutuu', border: InputBorder.none),
                       onChanged: onSearchTextChanged,
                     ),
                     trailing: new IconButton(icon: new Icon(Icons.cancel), onPressed: () {
@@ -77,7 +78,7 @@ class _TestState extends State<Test> {
                   return new GestureDetector(
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder:
-                            (context) => DoctorDetails(_searchResult[i].id,_searchResult[i].name,_searchResult[i].category,_searchResult[i].location)
+                            (context) => DoctorDetails(_searchResult[i].id,_searchResult[i].name,_searchResult[i].category,_searchResult[i].location,_searchResult[i].charges)
                         ));
                       },
                       child:Container(
@@ -166,7 +167,7 @@ class _TestState extends State<Test> {
                   return new GestureDetector(
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder:
-                            (context) => DoctorDetails(_userDetails[index].id,_userDetails[index].name,_userDetails[index].category,_userDetails[index].location)
+                            (context) => DoctorDetails(_userDetails[index].id,_userDetails[index].name,_userDetails[index].category,_userDetails[index].location,_userDetails[index].charges)
                         ));
                       },
                       child:Container(
@@ -240,6 +241,21 @@ class _TestState extends State<Test> {
                                               color: primary, fontSize: 13, letterSpacing: .3)),
                                     ],
                                   ),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.credit_card,
+                                        color: secondary,
+                                        size: 20,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(_userDetails[index].charges,
+                                          style: TextStyle(
+                                              color: primary, fontSize: 13, letterSpacing: .3)),
+                                    ],
+                                  ),
                                 ],
                               ),
                             )
@@ -276,12 +292,12 @@ List<UserDetails> _searchResult = [];
 
 List<UserDetails> _userDetails = [];
 
-final String url = 'https://hms.horebinsurance.co.ke/api/doctors/all';
+final String _url = 'http://192.168.43.77:8000/api/doctors/all';
 class UserDetails {
   final int id;
-  final String name, email,category, profileUrl;
+  final String name, email,category,charges ,profileUrl;
   final String ? location;
-  UserDetails({required this.id, required this.name, required this.email,required this.location ,required this.category, this.profileUrl = 'http://pngimg.com/uploads/doctor/doctor_PNG15988.png'});
+  UserDetails({required this.id, required this.name, required this.email,required this.location ,required this.category,required this.charges, this.profileUrl = 'http://pngimg.com/uploads/doctor/doctor_PNG15988.png'});
 
   factory UserDetails.fromJson(Map<String, dynamic> json) {
     return new UserDetails(
@@ -289,6 +305,7 @@ class UserDetails {
       name: json['name'],
       email: json['email'],
       location: json['location'],
+      charges: json['charges'],
       category: json['category'],
     );
   }

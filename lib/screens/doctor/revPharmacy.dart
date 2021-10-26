@@ -105,9 +105,9 @@ class _RevPharmacyState extends State<RevPharmacy> {
                 itemBuilder: (context, i) {
                   return new GestureDetector(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder:
-                            (context) => DoctorDetails(_searchResult[i].id,_searchResult[i].name,_searchResult[i].category,_searchResult[i].location)
-                        ));
+                        // Navigator.push(context, MaterialPageRoute(builder:
+                        //     (context) => DoctorDetails(_searchResult[i].id,_searchResult[i].name,_searchResult[i].category,_searchResult[i].location)
+                        // ));
                       },
                       child:Container(
                         decoration: BoxDecoration(
@@ -194,9 +194,9 @@ class _RevPharmacyState extends State<RevPharmacy> {
                 itemBuilder: (context, index) {
                   return new GestureDetector(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder:
-                            (context) => DoctorDetails(_userDetails[index].id,_userDetails[index].name,_userDetails[index].category,_userDetails[index].location)
-                        ));
+                        // Navigator.push(context, MaterialPageRoute(builder:
+                        //     (context) => DoctorDetails(_userDetails[index].id,_userDetails[index].name,_userDetails[index].category,_userDetails[index].location)
+                        // ));
                       },
                       child:Container(
                         decoration: BoxDecoration(

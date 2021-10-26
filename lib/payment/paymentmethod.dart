@@ -4,7 +4,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hms/shared/RadioButton/radio_option.dart';
 import 'package:intl/intl.dart';
 class PaymentMethod extends StatefulWidget {
-  const PaymentMethod({Key? key}) : super(key: key);
+  final charges;
+  final name;
+  const PaymentMethod({Key? key, this.charges, this.name}) : super(key: key);
 
   @override
   _PaymentMethodState createState() => _PaymentMethodState();
@@ -190,7 +192,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
   Widget PaymentSuccessDialog() {
     return Center(
       child: SizedBox(
-        height: 390,
+        height: 420,
         child: Dialog(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -232,7 +234,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                         ),
                         Text("HMS"),
                         Text(
-                          "hms.payment@gmail.com",
+                          widget.name,
                           style: subtitle,
                         ),
                       ],
@@ -254,7 +256,7 @@ class _PaymentMethodState extends State<PaymentMethod> {
                           "AMOUNT",
                           style: label,
                         ),
-                        Text("\$ 15000"),
+                        Text("\$ "+widget.charges),
                       ],
                     ),
                     Text(
@@ -284,11 +286,36 @@ class _PaymentMethodState extends State<PaymentMethod> {
                             "Account No: ***5",
                             style: subtitle,
                           ),
+
                         ],
+
                       )
                     ],
                   ),
-                )
+                ),     InkWell(
+                  child: Container(
+                    padding: EdgeInsets.only(top: 15.0,bottom:15.0),
+                    decoration: BoxDecoration(
+                      color:Colors.green,
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(16.0),
+                          bottomRight: Radius.circular(16.0)),
+                    ),
+                    child:  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        "OK",
+                        style: TextStyle(color: Colors.white,fontSize: 25.0),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+
+                ),
+
+
               ],
             ),
           ),
