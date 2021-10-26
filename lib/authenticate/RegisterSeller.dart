@@ -8,7 +8,6 @@ import 'package:hms/screens/doctor/doctorslist.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
 import 'package:hms/screens/labaratory/labhome.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
-import 'package:hms/screens/patient/revDoctor.dart';
 import 'package:hms/screens/patient/revHomePage.dart';
 import 'package:hms/screens/pharmacy/HomeScreenPharmacy.dart';
 import 'package:hms/shared/loading.dart';
@@ -377,7 +376,7 @@ class _RegisterSellerState extends State<RegisterSeller> {
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => RevDoctor()));
+                builder: (context) => HomeScreenDoctor()));
       } else if (user_role == "Pharmacy") {
         Navigator.push(
             context,

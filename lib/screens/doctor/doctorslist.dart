@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:hms/api/api.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:hms/screens/doctor/doctor_details.dart';
 
-import 'doctor_details.dart';
-
-class Test extends StatefulWidget {
+class DoctorsList extends StatefulWidget {
   @override
-  _TestState createState() => new _TestState();
+  _DoctorsListState createState() => new _DoctorsListState();
 }
 
-class _TestState extends State<Test> {
+class _DoctorsListState extends State<DoctorsList> {
   TextEditingController controller = new TextEditingController();
   final TextStyle dropdownMenuItem =
   TextStyle(color: Colors.black, fontSize: 18);
@@ -20,9 +20,8 @@ class _TestState extends State<Test> {
   Future<Null> getUserDetails() async {
     _userDetails.clear();
     _searchResult.clear();
-    final response = await http.get(Uri.parse(_url));
+    final response = await CallApi().getData('/doctors/all');
     final responseJson = json.decode(response.body);
-    print(responseJson);
     TextStyle(color: Colors.black, fontSize: 18);
 
 
@@ -46,7 +45,29 @@ class _TestState extends State<Test> {
   Widget build(BuildContext context) {
     return new Scaffold(
       backgroundColor: Color(0xfff0f0f0),
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.only(right: 210.0,bottom: 30.0),
+        child: GestureDetector(
+          child: Text("Need Help (Helpline)",
+            style: TextStyle(
+              color:Colors.brown,
+              fontStyle: FontStyle.italic,
+              fontSize: 18,
+            ),
+          ),
+        ),
+
+      ),
+      appBar: AppBar(
+        toolbarHeight: 100,
+        title: Center(
+          child: Image.asset("assets/images/logo.png",
+            height: 150,
+          ),
+        ),
+      ),
       body: Container(
+
         padding: EdgeInsets.all(12),
         child: new Column(
           children: <Widget>[
@@ -59,7 +80,7 @@ class _TestState extends State<Test> {
                     title: new TextField(
                       controller: controller,
                       decoration: new InputDecoration(
-                          hintText: 'Search Tobutuu', border: InputBorder.none),
+                          hintText: 'Search', border: InputBorder.none),
                       onChanged: onSearchTextChanged,
                     ),
                     trailing: new IconButton(icon: new Icon(Icons.cancel), onPressed: () {
@@ -67,6 +88,15 @@ class _TestState extends State<Test> {
                       onSearchTextChanged('');
                     },),
                   ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(12),
+              child: Text("Advertisement",
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -87,7 +117,7 @@ class _TestState extends State<Test> {
                           color: Colors.white,
                         ),
                         width: double.infinity,
-                        height: 110,
+                        height: 115,
                         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                         child: Row(
@@ -117,7 +147,7 @@ class _TestState extends State<Test> {
                                         fontSize: 18),
                                   ),
                                   SizedBox(
-                                    height: 6,
+                                    height: 5,
                                   ),
                                   Row(
                                     children: <Widget>[
@@ -127,7 +157,7 @@ class _TestState extends State<Test> {
                                         size: 20,
                                       ),
                                       SizedBox(
-                                        width: 5,
+                                        width: 4,
                                       ),
                                       Text(_searchResult[i].location.toString(),
                                           style: TextStyle(
@@ -135,7 +165,7 @@ class _TestState extends State<Test> {
                                     ],
                                   ),
                                   SizedBox(
-                                    height: 6,
+                                    height: 5,
                                   ),
                                   Row(
                                     children: <Widget>[
@@ -148,6 +178,21 @@ class _TestState extends State<Test> {
                                         width: 5,
                                       ),
                                       Text(_searchResult[i].category,
+                                          style: TextStyle(
+                                              color: primary, fontSize: 13, letterSpacing: .3)),
+                                    ],
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.credit_card,
+                                        color: secondary,
+                                        size: 20,
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(_searchResult[i].charges,
                                           style: TextStyle(
                                               color: primary, fontSize: 13, letterSpacing: .3)),
                                     ],
@@ -176,7 +221,7 @@ class _TestState extends State<Test> {
                           color: Colors.white,
                         ),
                         width: double.infinity,
-                        height: 110,
+                        height: 115,
                         margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                         child: Row(
@@ -292,7 +337,7 @@ List<UserDetails> _searchResult = [];
 
 List<UserDetails> _userDetails = [];
 
-final String _url = 'http://192.168.43.77:8000/api/doctors/all';
+
 class UserDetails {
   final int id;
   final String name, email,category,charges ,profileUrl;

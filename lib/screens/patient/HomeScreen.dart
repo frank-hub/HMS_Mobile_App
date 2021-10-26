@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final List<Widget> _children = [
     HomeWidget(),
-    Test(),
+  //  RevDoctor(),
     HomeScreenPharmacy(),
     BookingAppointment(),
 

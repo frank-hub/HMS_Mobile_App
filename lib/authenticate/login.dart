@@ -10,8 +10,6 @@ import 'package:hms/authenticate/register.dart';
 import 'package:hms/authenticate/usertype.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
 import 'package:hms/screens/labaratory/labhome.dart';
-import 'package:hms/screens/patient/HomeScreen.dart';
-import 'package:hms/screens/patient/revDoctor.dart';
 import 'package:hms/screens/patient/revHomePage.dart';
 import 'package:hms/screens/pharmacy/HomeScreenPharmacy.dart';
 import 'package:hms/screens/static/about.dart';
