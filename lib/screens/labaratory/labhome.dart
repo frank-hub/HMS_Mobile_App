@@ -307,7 +307,7 @@ List<UserDetails> _searchResult = [];
 
 List<UserDetails> _userDetails = [];
 
-final String url ='http://192.168.43.77:8000/api/labs';
+
 class UserDetails {
   final int id;
   final String name, email,charges, profileUrl;
