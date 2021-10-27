@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hms/api/api.dart';
 import 'package:hms/authenticate/login.dart';
+import 'package:hms/screens/doctor/BookingDetails.dart';
 import 'package:hms/screens/doctor/UpdateDetails.dart';
 import 'package:hms/screens/patient/profile.dart';
 import 'package:hms/shared/loading.dart';
@@ -289,6 +290,12 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
                 itemCount: _bookings.length,
                 itemBuilder: (context , index){
                   return new GestureDetector(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder:
+                      (context) => BookingDetails(_bookings[index].id,_bookings[index].name,
+                          _bookings[index].location,_bookings[index].date,_bookings[index].time)
+                      ));
+                    },
                     child: Card(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
