@@ -1,15 +1,17 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:hms/api/api.dart';
+import 'package:hms/screens/pharmacy/pharmacydetails.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:hms/screens/doctor/doctor_details.dart';
 
-class RevPharmacy extends StatefulWidget {
+class PharmacyList extends StatefulWidget {
   @override
-  _RevPharmacyState createState() => new _RevPharmacyState();
+  _PharmacyListState createState() => new _PharmacyListState();
 }
 
-class _RevPharmacyState extends State<RevPharmacy> {
+class _PharmacyListState extends State<PharmacyList> {
   TextEditingController controller = new TextEditingController();
   final TextStyle dropdownMenuItem =
   TextStyle(color: Colors.black, fontSize: 18);
@@ -19,7 +21,7 @@ class _RevPharmacyState extends State<RevPharmacy> {
   Future<Null> getUserDetails() async {
     _userDetails.clear();
     _searchResult.clear();
-    final response = await http.get(Uri.parse(url));
+    final response = await CallApi().getData('/pharmacies');
     final responseJson = json.decode(response.body);
     TextStyle(color: Colors.black, fontSize: 18);
 
@@ -27,7 +29,7 @@ class _RevPharmacyState extends State<RevPharmacy> {
     final primary = Color(0xff291747);
     final secondary = Color(0xff6C48AB);
     setState(() {
-      for (Map<String, dynamic> user in responseJson['doctors']) {
+      for (Map<String, dynamic> user in responseJson['pharmacy']) {
         _userDetails.add(UserDetails.fromJson(user));
 
       }
@@ -47,7 +49,7 @@ class _RevPharmacyState extends State<RevPharmacy> {
       bottomNavigationBar: Container(
         margin: const EdgeInsets.only(right: 210.0,bottom: 30.0),
         child: GestureDetector(
-          child: Text("Need Help (Helpline)",
+          child: Text("Need Help (Helpline) ",
             style: TextStyle(
               color:Colors.brown,
               fontStyle: FontStyle.italic,
@@ -105,9 +107,9 @@ class _RevPharmacyState extends State<RevPharmacy> {
                 itemBuilder: (context, i) {
                   return new GestureDetector(
                       onTap: (){
-                        // Navigator.push(context, MaterialPageRoute(builder:
-                        //     (context) => DoctorDetails(_searchResult[i].id,_searchResult[i].name,_searchResult[i].category,_searchResult[i].location)
-                        // ));
+                        Navigator.push(context, MaterialPageRoute(builder:
+                            (context) => PharmacyDetails(_searchResult[i].id,_searchResult[i].name,_searchResult[i].charges,_searchResult[i].location)
+                        ));
                       },
                       child:Container(
                         decoration: BoxDecoration(
@@ -138,7 +140,7 @@ class _RevPharmacyState extends State<RevPharmacy> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    "Dr. "+_searchResult[i].name,
+                                    _searchResult[i].name,
                                     style: TextStyle(
                                         color: primary,
                                         fontWeight: FontWeight.bold,
@@ -168,14 +170,14 @@ class _RevPharmacyState extends State<RevPharmacy> {
                                   Row(
                                     children: <Widget>[
                                       Icon(
-                                        Icons.school,
+                                        Icons.credit_card,
                                         color: secondary,
                                         size: 20,
                                       ),
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Text(_searchResult[i].category,
+                                      Text(_searchResult[i].charges,
                                           style: TextStyle(
                                               color: primary, fontSize: 13, letterSpacing: .3)),
                                     ],
@@ -194,9 +196,9 @@ class _RevPharmacyState extends State<RevPharmacy> {
                 itemBuilder: (context, index) {
                   return new GestureDetector(
                       onTap: (){
-                        // Navigator.push(context, MaterialPageRoute(builder:
-                        //     (context) => DoctorDetails(_userDetails[index].id,_userDetails[index].name,_userDetails[index].category,_userDetails[index].location)
-                        // ));
+                        Navigator.push(context, MaterialPageRoute(builder:
+                            (context) => PharmacyDetails(_userDetails[index].id,_userDetails[index].name,_userDetails[index].charges,_userDetails[index].location)
+                        ));
                       },
                       child:Container(
                         decoration: BoxDecoration(
@@ -227,7 +229,7 @@ class _RevPharmacyState extends State<RevPharmacy> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    "Dr. "+_userDetails[index].name,
+                                    _userDetails[index].name,
                                     style: TextStyle(
                                         color: primary,
                                         fontWeight: FontWeight.bold,
@@ -257,14 +259,14 @@ class _RevPharmacyState extends State<RevPharmacy> {
                                   Row(
                                     children: <Widget>[
                                       Icon(
-                                        Icons.school,
+                                        Icons.credit_card,
                                         color: secondary,
                                         size: 20,
                                       ),
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Text(_userDetails[index].category,
+                                      Text(_userDetails[index].charges,
                                           style: TextStyle(
                                               color: primary, fontSize: 13, letterSpacing: .3)),
                                     ],
@@ -293,7 +295,7 @@ class _RevPharmacyState extends State<RevPharmacy> {
     }
 
     _userDetails.forEach((userDetail) {
-      if (userDetail.name.contains(text) || userDetail.category.contains(text) || userDetail.location!.contains(text))
+      if (userDetail.name.contains(text) || userDetail.location!.contains(text))
         _searchResult.add(userDetail);
     });
 
@@ -305,12 +307,12 @@ List<UserDetails> _searchResult = [];
 
 List<UserDetails> _userDetails = [];
 
-final String url = 'https://hms.horebinsurance.co.ke/api/doctors/all';
+
 class UserDetails {
   final int id;
-  final String name, email,category, profileUrl;
+  final String name, email,charges, profileUrl;
   final String ? location;
-  UserDetails({required this.id, required this.name, required this.email,required this.location ,required this.category, this.profileUrl = 'http://pngimg.com/uploads/doctor/doctor_PNG15988.png'});
+  UserDetails({required this.id, required this.name, required this.email,required this.location ,required this.charges, this.profileUrl = 'http://pngimg.com/uploads/doctor/doctor_PNG15988.png'});
 
   factory UserDetails.fromJson(Map<String, dynamic> json) {
     return new UserDetails(
@@ -318,7 +320,7 @@ class UserDetails {
       name: json['name'],
       email: json['email'],
       location: json['location'],
-      category: json['category'],
+      charges: json['charges'],
     );
   }
 
