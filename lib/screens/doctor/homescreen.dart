@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hms/api/api.dart';
 import 'package:hms/authenticate/login.dart';
 import 'package:hms/screens/doctor/UpdateDetails.dart';
 import 'package:hms/screens/patient/profile.dart';
@@ -15,11 +16,15 @@ class HomeScreenDoctor extends StatefulWidget {
 
 class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
   var userData;
+  String totalPatient = "";
+  String appointment = "";
   @override
   void initState() {
     _getUserInfo();
+    getBookingDetails();
     super.initState();
   }
+  
   String greeting() {
     var hour = DateTime.now().hour;
     if (hour < 12) {
@@ -31,7 +36,6 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
     return ' Evening';
   }
 
-
   void _getUserInfo() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var userJson = localStorage.getString('user');
@@ -42,6 +46,25 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
     });
 
   }
+  List<Booking> _bookings = [];
+  Future<Null> getBookingDetails() async {
+    final response = await CallApi().getData('/booking/my_bookings/');
+    final responseJson = json.decode(response.body);
+
+    final count_response = await CallApi().getData('/count/activities/');
+    final countJson = json.decode(count_response.body);
+    setState(() {
+      for (Map<String, dynamic> booking in responseJson['bookings']){
+        _bookings.add(Booking.fromJson(booking));
+      }
+
+      totalPatient = countJson['patient'].toString();
+      appointment = countJson['bookings'].toString();
+    });
+
+  }
+
+  
   set __isLoggedIn(bool __isLoggedIn) {}
 
   logout()  async {
@@ -177,7 +200,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
                         TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "58",
+                        totalPatient,
                         textAlign: TextAlign.center,
                         style:
                         TextStyle(fontWeight: FontWeight.bold),
@@ -205,7 +228,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
                         TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "448",
+                        appointment,
                         textAlign: TextAlign.center,
                         style:
                         TextStyle(fontWeight: FontWeight.bold),
@@ -262,181 +285,31 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
               ),
             ),
             Expanded(
-              child: ListView(
+              child: ListView.builder(
+                itemCount: _bookings.length,
+                itemBuilder: (context , index){
+                  return new GestureDetector(
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(_bookings[index].name),
+                            Text(_bookings[index].location.toString()),
+                            Text(_bookings[index].date),
+                            Text(_bookings[index].time),
+                            FaIcon(FontAwesomeIcons.check,
+                              size: 25,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                children: [
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Shopie "),
-                          Text("Djibouti"),
-                          Text("24/56/2021"),
-                          Text("6:40 AM"),
-                          FaIcon(FontAwesomeIcons.check,
-                            size: 25,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Shopie "),
-                          Text("Djibouti"),
-                          Text("24/56/2021"),
-                          Text("6:40 AM"),
-                          FaIcon(FontAwesomeIcons.check,
-                            size: 25,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Shopie "),
-                          Text("Djibouti"),
-                          Text("24/56/2021"),
-                          Text("6:40 AM"),
-                          FaIcon(FontAwesomeIcons.check,
-                            size: 25,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Shopie "),
-                          Text("Djibouti"),
-                          Text("24/56/2021"),
-                          Text("6:40 AM"),
-                          FaIcon(FontAwesomeIcons.check,
-                            size: 25,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Shopie "),
-                          Text("Djibouti"),
-                          Text("24/56/2021"),
-                          Text("6:40 AM"),
-                          FaIcon(FontAwesomeIcons.check,
-                            size: 25,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Shopie "),
-                          Text("Djibouti"),
-                          Text("24/56/2021"),
-                          Text("6:40 AM"),
-                          FaIcon(FontAwesomeIcons.check,
-                            size: 25,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Shopie "),
-                          Text("Djibouti"),
-                          Text("24/56/2021"),
-                          Text("6:40 AM"),
-                          FaIcon(FontAwesomeIcons.check,
-                            size: 25,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Shopie "),
-                          Text("Djibouti"),
-                          Text("24/56/2021"),
-                          Text("6:40 AM"),
-                          FaIcon(FontAwesomeIcons.check,
-                            size: 25,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Shopie "),
-                          Text("Djibouti"),
-                          Text("24/56/2021"),
-                          Text("6:40 AM"),
-                          FaIcon(FontAwesomeIcons.check,
-                            size: 25,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text("Shopie "),
-                          Text("Djibouti"),
-                          Text("24/56/2021"),
-                          Text("6:40 AM"),
-                          FaIcon(FontAwesomeIcons.check,
-                            size: 25,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
               ),
             )
           ],
@@ -444,4 +317,22 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
       ),
     );
   }
+}
+class Booking {
+
+  final int id;
+  final String name, date,time;
+  final String ? location;
+  Booking({required this.id, required this.name, required this.date, this.location = 'Kuwait' ,required this.time});
+
+  factory Booking.fromJson(Map<String, dynamic> json) {
+    return new Booking(
+      id: json['id'],
+      name: json['name'],
+      date: json['date'],
+      location: json['location'],
+      time: json['time'],
+    );
+  }
+
 }

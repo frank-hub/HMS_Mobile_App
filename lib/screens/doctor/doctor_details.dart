@@ -396,6 +396,7 @@ class DoctorDetailsState extends State<DoctorDetails> {
       'doctor_id' : widget.id,
       'doctor_name' : widget.name,
       'description' : _descriptionController.text,
+      'location' : widget.location,
       'date' :  _dateController.text,
       'time' : _timeController.text,
 
