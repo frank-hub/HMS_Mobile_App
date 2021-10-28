@@ -7,6 +7,7 @@ import 'package:hms/screens/doctor/homescreen.dart';
 import 'package:hms/screens/labaratory/labhome.dart';
 import 'package:hms/screens/patient/HomeScreen.dart';
 import 'package:hms/screens/patient/revHomePage.dart';
+import 'package:hms/screens/pharmacy/HomeScreenPharmacy.dart';
 import 'package:hms/screens/splashscreen.dart';
 import 'package:is_first_run/is_first_run.dart';
 
@@ -49,7 +50,7 @@ class _MyAppState extends State<MyApp> {
     }else if(user_role=="Laboratory"){
       return LabHome();
     }else if(user_role=="Pharmacy"){
-      return LabHome();
+      return HomeScreenPharmacy();
     }
     else{
       return PatientHome();

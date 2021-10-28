@@ -55,7 +55,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
     print(response.body.toString());
     final responseJson = json.decode(response.body);
 
-    final count_response = await CallApi().getData('/count/activities/');
+    final count_response = await CallApi().getData('/count/doctor_activities/');
     final countJson = json.decode(count_response.body);
     setState(() {
       for (Map<String, dynamic> booking in responseJson['bookings']){

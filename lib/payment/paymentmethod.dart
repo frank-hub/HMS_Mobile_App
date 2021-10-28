@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hms/screens/patient/revHomePage.dart';
 import 'package:hms/shared/RadioButton/radio_option.dart';
 import 'package:intl/intl.dart';
 class PaymentMethod extends StatefulWidget {
@@ -303,7 +304,9 @@ class _PaymentMethodState extends State<PaymentMethod> {
                     ),
                     child:  TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        Navigator.pop(context,MaterialPageRoute(
+                          builder:(context )=>PatientHome()
+                        ));
                       },
                       child: Text(
                         "OK",
