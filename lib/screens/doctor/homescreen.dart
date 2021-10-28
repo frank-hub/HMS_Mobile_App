@@ -24,7 +24,6 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
   @override
   void initState() {
     getUserInfo();
-    getBookingDetails();
     super.initState();
 
   }
@@ -40,25 +39,19 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
     return ' Evening';
   }
 
-  void getUserInfo() async {
+   getUserInfo() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var userJson = localStorage.getString('user');
     var user = json.decode(userJson!);
     setState(() {
       userData = user;
-
     });
-    doc_id = userData['id'].toString();
-    print(doc_id);
-  }
+    print(userData['id'].toString());
+    return getBookingDetails(userData['id'].toString());
+   }
   List<Booking> _bookings = [];
-  void getBookingDetails() async {
-    // var data = {
-    //   'uid' : userData['id'].toString(),
-    // };
-    // //progress.imework?
-    // print( userData['id'].toString());
-    final response = await CallApi().getData('/booking/my_bookings/'+userData['id'].toString());
+  void getBookingDetails(id) async {
+    final response = await CallApi().getData('/booking/my_bookings/'+id);
     print(response.body.toString());
     final responseJson = json.decode(response.body);
 
@@ -68,7 +61,6 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
       for (Map<String, dynamic> booking in responseJson['bookings']){
         _bookings.add(Booking.fromJson(booking));
       }
-
       totalPatient = countJson['patient'].toString();
       appointment = countJson['bookings'].toString();
       approvedBooking = countJson['approved'].toString();
