@@ -19,11 +19,14 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
   var userData;
   String totalPatient = "";
   String appointment = "";
+  String approvedBooking = "";
+  var  doc_id ;
   @override
   void initState() {
-    _getUserInfo();
+    getUserInfo();
     getBookingDetails();
     super.initState();
+
   }
   
   String greeting() {
@@ -37,7 +40,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
     return ' Evening';
   }
 
-  void _getUserInfo() async {
+  void getUserInfo() async {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var userJson = localStorage.getString('user');
     var user = json.decode(userJson!);
@@ -45,11 +48,18 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
       userData = user;
 
     });
-
+    doc_id = userData['id'].toString();
+    print(doc_id);
   }
   List<Booking> _bookings = [];
-  Future<Null> getBookingDetails() async {
-    final response = await CallApi().getData('/booking/my_bookings/');
+  void getBookingDetails() async {
+    // var data = {
+    //   'uid' : userData['id'].toString(),
+    // };
+    // //progress.imework?
+    // print( userData['id'].toString());
+    final response = await CallApi().getData('/booking/my_bookings/'+userData['id'].toString());
+    print(response.body.toString());
     final responseJson = json.decode(response.body);
 
     final count_response = await CallApi().getData('/count/activities/');
@@ -61,6 +71,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
 
       totalPatient = countJson['patient'].toString();
       appointment = countJson['bookings'].toString();
+      approvedBooking = countJson['approved'].toString();
     });
 
   }
@@ -257,7 +268,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
                         TextStyle(fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "58",
+                        approvedBooking,
                         textAlign: TextAlign.center,
                         style:
                         TextStyle(fontWeight: FontWeight.bold),
@@ -306,9 +317,12 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
                             Text(_bookings[index].location.toString()),
                             Text(_bookings[index].date),
                             Text(_bookings[index].time),
-                            FaIcon(FontAwesomeIcons.check,
-                              size: 25,
-                            ),
+                            Container(
+                              child: (_bookings[index].status == 1)
+                                  ? FaIcon(FontAwesomeIcons.check, size: 25,)
+                                  : FaIcon(FontAwesomeIcons.hourglass, size: 25,)
+                            )
+
                           ],
                         ),
                       ),
@@ -327,14 +341,15 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
 }
 class Booking {
 
-  final int id;
+  final int id , status;
   final String name, date,time;
   final String ? location;
-  Booking({required this.id, required this.name, required this.date, this.location = 'Kuwait' ,required this.time});
+  Booking({required this.id,required this.status, required this.name, required this.date, this.location = 'Kuwait' ,required this.time});
 
   factory Booking.fromJson(Map<String, dynamic> json) {
     return new Booking(
       id: json['id'],
+      status: json['status'],
       name: json['name'],
       date: json['date'],
       location: json['location'],

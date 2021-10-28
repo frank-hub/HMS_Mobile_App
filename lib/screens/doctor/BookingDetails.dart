@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hms/api/api.dart';
+import 'package:hms/screens/doctor/homescreen.dart';
 
 class BookingDetails extends StatefulWidget {
   // const BookingDetails({Key? key}) : super(key: key);
@@ -27,7 +29,9 @@ class _BookingDetailsState extends State<BookingDetails> {
         margin: EdgeInsets.only(bottom: 10),
         height: 70,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            _approveBooking();
+          },
           child: Text('Approve Appointment'),
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
@@ -114,5 +118,15 @@ class _BookingDetailsState extends State<BookingDetails> {
         )
       ),
     );
+  }
+  void _approveBooking() async {
+    var res = await CallApi().updateBooking('/booking/status/'+widget.id.toString());
+    if(res.statusCode == 200){
+      Navigator.push(context, MaterialPageRoute(builder:
+      (context) => HomeScreenDoctor()
+      ));
+    }else{
+      print("Error");
+    }
   }
 }

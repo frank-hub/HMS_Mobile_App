@@ -18,6 +18,14 @@ class CallApi{
     );
   }
 
+  updateBooking(apiUrl) async {
+    var fullUrl = _url + apiUrl;
+    return await http.get(
+        Uri.parse(fullUrl),
+        headers: _setHeaders()
+    );
+  }
+
   updateDoc(data, apiUrl) async {
     var fullUrl = _url + apiUrl + await _getToken();
     return await http.post(
