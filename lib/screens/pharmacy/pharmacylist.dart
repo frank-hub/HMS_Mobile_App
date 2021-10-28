@@ -15,6 +15,7 @@ class _PharmacyListState extends State<PharmacyList> {
   TextEditingController controller = new TextEditingController();
   final TextStyle dropdownMenuItem =
   TextStyle(color: Colors.black, fontSize: 18);
+   String discount="2S";
   final primary = Color(0xff291747);
   final secondary = Color(0xff6C48AB);
   // Get json result and convert it to model. Then add
@@ -111,77 +112,109 @@ class _PharmacyListState extends State<PharmacyList> {
                             (context) => PharmacyDetails(_searchResult[i].id,_searchResult[i].name,_searchResult[i].charges,_searchResult[i].location)
                         ));
                       },
-                      child:Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          color: Colors.white,
-                        ),
-                        width: double.infinity,
-                        height: 110,
-                        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      child:Card(
+                        elevation: 3,
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Container(
-                              width: 50,
-                              height: 50,
-                              margin: EdgeInsets.only(right: 15),
+                              height: 125,
+                              width: 110,
+                              padding:
+                              EdgeInsets.only(left: 0, top: 10, bottom: 70, right: 20),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                border: Border.all(width: 3, color: secondary),
-                                image: DecorationImage(
-                                    image: NetworkImage("http://pngimg.com/uploads/doctor/doctor_PNG15988.png"),
-                                    fit: BoxFit.fill),
+                                  image: DecorationImage(
+                                      image: NetworkImage("http://pngimg.com/uploads/doctor/doctor_PNG15988.png"), fit: BoxFit.cover)),
+                              child: discount == ""
+                                  ? Container()
+                                  : Container(
+                                color: Colors.deepOrange,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      discount,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal),
+                                    ),
+                                    Text(
+                                      "Discount",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                            Expanded(
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
                                     _searchResult[i].name,
                                     style: TextStyle(
-                                        color: primary,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
+                                        color: Colors.deepOrange,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 17),
+                                  ),
+                                  Text(
+                                    _searchResult[i].location.toString(),
+                                    style: TextStyle(fontSize: 14, color: Colors.black87),
+                                  ),
+                                  Text(
+                                    _searchResult[i].charges,
+                                    style: TextStyle(fontSize: 14, color: Colors.black87),
                                   ),
                                   SizedBox(
-                                    height: 6,
+                                    height: 10,
                                   ),
                                   Row(
                                     children: <Widget>[
                                       Icon(
-                                        Icons.location_on,
-                                        color: secondary,
-                                        size: 20,
+                                        Icons.star,
+                                        color: Colors.pink,
+                                        size: 18,
                                       ),
-                                      SizedBox(
-                                        width: 5,
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.pink,
+                                        size: 18,
                                       ),
-                                      Text(_searchResult[i].location.toString(),
-                                          style: TextStyle(
-                                              color: primary, fontSize: 13, letterSpacing: .3)),
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.pink,
+                                        size: 18,
+                                      ),
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.pink,
+                                        size: 18,
+                                      ),
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.pink,
+                                        size: 18,
+                                      ),
                                     ],
-                                  ),
-                                  SizedBox(
-                                    height: 6,
                                   ),
                                   Row(
                                     children: <Widget>[
-                                      Icon(
-                                        Icons.credit_card,
-                                        color: secondary,
-                                        size: 20,
+                                      Text(
+                                        "5",
+                                        style: TextStyle(fontSize: 13),
                                       ),
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Text(_searchResult[i].charges,
-                                          style: TextStyle(
-                                              color: primary, fontSize: 13, letterSpacing: .3)),
+                                      Text(
+                                        "Ratings",
+                                        style: TextStyle(fontSize: 13),
+                                      ),
                                     ],
-                                  ),
+                                  )
                                 ],
                               ),
                             )
@@ -200,77 +233,109 @@ class _PharmacyListState extends State<PharmacyList> {
                             (context) => PharmacyDetails(_userDetails[index].id,_userDetails[index].name,_userDetails[index].charges,_userDetails[index].location)
                         ));
                       },
-                      child:Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          color: Colors.white,
-                        ),
-                        width: double.infinity,
-                        height: 110,
-                        margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      child:Card(
+                        elevation: 3,
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Container(
-                              width: 50,
-                              height: 50,
-                              margin: EdgeInsets.only(right: 15),
+                              height: 125,
+                              width: 110,
+                              padding:
+                              EdgeInsets.only(left: 0, top: 10, bottom: 70, right: 20),
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                border: Border.all(width: 3, color: secondary),
-                                image: DecorationImage(
-                                    image: NetworkImage("http://pngimg.com/uploads/doctor/doctor_PNG15988.png"),
-                                    fit: BoxFit.fill),
+                                  image: DecorationImage(
+                                      image: NetworkImage("http://pngimg.com/uploads/doctor/doctor_PNG15988.png"), fit: BoxFit.cover)),
+                              child: discount == ""
+                                  ? Container()
+                                  : Container(
+                                color: Colors.deepOrange,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Text(
+                                      discount,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal),
+                                    ),
+                                    Text(
+                                      "Discount",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.normal),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                            Expanded(
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    _userDetails[index].name,
+                              _userDetails[index].name,
                                     style: TextStyle(
-                                        color: primary,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
+                                        color: Colors.deepOrange,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 17),
+                                  ),
+                                  Text(
+                                    _userDetails[index].location.toString(),
+                                    style: TextStyle(fontSize: 14, color: Colors.black87),
+                                  ),
+                                  Text(
+                                      _userDetails[index].charges,
+                                    style: TextStyle(fontSize: 14, color: Colors.black87),
                                   ),
                                   SizedBox(
-                                    height: 6,
+                                    height: 10,
                                   ),
                                   Row(
                                     children: <Widget>[
                                       Icon(
-                                        Icons.location_on,
-                                        color: secondary,
-                                        size: 20,
+                                        Icons.star,
+                                        color: Colors.pink,
+                                        size: 18,
                                       ),
-                                      SizedBox(
-                                        width: 5,
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.pink,
+                                        size: 18,
                                       ),
-                                      Text(_userDetails[index].location.toString(),
-                                          style: TextStyle(
-                                              color: primary, fontSize: 13, letterSpacing: .3)),
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.pink,
+                                        size: 18,
+                                      ),
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.pink,
+                                        size: 18,
+                                      ),
+                                      Icon(
+                                        Icons.star,
+                                        color: Colors.pink,
+                                        size: 18,
+                                      ),
                                     ],
-                                  ),
-                                  SizedBox(
-                                    height: 6,
                                   ),
                                   Row(
                                     children: <Widget>[
-                                      Icon(
-                                        Icons.credit_card,
-                                        color: secondary,
-                                        size: 20,
+                                      Text(
+                                        "5",
+                                        style: TextStyle(fontSize: 13),
                                       ),
                                       SizedBox(
                                         width: 5,
                                       ),
-                                      Text(_userDetails[index].charges,
-                                          style: TextStyle(
-                                              color: primary, fontSize: 13, letterSpacing: .3)),
+                                      Text(
+                                        "Ratings",
+                                        style: TextStyle(fontSize: 13),
+                                      ),
                                     ],
-                                  ),
+                                  )
                                 ],
                               ),
                             )
