@@ -46,9 +46,9 @@ class _MyAppState extends State<MyApp> {
   checkUserType(){
     if(user_role=="Doctor"){
       return HomeScreenDoctor();
-    }else if(user_role=="laboratory"){
+    }else if(user_role=="Laboratory"){
       return LabHome();
-    }else if(user_role=="pharmacy"){
+    }else if(user_role=="Pharmacy"){
       return LabHome();
     }
     else{

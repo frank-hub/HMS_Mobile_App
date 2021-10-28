@@ -27,7 +27,6 @@ class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
     if(user['user_role'].toString() == 'doctor'){
-
       return HomeScreen();
     }else{
       return HomeScreenDoctor();

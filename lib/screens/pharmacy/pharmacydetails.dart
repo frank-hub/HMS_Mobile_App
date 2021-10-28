@@ -29,9 +29,7 @@ class PharmacyDetailsState extends State<PharmacyDetails> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _doctorController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
-  final TextEditingController _timeController = TextEditingController();
+  final TextEditingController _deliveryController = TextEditingController();
 
   bool loading=false;
   final format = DateFormat("yyyy-MM-dd");
@@ -170,7 +168,7 @@ class PharmacyDetailsState extends State<PharmacyDetails> {
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        hintText: 'Description',
+                        hintText: 'Prescription Or Drug Name',
                         hintStyle: GoogleFonts.lato(
                           color: Colors.black26,
                           fontSize: 18,
@@ -187,72 +185,31 @@ class PharmacyDetailsState extends State<PharmacyDetails> {
                       alignment: Alignment.center,
                       height: 60,
                       width: MediaQuery.of(context).size.width,
-                      child: Stack(
-                        alignment: Alignment.centerRight,
-                        children: [
-                          DateTimeField(
-                            format: format,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                left: 20,
-                                top: 10,
-                                bottom: 10,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(90.0)),
-                                borderSide: BorderSide.none,
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintText: 'Select Date*',
-                              hintStyle: GoogleFonts.lato(
-                                color: Colors.black26,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                            controller: _dateController,
-                            // validator: (value) {
-                            //   if (value!.day)
-                            //     return 'Please Enter the Date';
-                            //   // return null;
-                            // },
-
-                            textInputAction: TextInputAction.next,
-                            style: GoogleFonts.lato(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                            onShowPicker: (context, currentValue) {
-                              return showDatePicker(
-                                  context: context,
-                                  firstDate: currentValue ?? DateTime.now(),
-                                  initialDate: currentValue ?? DateTime.now(),
-                                  lastDate: DateTime(2100));
-                            },
+                      child:  TextFormField(
+                        controller: _deliveryController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        style: GoogleFonts.lato(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                        decoration: InputDecoration(
+                          contentPadding:
+                          EdgeInsets.only(left: 20, top: 10, bottom: 10),
+                          border: OutlineInputBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(90.0)),
+                            borderSide: BorderSide.none,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 5.0),
-                            child: ClipOval(
-                              child: Material(
-                                color: Colors.indigo, // button color
-                                child: InkWell(
-                                  // inkwell color
-                                  child: SizedBox(
-                                    width: 40,
-                                    height: 40,
-                                    child: Icon(
-                                      Icons.date_range_outlined,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  onTap: () {
+                          filled: true,
+                          fillColor: Colors.white,
+                          hintText: 'Prescription Or Drug Name',
+                          hintStyle: GoogleFonts.lato(
+                            color: Colors.black26,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
 
-                                  },
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
+                        textInputAction: TextInputAction.next,
                       ),
                     ),
                     SizedBox(
@@ -262,73 +219,7 @@ class PharmacyDetailsState extends State<PharmacyDetails> {
                       alignment: Alignment.center,
                       height: 60,
                       width: MediaQuery.of(context).size.width,
-                      child: Stack(
-                        alignment: Alignment.centerRight,
-                        children: [
-                          DateTimeField(
-                            format: time_format,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.only(
-                                left: 20,
-                                top: 10,
-                                bottom: 10,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(90.0)),
-                                borderSide: BorderSide.none,
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintText: 'Select Time*',
-                              hintStyle: GoogleFonts.lato(
-                                color: Colors.black26,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                            controller: _timeController,
-                            // validator: (value) {
-                            //   if (value!.day)
-                            //     return 'Please Enter the Date';
-                            //   // return null;
-                            // },
 
-                            textInputAction: TextInputAction.next,
-                            style: GoogleFonts.lato(
-                                fontSize: 18, fontWeight: FontWeight.bold),
-                            onShowPicker: (context, currentValue) async {
-                              final time = await showTimePicker(
-                                context: context,
-                                initialTime: TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                              );
-                              return DateTimeField.convert(time);
-                            },
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 5.0),
-                            child: ClipOval(
-                              child: Material(
-                                color: Colors.indigo, // button color
-                                child: InkWell(
-                                  // inkwell color
-                                  child: SizedBox(
-                                    width: 40,
-                                    height: 40,
-                                    child: Icon(
-                                      Icons.timer_outlined,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  onTap: () {
-
-                                  },
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
                     ),
                     SizedBox(height: 50,),
                     Container(
@@ -345,12 +236,12 @@ class PharmacyDetailsState extends State<PharmacyDetails> {
                         ),
                         onPressed: () {
                           if(_formKey.currentState!.validate()){
-                            _handleBooking();
+                            _handleOrder();
 
                           }
                         },
                         child: Text(
-                          "Book Appointment",
+                          "Order Drugs",
                           style: GoogleFonts.lato(
                             color: Colors.white,
                             fontSize: 18,
@@ -369,7 +260,7 @@ class PharmacyDetailsState extends State<PharmacyDetails> {
     );
   }
 
-  void _handleBooking() async {
+  void _handleOrder() async {
     setState(() {
       loading = true;
     });
@@ -380,10 +271,12 @@ class PharmacyDetailsState extends State<PharmacyDetails> {
       'phone' : userData['phone'],
       'location' : widget.location,
       'pharmacy_name' : widget.name,
-      'date' :  _dateController.text,
-      'time' : _timeController.text,
-
+      'prescription' :  _descriptionController.text,
+      'delivery' :  _deliveryController.text,
     };
+
+
+
     var res = await CallApi().postData(data, '/pharmacyorder/store');
     print(data);
     var body = json.decode(res.body);
