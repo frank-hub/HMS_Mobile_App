@@ -55,7 +55,7 @@ class PharmacyDetailsState extends State<PharmacyDetails> {
     return Scaffold(
       backgroundColor: Color(0xfff0f0f0),
       appBar: AppBar(
-        title: Text("Book Appointment"),
+        title: Text("Order Drugs"),
       ),
       body: Container(
         child: ListView(
@@ -201,7 +201,7 @@ class PharmacyDetailsState extends State<PharmacyDetails> {
                           ),
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: 'Prescription Or Drug Name',
+                          hintText: 'Delivery Address',
                           hintStyle: GoogleFonts.lato(
                             color: Colors.black26,
                             fontSize: 18,
