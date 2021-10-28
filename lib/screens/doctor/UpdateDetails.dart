@@ -28,12 +28,12 @@ class _UpdateDetailsState extends State<UpdateDetails> {
   final format = DateFormat("yyyy-MM-dd");
 
   var gender = "Male";
-  var cat = "General";
+  var cat = "Emergency physicians";
   var dob = "1990-09-07";
   var userData;
   String msgStatus = '';
   void initState() {
-    _fetchJobs();
+    //_fetchJobs();
     _getUserInfo();
     super.initState();
   }
@@ -47,19 +47,18 @@ class _UpdateDetailsState extends State<UpdateDetails> {
     });
   }
 
-
-  Future<List<Doctor>> _fetchJobs() async {
-    var response = await CallApi().getData('/categories');
-    if (response.statusCode == 200) {
-      Map<String, dynamic> map = json.decode(response.body);
-
-      List<dynamic>? jsonResponse = map["cartegories"];
-      // print(jsonResponse);
-      return jsonResponse!.map((job) => new Doctor.fromJson(job)).toList();
-    } else {
-      throw Exception('Failed to load Events from API');
-    }
-  }
+  // Future<List<Doctor>> _fetchJobs() async {
+  //   var response = await CallApi().getData('/categories');
+  //   if (response.statusCode == 200) {
+  //     Map<String, dynamic> map = json.decode(response.body);
+  //
+  //     List<dynamic>? jsonResponse = map["cartegories"];
+  //     // print(jsonResponse);
+  //     return jsonResponse!.map((job) => new Doctor.fromJson(job)).toList();
+  //   } else {
+  //     throw Exception('Failed to load Events from API');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -72,24 +71,21 @@ class _UpdateDetailsState extends State<UpdateDetails> {
           Color(0xFF5A54C4),
           Color(0xFF5B55BE),
         ])),
-        child: FutureBuilder<List<Doctor>>(
-          future: _fetchJobs(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              List<Doctor>? data = snapshot.data;
-              return Column(
+        child:  Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(
                       height: 50,
                     ),
-                    Text(msgStatus,style: TextStyle(color: Colors.red),),
+                    Text(
+                      msgStatus,
+                      style: TextStyle(color: Colors.red),
+                    ),
                     Padding(
                       padding: EdgeInsets.all(20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-
                           SizedBox(
                             height: 10,
                           ),
@@ -105,7 +101,7 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                       padding: EdgeInsets.all(15),
                       decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.all(  Radius.circular(40))),
+                          borderRadius: BorderRadius.all(Radius.circular(40))),
                       child: ListView(
                         shrinkWrap: true,
                         children: [
@@ -212,14 +208,26 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                                             style:
                                                 TextStyle(color: Colors.black),
 
-                                            items: data!.map((value) {
+                                            items: <String>[
+                                              'Family physicians',
+                                              'Internists',
+                                              'Emergency physicians',
+                                              'Psychiatrists',
+                                              'Obstetricians and gynecologists',
+                                              'Neurologists',
+                                              'Radiologists'
+                                              'Anesthesiologists',
+                                              'Pediatricians',
+                                              'Cardiologists'
+                                            ].map<DropdownMenuItem<String>>(
+                                                (String value) {
                                               return DropdownMenuItem<String>(
-                                                value: value.name,
-                                                child: Text(value.name),
+                                                value: value,
+                                                child: Text(value),
                                               );
                                             }).toList(),
                                             hint: Text(
-                                              "Please Your Gender",
+                                              "Please Your Category",
                                               style: TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 16,
@@ -268,9 +276,8 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                                             ),
                                             controller: _dateController,
                                             validator: (value) {
-                                             dob = value.toString();
+                                              dob = value.toString();
                                             },
-
                                             textInputAction:
                                                 TextInputAction.next,
                                             style: GoogleFonts.lato(
@@ -353,43 +360,36 @@ class _UpdateDetailsState extends State<UpdateDetails> {
                         ],
                       ),
                     )
-                  ]);
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-            return CircularProgressIndicator();
-          },
+                  ]),
+
         ),
-      ),
+
     );
   }
 
   Future<void> updateDoctor() async {
     var data = {
-    'doc_id' :  userData['id'].toString(),
-    'category' : cat.toString(),
-    'gender' : gender.toString(),
-      'dob' : dob.toString(),
+      'doc_id': userData['id'].toString(),
+      'category': cat.toString(),
+      'gender': gender.toString(),
+      'dob': dob.toString(),
     };
 
-    var res = await CallApi().updateDoc(data,'/doctors/store');
+    var res = await CallApi().updateDoc(data, '/doctors/store');
     var body = json.decode(res.body);
     print(body);
-    if(body['success'] == true){
+    if (body['success'] == true) {
       Fluttertoast.showToast(
-        backgroundColor: Colors.blue,
+          backgroundColor: Colors.blue,
           textColor: Colors.white,
           msg: "Successful",
-          toastLength:
-          Toast.LENGTH_SHORT);
-    }else{
+          toastLength: Toast.LENGTH_SHORT);
+    } else {
       Fluttertoast.showToast(
           backgroundColor: Colors.blue,
           textColor: Colors.white,
           msg: "Already Updated",
-          toastLength:
-          Toast.LENGTH_SHORT);
+          toastLength: Toast.LENGTH_SHORT);
     }
-
   }
 }

@@ -268,6 +268,7 @@ class PharmacyDetailsState extends State<PharmacyDetails> {
     var data = {
       'uid': userData['id'],
       'name' : userData['name'],
+      'pharmacy_id' : widget.id,
       'phone' : userData['phone'],
       'location' : widget.location,
       'pharmacy_name' : widget.name,
