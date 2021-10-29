@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hms/api/api.dart';
+import 'package:hms/authenticate/RegisterSeller.dart';
 import 'package:hms/authenticate/register.dart';
 import 'package:hms/authenticate/usertype.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
@@ -199,7 +200,7 @@ class _LoginState extends State<Login> {
                           ),),
 
                         SizedBox(
-                          height: 50,
+                          height: 30,
                         ),
                         Center(
                           child:ElevatedButton(
@@ -218,7 +219,31 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 10,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(right: 200.0),
+                          child: GestureDetector(
+                            child: Text("Register as a Seller",
+                              style: TextStyle(
+                                color:Colors.brown,
+                                fontStyle: FontStyle.italic,
+                                fontSize: 16,
+                              ),
+                            ),
+                            onTap: (){
+                              Navigator.push(context,
+                                  MaterialPageRoute(
+                                      builder: (
+                                          context) => RegisterSeller()
+                                  ));
+
+                            },
+                          ),
+
+                        ),
+                        SizedBox(
+                          height: 10,
                         ),
                         Container(
                           margin: const EdgeInsets.only(right: 210.0),

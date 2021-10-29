@@ -242,13 +242,13 @@ class _PatientHomeState extends State<PatientHome> {
                                  height: 20,
                                ),
                                Container(
-                                 margin: const EdgeInsets.only(right: 210.0),
+                                 margin: const EdgeInsets.only(right: 200.0),
                                  child: GestureDetector(
                                    child: Text("Register as a Seller",
                                      style: TextStyle(
                                        color:Colors.brown,
                                        fontStyle: FontStyle.italic,
-                                       fontSize: 18,
+                                       fontSize: 16,
                                      ),
                                    ),
                                    onTap: (){
