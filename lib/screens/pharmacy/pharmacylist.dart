@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hms/api/api.dart';
+import 'package:hms/screens/pharmacy/pharmacydetails.dart';
 // import 'package:hms/screens/pharmacy/pharmacydetails.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -108,9 +109,9 @@ class _PharmacyListState extends State<PharmacyList> {
                 itemBuilder: (context, i) {
                   return new GestureDetector(
                       onTap: (){
-                        // Navigator.push(context, MaterialPageRoute(builder:
-                        //     (context) => PharmacyDetails(_searchResult[i].id,_searchResult[i].name,_searchResult[i].charges,_searchResult[i].location)
-                        // ));
+                        Navigator.push(context, MaterialPageRoute(builder:
+                            (context) => PharmacyDetails(_searchResult[i].id,_searchResult[i].name,_searchResult[i].charges,_searchResult[i].location)
+                        ));
                       },
                       child:Card(
                         elevation: 3,
@@ -229,9 +230,9 @@ class _PharmacyListState extends State<PharmacyList> {
                 itemBuilder: (context, index) {
                   return new GestureDetector(
                       onTap: (){
-                        // Navigator.push(context, MaterialPageRoute(builder:
-                        //     (context) => PharmacyDetails(_userDetails[index].id,_userDetails[index].name,_userDetails[index].charges,_userDetails[index].location)
-                        // ));
+                        Navigator.push(context, MaterialPageRoute(builder:
+                            (context) => PharmacyDetails(_userDetails[index].id,_userDetails[index].name,_userDetails[index].charges,_userDetails[index].location)
+                        ));
                       },
                       child:Card(
                         elevation: 3,
