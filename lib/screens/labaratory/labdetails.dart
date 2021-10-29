@@ -376,6 +376,7 @@ class LabDetailsState extends State<LabDetails> {
 
     var data = {
       'uid': userData['id'],
+      'lab_id': widget.id,
       'name' : userData['name'],
       'phone' : userData['phone'],
       'location' : widget.location,
@@ -385,7 +386,7 @@ class LabDetailsState extends State<LabDetails> {
 
     };
 
-    var res = await CallApi().postData(data, '/labbooking/store');
+    var res = await CallApi().postData(data,'/labbooking/store');
     print(data);
     var body = json.decode(res.body);
 

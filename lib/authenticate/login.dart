@@ -9,6 +9,7 @@ import 'package:hms/api/api.dart';
 import 'package:hms/authenticate/register.dart';
 import 'package:hms/authenticate/usertype.dart';
 import 'package:hms/screens/doctor/homescreen.dart';
+import 'package:hms/screens/labaratory/MyLab.dart';
 import 'package:hms/screens/labaratory/labhome.dart';
 import 'package:hms/screens/patient/revHomePage.dart';
 import 'package:hms/screens/pharmacy/HomeScreenPharmacy.dart';
@@ -321,7 +322,7 @@ class _LoginState extends State<Login> {
         Navigator.push(
             context,
             new MaterialPageRoute(
-                builder: (context) => LabHome()));
+                builder: (context) => MyLab()));
 
       }
       else{
