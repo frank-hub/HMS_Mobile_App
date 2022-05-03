@@ -58,7 +58,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
     final count_response = await CallApi().getData('/count/doctor_activities/');
     final countJson = json.decode(count_response.body);
     setState(() {
-      for (Map<String, dynamic> booking in responseJson['bookings']){
+      for (Map<String, dynamic> booking in responseJson ){
         _bookings.add(Booking.fromJson(booking));
       }
       totalPatient = countJson['patient'].toString();
@@ -67,7 +67,6 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
     });
 
   }
-
   
   set __isLoggedIn(bool __isLoggedIn) {}
 
@@ -75,7 +74,7 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     setState(() {
-      __isLoggedIn=false;
+      __isLoggedIn = false;
     });
     Navigator.push(
         context,
@@ -88,53 +87,6 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
       return Loading();
     }
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Welcome"),
-        actions: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) =>  UpdateDetails())
-                  );
-                },
-                child: Icon(
-                  Icons.doorbell_outlined,
-                  size: 26.0,
-                ),
-              )
-          ),
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (context) => Profile()));
-                },
-                child: Icon(
-                  Icons.person,
-                  size: 26.0,
-                ),
-              )
-          ),
-          Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () async{
-                  await logout();
-                },
-                child: Icon(
-                  Icons.logout,
-                  size: 26.0,
-                ),
-              )
-          ),
-        ],
-      ),
-
       body: Container(
         padding: EdgeInsets.all(10),
         child: Column(
@@ -329,7 +281,11 @@ class _HomeScreenDoctorState extends State<HomeScreenDoctor> {
         ),
       ),
     );
-  }
+
+
+
+}
+
 }
 class Booking {
 
@@ -339,14 +295,14 @@ class Booking {
   Booking({required this.id,required this.status, required this.name, required this.date, this.location = 'Kuwait' ,required this.time});
 
   factory Booking.fromJson(Map<String, dynamic> json) {
-    return new Booking(
-      id: json['id'],
-      status: json['status'],
-      name: json['name'],
-      date: json['date'],
-      location: json['location'],
-      time: json['time'],
-    );
+  return new Booking(
+  id: json['id'],
+  status: json['status'],
+  name: json['name'],
+  date: json['date'],
+  location: json['location'],
+  time: json['time'],
+  );
   }
 
-}
+  }
