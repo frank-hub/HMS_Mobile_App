@@ -37,6 +37,7 @@ android {
         applicationId "com.example.hms"
         minSdkVersion 16
         targetSdkVersion 30
+        compileSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
