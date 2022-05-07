@@ -114,6 +114,12 @@ class _SignUpState extends State<SignUp> {
                     children: <Widget>[
                       Text(msgStatus,style: TextStyle(color: Colors.red),),
                       SizedBox(height: 5,),
+                      Row(
+                        children: [
+                          _textInput(hint: "First Name", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
+                          _textInput(hint: "Middle Name", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
+                        ],
+                      ),
                       _textInput(hint: "Fullname", icon: Icons.person,controller: _nameController,obscure: false,validator:(value) => value!.isEmpty ? 'Please Enter Your Name' : null, ),
                       _textInput(hint: "Email", icon: Icons.email,controller: _emailController,obscure: false,validator: (value) => EmailValidator.validate(value) ? null : "Please enter a valid email",),
                       SizedBox(height: 10.0,),
